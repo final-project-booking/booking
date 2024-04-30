@@ -32,7 +32,7 @@ app.use('/api/search',search)
 
 app.use("/api/user",userRoute)
 
-let port = 3000
+let port = 3001
 
 app.listen(port, function () {
   console.log(`listening on port ${port}`)
