@@ -1,126 +1,155 @@
 
 import React,{ useState } from 'react'
-import { View, Text, StyleSheet,Image  ,TextInput,TouchableOpacity,SafeAreaView} from 'react-native';
+import { useDispatch } from 'react-redux'
+import { View, Text, StyleSheet,Image  ,TextInput,TouchableOpacity,SafeAreaView,ImageBackground ,Modal} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
-/**
- * Renders the Home component.
- *
- * @returns {JSX.Element} The rendered Home component.
- */
+import {getCityByLocation} from '../../reduce/SearchHotel'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import moment from 'moment';
+import HotelsByLocation from './HotelsByLocation';
 export default function Home() {
 
   const [isCalendarVisible, setCalendarVisible] = useState(false);
-  const [selectedCity, setSelectedCity] = useState('sousse');
+  const [selectedCity, setSelectedCity] = useState([]);
+  const dispatch=useDispatch()
+  const [selectedDate, setSelectedDate] = useState(null);
+ 
 
-  /**
-   * Toggles the visibility of the calendar.
-   */
+const handleSubmitForm =(selectedCity)=>{
+dispatch(getCityByLocation(selectedCity))
+console.log('okkkkkkkkk');
+}
+    
 
 
     return (
 
+      <ImageBackground source={{uri:'https://i.pinimg.com/originals/00/9e/59/009e59b9df936efc79f2089d55181766.jpg'}} style={styles.backgroundImage}>
       <View style={styles.container}>
-      <View style={styles.navBar}>
-        {/* Assuming styles.logo defines the width and height */}
-        <Image source={require('../../Photo/bestpho.jpg')} style={styles.logo} />
-      </View>
-      <View style={styles.centerContainer}>
-        <View style={styles.title}>
-          <Text>Hotels Tunisie</Text>
-        </View>
-        <Picker
-          selectedValue={selectedCity}
-          onValueChange={(itemValue) => setSelectedCity(itemValue)}
-          style={styles.picker}
-        >
-          <Picker.Item label="Sousse" value="sousse" />
-          <Picker.Item label="Hammamet" value="hammamet" />
-          <Picker.Item label="Jerba" value="jerba" />
-          <Picker.Item label="Mahdia" value="mahdia" />
-          <Picker.Item label="Bizerte" value="bizerte" />
-        </Picker>
-        <TouchableOpacity
-          style={styles.calendarButton}
-          onPress={() => setCalendarVisible(!isCalendarVisible)}
-        >
-          <Text style={styles.calendarButtonText}>Calendar</Text>
-        </TouchableOpacity>
-        {isCalendarVisible && (
-          <Calendar
-            style={styles.calendar} // Applied styles to calendar
-            theme={{
-              backgroundColor: '#ffffff',
-              calendarBackground: '#ffffff',
-              textSectionTitleColor: '#b6c1cd',
-              selectedDayBackgroundColor: '#00adf5',
-              selectedDayTextColor: '#ffffff',
-              todayTextColor: '#00adf5',
-              dayTextColor: '#2d4150',
-              textDisabledColor: '#d9e',
-              dotColor: '#00adf5',
-              selectedDotColor: '#ffffff',
-              arrowColor: 'orange',
-              monthTextColor: 'blue',
-              textDayFontFamily: 'monospace',
-              textMonthFontFamily: 'monospace',
-              textDayHeaderFontFamily: 'monospace',
-              textDayFontSize: 16,
-              textMonthFontSize: 16,
-              textDayHeaderFontSize: 16,
-            }}
-          />
-        )}
-      <TouchableOpacity style={styles.searchButton}>
-        <Text style={styles.searchButtonText}>Search</Text>
-      </TouchableOpacity>
-      </View>
-      <SafeAreaView style={styles.footer}>
-        <TouchableOpacity style={styles.link}>
-          <Text style={styles.linkText}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.link}>
-          <Text style={styles.linkText}>Profile</Text>
-        </TouchableOpacity>
-      </SafeAreaView>
+        <View style={styles.centerContainer}>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>Hotels Tunisie</Text>
+          </View>
+          <Picker
+            selectedValue={selectedCity}
+            onValueChange={(itemValue) => setSelectedCity(itemValue)}
+            style={styles.picker}
+          >
+            <Picker.Item label="Sousse" value="sousse" />
+            <Picker.Item label="Hammamet" value="hammamet" />
+            <Picker.Item label="Jerba" value="jerba" />
+            <Picker.Item label="Mahdia" value="mahdia" />
+            <Picker.Item label="Bizerte" value="bizerte" />
+          </Picker>
+          <TouchableOpacity
+            style={styles.calendarButton}
+            onPress={() => setCalendarVisible(!isCalendarVisible)}
+          >
+           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderWidth: 2  , borderColor: '#FFFFFF',backgroundColor:'#FFFFFF' }}>
+          <TextInput placeholder='Date' style={{width:'55%'}} value={selectedDate}/>
+            <Icon
+          name='calendar'
+          size={20}
+          // color='#887700'
+           /> 
+          </View>
+          </TouchableOpacity>
+          {isCalendarVisible && (
+  <Modal transparent={true} animationType="slide">
+    <View style={styles.modalBackground}>
+    <TouchableOpacity style={styles.closeButton} onPress={() => setCalendarVisible(false)}>
+      <Text style={styles.closeButtonText}>X</Text>
+    </TouchableOpacity>
+      <Calendar
+        style={styles.calendar}
+        theme={{
+          backgroundColor: '#ffffff',
+          calendarBackground: '#ffffff',
+          textSectionTitleColor: '#b6c1cd',
+          selectedDayBackgroundColor: '#00adf5',
+          selectedDayTextColor: '#ffffff',
+          todayTextColor: '#00adf5',
+          dayTextColor: '#2d4150',
+          textDisabledColor: '#d9e',
+          dotColor: '#00adf5',
+          selectedDotColor: '#ffffff',
+          arrowColor: 'orange',
+        }}
+        onDayPress={(day) => {
+    const formattedDate = moment(day.dateString).format('MMMM Do YYYY');
+    setSelectedDate(formattedDate);
+    setCalendarVisible(false);
+  }}
+      />
     </View>
-  
+  </Modal>
+)}
+          <TouchableOpacity style={styles.searchButton}>
+            <Text style={styles.searchButtonText} onPress={()=>handleSubmitForm(selectedCity)}>Search</Text>
+          </TouchableOpacity>
+        </View>
+        <SafeAreaView style={styles.footer}>
+          <TouchableOpacity style={styles.link}>
+            <Text style={styles.linkText}>Home</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.link}>
+            <Text style={styles.linkText}>Profile</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+      </View>
+      <HotelsByLocation hotels={selectedCity}/>
+    </ImageBackground>
   );
   } // Add this closing curly brace
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff', 
-    paddingHorizontal: 20,
   },
-  navBar: {
-       height: 50,
-    backgroundColor: '#007bff',
-    alignItems: 'center',
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
     justifyContent: 'center',
-  },
-  logo: {
-      width: '100%',
-    height: 350,
-    marginBottom: 10,
   },
   centerContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   title: {
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  picker: {
-    width: 200,
-    height: 40,
     marginBottom: 20,
   },
+  titleText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000000',
+  },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    justifyContent: 'center', // Center the calendar vertically
+    alignItems: 'center', // Center the calendar horizontally
+  },
+  closeButton: {
+    position: 'absolute', // Position the close button absolutely...
+    top: 20, // ...20 pixels from the top...
+    right: 20, // ...and 20 pixels from the right
+  },
+  closeButtonText: {
+    fontSize: 24, // Make the 'X' text larger
+    fontWeight: 'bold', // Make the 'X' text bold
+  },
+  picker: {
+    width: '55%',
+    height: 40,
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+  },
   calendarButton: {
-    backgroundColor: '#00adf5',
+    // backgroundColor: '#00adf5',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -128,20 +157,26 @@ const styles = StyleSheet.create({
   },
   calendarButtonText: {
     color: '#ffffff',
- 
+    // fontWeight: 'bold',
+    fontSize: 30,
   },
   calendar: {
     borderWidth: 1,
     borderColor: 'gray',
-    height: 350,
+    height: 300,
+    width: '100%',
+    marginBottom: 20,
+  },
+  calendarTheme: {
+    // Define your calendar theme styles here
   },
   searchButton: {
-    backgroundColor: '#007bff',
+     
+    backgroundColor: '#00adf5',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
     marginBottom: 50,
-    alignSelf: 'center'
   },
   searchButtonText: {
     color: '#ffffff',
@@ -151,149 +186,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 60,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    // backgroundColor: '#F0FFFF',
   },
   link: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+      alignItems: 'center',
   },
   linkText: {
+    color: '#00adf5',
     fontWeight: 'bold',
-    color: '#007bff',
   },
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: '#fff',
-  //   // paddingHorizontal: 20,
-  //   // paddingTop: 20,
-  // },
-  // navBar: {
-  //   height: 50,
-  //   backgroundColor: '#007bff',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
-  // logo: {
-  //     width: '100%',
-  //   height: 350,
-  //   marginBottom: 10,
-  // },
-  // centerContainer: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
-  // title: {
-  //   marginBottom: 20,
-  // },
-  // picker: {
-  //     width: 200,
-  //   height: 40,
-  //   marginBottom: 20,
-  // },
-  // calendarButton: {
-  //    backgroundColor: '#007bff',
-  //   paddingVertical: 10,
-  //   paddingHorizontal: 20,
-  //   borderRadius: 5,
-  //   marginBottom: 20,
-  // },
-  // calendarButtonText: {
-  //   color: '#fff',
-  //   textAlign: 'center',
-  // },
-  // searchButton: {
-  //   backgroundColor: '#007bff',
-  //   paddingVertical: 10,
-  //   paddingHorizontal: 20,
-  //   borderRadius: 5,
-  //   marginBottom: 100,
-  //   alignSelf: 'center'
-  // },
-  // searchButtonText: {
-  //   color: '#fff',
-  //   textAlign: 'center',
-  // },
-  // footer: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-around',
-  //   alignItems: 'center',
-  //   borderTopWidth: 1,
-  //   borderTopColor: '#ccc',
-  //   paddingVertical: 10,
-  // },
-  // link: {
-  //   flex: 1,
-  //   alignItems: 'center',
-  // },
-  // linkText: {
-  //   color: '#007bff',
-  //   fontSize: 16,
-  // },
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: '#fff',
-  // },
-  // navBar: {
-  //    width: '100%',
-  //   height: 50,
-  //   backgroundColor: '#f2f2f2',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
-  // logo: {
-  //   width: '100%',
-  //   height: 200,
-  //   marginBottom: 10,
-  // },
-  // centerContainer: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
-  // picker: {
-  //   width: 200,
-  //   height: 40,
-  //   marginBottom: 20,
-  // },
-  // calendarButton: {
-  //   backgroundColor: '#007bff',
-  //   paddingVertical: 10,
-  //   paddingHorizontal: 20,
-  //   borderRadius: 5,
-  //   marginBottom: 20,
-  // },
-  // calendarButtonText: {
-  //   color: '#fff',
-  //   textAlign: 'center',
-  // },
-  // searchButton: {
-  //   backgroundColor: '#007bff',
-  //   paddingVertical: 10,
-  //   paddingHorizontal: 20,
-  //   borderRadius: 5,
-  //   marginBottom: 200,
-  //   alignSelf: 'center', // To center the button horizontally
-  // },
-  // searchButtonText: {
-  //   color: '#fff',
-  //   textAlign: 'center',
-  // },
-  // footer: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-around',
-  //   alignItems: 'center',
-  //   borderTopWidth: 1,
-  //   borderTopColor: '#ccc',
-  //   paddingVertical: 10,
-  // },
-  // link: {
-  //   flex: 1,
-  //   alignItems: 'center',
-  // },
-  // linkText: {
-  //   color: '#007bff',
-  //   fontSize: 16,
-  // },
+ 
 });

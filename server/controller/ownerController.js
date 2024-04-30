@@ -54,8 +54,9 @@ promoteToOwner : async function(req, res) {
 
         res.status(201).send(result);
     } catch (error) {
-        console.error('Failed to promote user to owner with hotel:', error);
-        res.status(500).send('Error promoting user to owner');
+        // console.error('Failed to promote user to owner with hotel:', error);
+        // res.status(500).send('Error promoting user to owner');
+        throw error;
     }
 },
 
