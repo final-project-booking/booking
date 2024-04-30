@@ -1,5 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
+import SignUp from './src/component/authentication/SigneUp';
 import EditProfile from './src/component/editprofile/EditProfile';
 import UserProfile from './src/component/UserProfile/UserProfile'
 // import NAVSTART from './screens/Nav'
@@ -8,7 +9,8 @@ function App() {
   return (
 <SafeAreaView style={styles.container}>
 {/* <NAVSTART/> */}
-<UserProfile/>
+{/* <UserProfile/> */}
+<SignUp/>
 {/* <EditProfile/> */}
 </SafeAreaView>
   );                                      

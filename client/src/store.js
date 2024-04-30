@@ -2,10 +2,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 // import counterReducer from './counterSlice';
 import ownerProfileReducer from './SliceAction/OwnerProfile'
+import userSignUp from "./reduce/authentication/signUpReducer"
 const store = configureStore({
   reducer: {
-    // counter: counterReducer,
-    ownerProfile: ownerProfileReducer,
+    userSignUp:userSignUp,
+    // ownerProfile: ownerProfileReducer,
     
   }
 
