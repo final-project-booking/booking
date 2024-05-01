@@ -8,7 +8,7 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
  *
  * @returns {JSX.Element} The rendered Home component.
  */
-export default function Home() {
+export default function Home({navigation}) {
 
   const [isCalendarVisible, setCalendarVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState('sousse');

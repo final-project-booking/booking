@@ -1,90 +1,70 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView ,TouchableOpacity} from 'react-native';
-import EditProfile from '../editprofile/EditProfile';
-import Icon from 'react-native-vector-icons/FontAwesome';
-// import MapView, { PROVIDER_GOOGLE } from 'UserProfile.js";serProfile.js";eact-native-maps';
-const UserProfile = () => {
-  const profile = {
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    password: 'password',
-    imageUrl: 'https://th.bing.com/th/id/OIP.2i5UaEHaQM3PYAYXQyM1AAAAAA?w=177&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7', // Provided image URL
-    location: {
-      latitude: 37.78825,
-      longitude: -122.4324,
-    }
-  };
-  const handleSave = () => {
-    console.log('Changes saved');
-  };
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
-  const handleEditProfile = () => {
-    // navigation.navigate('EditProfile');
+const EditProfile = ({ profile, onSave }) => {
+  const [editedProfile, setEditedProfile] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  useEffect(() => {
+    console.log('Profile:', profile); 
+    setEditedProfile({
+      name: profile ? profile.name : '',
+      email: profile ? profile.email : '',
+      password: profile ? profile.password : '',
+    });
+  }, [profile]);
+
+  const handleSave = () => {
+    onSave(editedProfile);
   };
 
   return (
-    <ScrollView>
-
-      <View style={styles.container}>
-      <Icon name="rocket" size={30} color="#900" /> 
-        <Text style={styles.heading}>User Profile</Text>
-        <View style={styles.profileInfo}>
-          <Image source={{ uri: profile.imageUrl }} style={styles.image} />
-          <Text style={styles.label}>Name:</Text>
-          <Text style={styles.infoText}>{profile.name}</Text>
-          <Text style={styles.label}>Email:</Text>
-          <Text style={styles.infoText}>{profile.email}</Text>
-          <Text style={styles.label}>Location:</Text>
-          <Text style={styles.infoText}>{`Latitude: ${profile.location.latitude}, Longitude: ${profile.location.longitude}`}</Text>
-          <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
-            <Text style={styles.editButtonText}>Edit Profile</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      <Text style={styles.formHeading}>Edit Profile</Text>
+      <TextInput
+        style={styles.input}
+        value={editedProfile.name}
+        onChangeText={(value) => setEditedProfile({ ...editedProfile, name: value })}
+        placeholder="Enter your name"
+      />
+      <TextInput
+        style={styles.input}
+        value={editedProfile.email}
+        onChangeText={(value) => setEditedProfile({ ...editedProfile, email: value })}
+        placeholder="Enter your email"
+      />
+      <TextInput
+        style={styles.input}
+        value={editedProfile.password}
+        onChangeText={(value) => setEditedProfile({ ...editedProfile, password: value })}
+        placeholder="Enter your password"
+        secureTextEntry={true}
+      />
+      <Button title="Save Changes" onPress={handleSave} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#ffffff',
+    marginTop: 20,
   },
-  heading: {
-    fontSize: 24,
+  formHeading: {
+    fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  profileInfo: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  image: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
     marginBottom: 10,
   },
-  label: {
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  infoText: {
-    marginBottom: 10,
-  },
-  editButton: {
-    backgroundColor: '#007bff',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+  input: {
+    borderWidth: 1,
+    borderColor: '#cccccc',
     borderRadius: 5,
-    marginTop: 10,
-  },
-  editButtonText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
+    padding: 10,
+    marginBottom: 10,
+    width: '100%',
   },
 });
 
-export default UserProfile;
+export default EditProfile;
