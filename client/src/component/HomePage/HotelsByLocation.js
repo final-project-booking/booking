@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet,Image  ,TextInput,TouchableOpacity,SafeAreaView,ImageBackground ,Modal} from 'react-native';
+import { View, Text, StyleSheet,Image ,FlatList ,TextInput,TouchableOpacity,SafeAreaView,ImageBackground ,Modal} from 'react-native';
 // Import the necessary libraries
 
 const HotelsByLocation = ({hotels}) => {
@@ -9,17 +9,19 @@ const HotelsByLocation = ({hotels}) => {
 
     return (
         <View style={styles.hotelContainer}>
-           
-            {hotels.map((hotel) => (
-                <View key={hotel.id} style={styles.hotelContainer}>
-                    <Image source={hotel.imgUrl} style={styles.hotelImage} />
-                    <Text style={styles.hotelName}>{hotel.name}</Text>
-                    <Text style={styles.hotelLocation}>{hotel.location}</Text>
-                    <Text style={styles.hotelPrice}>{hotel.price}</Text>
-                    <Text style={styles.hotelRating}>{hotel.rating}</Text>
-                </View>
-            ))}
-          
+            <FlatList
+                data={hotels}
+                // keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item: hotel }) => (
+                    <View style={styles.hotelContainer}>
+                        {/* <Image source={hotel.imgUrl} style={styles.hotelImage} /> */}
+                        <Text style={styles.hotelName}>{hotel.name}</Text>
+                        <Text style={styles.hotelLocation}>{hotel.location}</Text>
+                        <Text style={styles.hotelPrice}>{hotel.price}</Text>
+                        <Text style={styles.hotelRating}>{hotel.rating}</Text>
+                    </View>
+                )}
+            />
         </View>
     );
 };

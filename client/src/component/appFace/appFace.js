@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, ViewBase,Image,Button ,ImageBackground} from 'react-native';
+import { View, Text, StyleSheet, ViewBase,Image,Button ,ImageBackground,TouchableOpacity} from 'react-native';
 
 const appFace = () => {
 
@@ -11,9 +11,12 @@ const appFace = () => {
         source={require('../../Photo/face.png')}
         style={styles.image}
       >
-
         <View style={styles.content}>
-          <Button title='Get Start'   />
+        <TouchableOpacity
+            style={styles.buttonContainer}
+            >
+            <Text style={styles.Text}>Get Start</Text>
+            </TouchableOpacity>
           <Text style={styles.text}>If you have an Account? Login</Text>
           <Text style={styles.text}>If you don't have an Account? Sign Up</Text>
         </View>
@@ -44,8 +47,21 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonContainer: {
+    marginTop: 20,
+    height: 45,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 20,
+    width: 250,
+    borderRadius: 30,
+    borderStyle:"solid",
+    backgroundColor: '#00b5ec'
   },
+  Text:{
+    color:'white',
+    fontSize:20,
+    fontWeight: 'bold',
+  }
 });
 
 export default appFace

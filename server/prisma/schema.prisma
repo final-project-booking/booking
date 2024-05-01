@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 generator client {
@@ -84,28 +84,28 @@ model DayAvailability{
   roomId Int @unique
   availability Boolean @default(true)
 }
-model Message{
+model Message {
   id          Int       @id @default(autoincrement()) 
   content     String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  users        User      @relation(fields: [usersId], references: [id])
-  usersId      Int
-  room        RoomChat      @relation(fields: [roomId], references: [id]) 
+  users        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  room        RoomChat      @relation(fields: [roomId], references: [id]) // This establishes a many-to-one relationship with Room
   roomId      Int
 }
 model RoomChat {
   id        Int       @id @default(autoincrement())
-  message Message[]
-  join JoinChat[]
-  }
-  model JoinChat {
+  messages  Message[]  
+  join JoinChat[]  
+}
+ model JoinChat {
    id          Int       @id @default(autoincrement()) 
-   rooms    RoomChat  @relation(fields: [roomId], references: [id])
-   roomId  Int
-   users    User  @relation(fields: [userId], references: [id])
-   userId  Int 
-   }
+  users    User  @relation(fields: [userId], references: [id])
+  userId  Int 
+  rooms    RoomChat  @relation(fields: [roomId], references: [id])
+  roomId  Int
+}
   
    model Offer{
   id Int   @id @default(autoincrement())

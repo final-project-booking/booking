@@ -18,10 +18,10 @@ export default function Home() {
 
 const handleSubmitForm =(selectedCity)=>{
 dispatch(getCityByLocation(selectedCity))
-console.log('okkkkkkkkk');
+
+console.log('okkkkkkkkk',selectedCity);
 }
     
-
 
     return (
 
@@ -31,23 +31,34 @@ console.log('okkkkkkkkk');
           <View style={styles.title}>
             <Text style={styles.titleText}>Hotels Tunisie</Text>
           </View>
-          <Picker
-            selectedValue={selectedCity}
-            onValueChange={(itemValue) => setSelectedCity(itemValue)}
-            style={styles.picker}
-          >
-            <Picker.Item label="Sousse" value="sousse" />
-            <Picker.Item label="Hammamet" value="hammamet" />
-            <Picker.Item label="Jerba" value="jerba" />
-            <Picker.Item label="Mahdia" value="mahdia" />
-            <Picker.Item label="Bizerte" value="bizerte" />
-          </Picker>
+          <View style={{ borderRadius: 50 , width: '60%',
+      height: 10,
+      marginBottom: 50,
+      backgroundColor: '#fff', }}>
+  <Picker
+    selectedValue={selectedCity}
+    onValueChange={(itemValue) => setSelectedCity(itemValue)}
+    style={{  
+    
+      marginBottom: 20,
+      backgroundColor: '#fff', 
+      opacity:0.8,
+      color:'black'
+    }}
+  >
+    <Picker.Item label="Sousse" value="sousse" />
+    <Picker.Item label="Hammamet" value="hammamet" />
+    <Picker.Item label="Jerba" value="jerba" />
+    <Picker.Item label="Mahdia" value="mahdia" />
+    <Picker.Item label="Bizerte" value="bizerte" />
+  </Picker>
+</View>
           <TouchableOpacity
             style={styles.calendarButton}
             onPress={() => setCalendarVisible(!isCalendarVisible)}
           >
-           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderWidth: 2  , borderColor: '#FFFFFF',backgroundColor:'#FFFFFF' }}>
-          <TextInput placeholder='Date' style={{width:'55%'}} value={selectedDate}/>
+           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderWidth: 2  , borderColor: '#FFFFFF',backgroundColor:'#FFFFFF',borderRadius:10 }}>
+          <TextInput placeholder='Date' style={{width:'60%'}} value={selectedDate}/>
             <Icon
           name='calendar'
           size={20}
@@ -86,7 +97,7 @@ console.log('okkkkkkkkk');
   </Modal>
 )}
           <TouchableOpacity style={styles.searchButton}>
-            <Text style={styles.searchButtonText} onPress={()=>handleSubmitForm(selectedCity)}>Search</Text>
+            <Text style={styles.searchButtonText} onPress={()=> handleSubmitForm(selectedCity)}>Search</Text>
           </TouchableOpacity>
         </View>
         <SafeAreaView style={styles.footer}>
@@ -98,7 +109,7 @@ console.log('okkkkkkkkk');
           </TouchableOpacity>
         </SafeAreaView>
       </View>
-      <HotelsByLocation hotels={selectedCity}/>
+      {/* <HotelsByLocation hotels={selectedCity}/> */}
     </ImageBackground>
   );
   } // Add this closing curly brace
@@ -113,6 +124,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   centerContainer: {
+    borderRadius: 50,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -140,13 +152,17 @@ const styles = StyleSheet.create({
   closeButtonText: {
     fontSize: 24, // Make the 'X' text larger
     fontWeight: 'bold', // Make the 'X' text bold
+    
   },
   picker: {
+    
     width: '55%',
-    height: 40,
+    height: 10,
     marginBottom: 20,
+    // borderRadius: 50,
+
     backgroundColor: '#fff',
-    borderRadius: 5,
+
   },
   calendarButton: {
     // backgroundColor: '#00adf5',
@@ -154,6 +170,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     marginBottom: 20,
+    opacity:0.8,
+
   },
   calendarButtonText: {
     color: '#ffffff',
@@ -168,15 +186,23 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   calendarTheme: {
-    // Define your calendar theme styles here
+    
+    borderRadius: 50,
+   width: '60%',
+    height: 10,
+    marginBottom: 20,
+    backgroundColor: '#00adf5',
   },
   searchButton: {
      
     backgroundColor: '#00adf5',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 50,
     marginBottom: 50,
+    width:'60%',
+    alignItems: 'center',
+
   },
   searchButtonText: {
     color: '#ffffff',
@@ -186,17 +212,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    // backgroundColor: '#F0FFFF',
+    paddingHorizontal: 10,
+    // paddingBottom: 40,
+    backgroundColor: '#F0FFFF',
+    alignItems: 'center',
+    width:'100%',
+    height: 50,
+    opacity:0.5
   },
   link: {
     flex: 1,
       alignItems: 'center',
   },
   linkText: {
-    color: '#00adf5',
+    color:  '#00b5ec',
     fontWeight: 'bold',
+    // top:5
   },
  
 });
