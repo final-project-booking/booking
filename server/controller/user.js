@@ -53,7 +53,7 @@ module.exports = {
     
     getOne:async function(req,res){
         try {
-            const users= await user.findFirst({ where: { id:req.user.userId } })
+            const users= await user.findUnique({ where: { id:req.user.userId } })
             res.status(200).send(users)    
         } catch (error) {
             throw error    

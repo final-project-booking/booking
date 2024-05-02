@@ -57,6 +57,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
   },
+  text: {
+    color: 'white',
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    marginBottom: 20,
+  },
 });
 
 export default AppFace;
