@@ -15,8 +15,9 @@ const Tab = createBottomTabNavigator();
 import Nav from './screens/Nav';
 function App() {
   return (
+    <Nav/>
       //  < Home/>
-  <Payment/>
+  // <Payment/>
   );                                     
 }
 export default App;

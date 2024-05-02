@@ -1,33 +1,19 @@
-import {signUpAsync} from '../../SliceAction/authentication/signUpAction'
-import { createSlice } from '@reduxjs/toolkit'
+import {createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 
 
-const initialState={
-    user:{},
-    loading:false,
-    error:""
-}
 
-
-const signUpSlice = createSlice({
-    name:"user",
-    initialState,
-    reducers:{},
-    extraReducers:(builder)=>{
-        builder
-        .addCase(signUpAsync.pending,(state)=>{
-            state.loading=true
-        })
-        .addCase(signUpAsync.fulfilled,(state,action)=>{
-            state.loading=false
-            state.user=action.payload
-        })
-        .addCase(signUpAsync.rejected,(state)=>{
-            state.loading=false
-            state.error="invalid information"
-        })
+export const signUpAsync=createAsyncThunk(
+    "signUp/user",
+    async(obj,{rejectWithValue})=>{
+        try {
+            const response=await axios.post(`http://192.168.11.118:3000/api/user/register`,obj)
+            console.log("signed");
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
     }
-})
+)
 
-export default signUpSlice.reducer
