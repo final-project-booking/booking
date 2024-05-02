@@ -14,6 +14,7 @@ import Home from './src/component/HomePage/Home'
 import HotelsByLocation from './src/component/HomePage/HotelsByLocation'
 import AppFace from './src/component/appFace/appFace'
 import ChatPage from './src/component/chat/chatPage'
+import Detail from './src/component/detail/detail'
 const stack = createNativeStackNavigator();
 function NAVSTART() {
   return (
@@ -41,7 +42,7 @@ console.log("App",process.env.hello);
     //   <Tab.Screen name="AppFace" component={AppFace} options={{ headerShown: false }} />
     //   </Tab.Navigator>
     // </NavigationContainer>
-    <ChatPage/>
+    <Detail/>
 
   );                                      
 

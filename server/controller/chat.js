@@ -2,15 +2,31 @@ const {message,user,roomChat,joinChat}=require('../database/index')
 
 // console.log(joinChat);
 module.exports = {
-    addMessage:async function(req,res){
+    addMessage: async function(req, res) {
+        const { userId, content, roomId } = req.body;
         try {
-            const { userId, content,roomId } = req.body
-            const messages=await message.create({data:{userId,content,roomId}})
-            res.status(200).send(messages)
+          const room = await roomChat.findUnique({
+            where: {
+              id: roomId
+            }
+          });
+      
+          if (!room) {
+            return res.status(400).json({ error: 'Room not found' });
+          }
+      
+          const messages = await message.create({
+            data: {
+              userId: userId,
+              content: content,
+              roomId: roomId
+            }
+          });
+          res.status(200).send(messages);
         } catch (error) {
-            throw error
+          throw error;
         }
-    },
+      },
 removeMessage:async function(req,res){
     try {
         const messages=await message.delete({where:{id:Number(req.params.id)}})
@@ -86,7 +102,8 @@ getAllUser:async function(req, res){
 
  createRoom: async function (req, res) {
     try {
-        // const rooms = await roomChat.create({});
+        const rooms = await roomChat.create({});
+        // const joinChats=await joinChat.create({})
         const commonRooms = await joinChat.findMany({
             where: {
                 AND: [
@@ -124,6 +141,20 @@ joinChat: async function(req, res) {
         throw error;
     }
 },
+// joinChat: async function(req, res) {
+//     try {
+//       const { userId, roomId } = req.body;
+//       const join = await joinChat.create({
+//         data: {
+//           roomId: roomId,
+//           userId: userId
+//         }
+//       });
+//       res.status(200).send(join);
+//     } catch (error) {
+//       throw error;
+//     }
+//   }
 
 
 
