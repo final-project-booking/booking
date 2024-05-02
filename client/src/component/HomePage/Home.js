@@ -3,28 +3,25 @@ import React,{ useState } from 'react'
 import { View, Text, StyleSheet,Image  ,TextInput,TouchableOpacity,SafeAreaView} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
-/**
- * Renders the Home component.
- *
- * @returns {JSX.Element} The rendered Home component.
- */
-export default function Home({navigation}) {
-
+import { ListItem, SearchBar } from "react-native-elements";
+export default function Home() {
   const [isCalendarVisible, setCalendarVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState('sousse');
-
-  /**
-   * Toggles the visibility of the calendar.
-   */
-
+  handleButton=()=>{
+    // navigation.navvigate("UserProfile")
+  }
 
     return (
 
       <View style={styles.container}>
       <View style={styles.navBar}>
-        {/* Assuming styles.logo defines the width and height */}
+       
         <Image source={require('../../Photo/bestpho.jpg')} style={styles.logo} />
       </View>
+      <view>
+        
+      </view>
+  
       <View style={styles.centerContainer}>
         <View style={styles.title}>
           <Text>Hotels Tunisie</Text>
@@ -40,10 +37,12 @@ export default function Home({navigation}) {
           <Picker.Item label="Mahdia" value="mahdia" />
           <Picker.Item label="Bizerte" value="bizerte" />
         </Picker>
+        
         <TouchableOpacity
           style={styles.calendarButton}
           onPress={() => setCalendarVisible(!isCalendarVisible)}
         >
+
           <Text style={styles.calendarButtonText}>Calendar</Text>
         </TouchableOpacity>
         {isCalendarVisible && (
@@ -80,14 +79,13 @@ export default function Home({navigation}) {
           <Text style={styles.linkText}>Home</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.link}>
-          <Text style={styles.linkText}>Profile</Text>
+          <Text style={styles.linkText} onPress={handleButton}>Profile </Text>
         </TouchableOpacity>
       </SafeAreaView>
     </View>
   
   );
-  } // Add this closing curly brace
-
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,

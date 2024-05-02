@@ -19,32 +19,38 @@ function Nav() {
           name="AppFace"
           component={AppFace}
           options={{ headerShown: false }}
-          initialParams={{ navigation: navigation }}
-
         /> 
          <Stack.Screen
           name="Home"
           component={Home}
-          options= {{ headerShown: false }}
+         options={{ headerShown: false }}
         /> 
         <Stack.Screen
           name="UserProfile"
           component={UserProfile}
-          options={({ navigation }) => ({ headerShown: false, navigation })}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="EditProfile"
           component={EditProfile}
-          options={({ navigation }) => ({ headerShown: false, navigation })}
+          options={ {headerShown: false}}
         />
          <Stack.Screen
           name="OwnerProfile"
           component={OwnerProfile}
-          options={({ navigation }) => ({ headerShown: false, navigation })}
+          options={ {headerShown: false }}
         /> 
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
+function TabNavigator() {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen name="Start" component={AppFace} options={{ headerShown: false }} />
+        <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Tab.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
+      </Tab.Navigator>
+    );
+  }
 export default Nav;
