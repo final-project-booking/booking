@@ -9,6 +9,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import AppFace from './src/component/AppFace/AppFace';
 import Home from './src/component/HomePage/Home';
+// import Detail from './src/component/Detail/Detail';
+import Reservation from './src/component/Detail/Reservation';
+import Choose from './src/component/Detail/ChooseChildren'
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -16,7 +19,7 @@ const Tab = createBottomTabNavigator();
 import Nav from './screens/Nav';
 function App() {
   return (
-    <Nav/>
+    <Choose/>
       //  <Home/>
   // <Payment/>
   );                                     
