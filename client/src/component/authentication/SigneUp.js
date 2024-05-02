@@ -7,15 +7,16 @@ import {
     Text,
     TouchableOpacity,
     ImageBackground,
-    PermissionsAndroid,
+    // PermissionsAndroid
 } from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
-import { useDispatch, } from 'react-redux';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {signUpAsync} from '../../SliceAction/authentication/signUpAction'
+// import Geolocation from '@react-native-community/geolocation';
+import { useDispatch } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {signUpAsync} from '../../reduce/authentication/signUpReducer'
 
 
 const SignUp = () => {
+  const arrowleft=<Icon name='arrowleft' size={30} color={"black"}/>
   const [view, setView] = useState('firstView');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signUp, setSignUp] = useState({
@@ -24,100 +25,103 @@ const SignUp = () => {
     email: '',
     password: '',
     phoneNumber: '',
-    location: null,
-    imgUrl:""
+    longitude: 0,
+    latitude:0,
+    imgUrl:"https://res.cloudinary.com/dockwpvkl/image/upload/v1714576558/default-avatar-icon-of-social-media-user-vector_jy16if.jpg"
   });
-  console.log("location",signUp.location);
-  const permission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'location Permission',
-          message:
-            'This application needs access to your location ' +
-            'so you can take awesome pictures.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        getCurrentLocation()
-        console.log('Location used');
-      } else {
-        console.log('Location permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-  const getCurrentLocation=()=>{
-    Geolocation.getCurrentPosition(
-      position=>{
-      const {latitude,longitude}=position.coords;
-      setSignUp((prevState) => ({
-        ...prevState,
-        location:{latitude,longitude}
-      }))
-      console.log(latitude,longitude);
-      },
-      error=>alert("Error",error.message),
-      {enableHighAccuracy: true,
-      timeout:15000,
-      maximumAge:10000
-      }
-    )
+
+  
+  
+
+  // const permission = async () => {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  //       {
+  //         title: 'location Permission',
+  //         message:
+  //           'This application needs access to your location ' +
+  //           'so you can take awesome pictures.',
+  //         buttonNeutral: 'Ask Me Later',
+  //         buttonNegative: 'Cancel',
+  //         buttonPositive: 'OK',
+  //       },
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       getCurrentLocation()
+  //       console.log('Location used');
+  //     } else {
+  //       console.log('Location permission denied');
+  //     }
+  //   } catch (err) {
+  //     console.warn(err);
+  //   }
+  // };
+  // const getCurrentLocation=()=>{
+  //   Geolocation.getCurrentPosition(
+  //     position=>{
+  //     const {latitude,longitude}=position.coords;
+  //     setSignUp((prevState) => ({
+  //       ...prevState,
+  //       longitude:longitude,
+  //       latitude:latitude
+  //     }))
+  //     console.log(latitude,longitude);
+  //     },
+  //     error=>alert("Error",error.message),
+  //     {enableHighAccuracy: true,
+  //     timeout:15000,
+  //     maximumAge:10000
+  //     }
+  //   )
     
-  }
+  // }
 
   
   
-  const imageUpload = async (obj) => {
-    
-    try {
-      const form = new FormData();
-      form.append("file", {
-        uri: obj.assets[0].uri,
-        name: "photo",
-        type: obj.assets[0].type,
-          });
-      form.append("upload_preset", "psocp6cg");
-  
-      const response = await fetch("https://api.cloudinary.com/v1_1/dockwpvkl/image/upload", {
-        method: "POST",
-        body: form
-      });
+//   const imageUpload = async (obj) => {
+//   try {
+//     const form = new FormData();
+//     form.append("file", {
+//       uri: obj.assets[0].uri,
+//       name: "photo",
+//       type: obj.assets[0].type,
+//     });
+//     form.append("upload_preset", process.env.preset);
 
-  
-      if (!response.ok) {
-        throw new Error(`Failed to upload image. Status: ${response.message}`);
-      }
-  
-      const responseData = await response.json();
-      const imageUrl = responseData.secure_url;
-  
-      console.log("Image uploaded successfully:", imageUrl);
-  
-      setSignUp((prevState) => ({
-        ...prevState,
-        imgUrl: imageUrl
-      }));
-    } catch (error) {
-      console.error("Error uploading image:", error.message);
-    }
-  };
+//     const response = await fetch(`https://api.cloudinary.com/v1_1/${process.env.cloud_name}/image/upload`, {
+//       method: "POST",
+//       body: form
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Failed to upload image. Status: ${response.message}`);
+//     }
+
+//     const responseData = await response.json();
+//     const imageUrl = responseData.secure_url;
+//     console.log("Image uploaded successfully:", imageUrl);
+
+//     setSignUp({
+//       imgUrl: imageUrl
+//     });
+//   } catch (error) {
+//     console.error("Error uploading image:", error.message);
+//   }
+// };
+
   
   
 
-  const selectImage = () => {
-    launchImageLibrary({ mediaType: 'photo' },(response) => {
-      if (response && !response.didCancel) {
-        imageUpload(response)
+  // const selectImage = () => {
+  //   launchImageLibrary({ mediaType: 'photo' },(response) => {
+  //     if (response && !response.didCancel) {
+  //       // console.log("response",response);
+  //       imageUpload(response)
       
-      }
-    });
-  };
+  //     }
+  //   });
+  // };
   
 
   const handleInputChange = (name, value) => {
@@ -130,6 +134,7 @@ const SignUp = () => {
     }
   };
   
+  // permission()
   
 
   const dispatch = useDispatch();
@@ -139,7 +144,7 @@ const SignUp = () => {
       console.log("Passwords do not match");
       return;
     }
-    imageUpload();
+    // imageUpload();
     dispatch(signUpAsync(signUp));
   };
   
@@ -151,147 +156,177 @@ const SignUp = () => {
 
   if (view === 'firstView') {
     return (
-      <ImageBackground source={require("../../Photo/face.png")}  style={{height:'100%',width:'100%'}}>
+      
       
         <SafeAreaView style={styles.safeAreaView}>
-          <View style={styles.inputContainer}>
+          <Text style={styles.previousBtn}>Previous</Text>
+          <Text style={styles.login}>Sign up</Text>
+          <View style={styles.loginContainer}>
+          <View style={styles.login_inputsContainer}>
+          <Text style={styles.login_label}>First name</Text>
             <TextInput
+              
               style={styles.input}
-              placeholder='First name'
+              placeholder='----------------------------------------------'
               onChangeText={(text) => handleInputChange('firstName', text)}
               value={signUp.firstName}
             />
+            <Text style={styles.login_label}>last name</Text>
             <TextInput
+            
               style={styles.input}
-              placeholder='Last name'
+              placeholder='----------------------------------------------'
               onChangeText={(text) => handleInputChange('lastName', text)}
               value={signUp.lastName}
             />
+            <Text style={styles.login_label}>Phone number</Text>
             <TextInput
+            
               style={styles.input}
-              placeholder='Email'
-              onChangeText={(text) => handleInputChange('email', text)}
-              value={signUp.email}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder='Phone number'
+              placeholder='+216?'
               onChangeText={(text)=>handleInputChange('phoneNumber',text)}
               value={signUp.phoneNumber}
             />
+            {/* <Text onPress={selectImage} style={styles.im/SageSelector}>upload 📷</Text> */}
             
           </View>
           <TouchableOpacity
             style={styles.buttonContainer}
-            onPress={() => {switchView("2ndView");permission()}}
+            onPress={() => {{switchView("2ndView")}}}
           >
             <Text style={styles.loginText}>Next</Text>
           </TouchableOpacity>
+          </View>
         </SafeAreaView>
       
-    </ImageBackground>
   );
 
   } else if (view === '2ndView') {
     return (
-      <ImageBackground source={require("../../Photo/face.png")}  style={{height:'100%',width:'100%'}}>
-
-      
+<>
         <Text style={styles.previousBtn} onPress={() => switchView('firstView')}>Previous</Text>
+        <Text style={styles.login}>Sign up</Text>
         <SafeAreaView style={styles.safeAreaView}>
-          <View style={styles.inputContainer}>
-          
+        <View style={styles.loginContainer}>
+          <View style={styles.login_inputsContainer}>
+          <Text style={styles.login_label}>Email</Text>
           <TextInput
+          
+              style={styles.input}
+              placeholder='example@gmail.com'
+              onChangeText={(text) => handleInputChange('email', text)}
+              value={signUp.email}
+            />
+            <Text style={styles.login_label}>password</Text>
+          <TextInput
+          
             style={styles.input}
             secureTextEntry
-            placeholder='Password'
+            placeholder='Ex@mPl3'
             onChangeText={(text) => handleInputChange('password', text)}
             value={signUp.password}
           />
+            <Text style={styles.login_label}>Confirm password</Text>
           <TextInput
+          
             style={styles.input}
             secureTextEntry
-            placeholder='Confirm password'
+            placeholder='Ex@mPl3'
+
             onChangeText={(text) => handleInputChange('confirmPassword', text)}
             value={confirmPassword}
           />
           {signUp.password !== confirmPassword && (
     <Text style={styles.errorMessage}>Passwords do not match</Text>)}
-
-            <Text onPress={selectImage} style={styles.imageSelector}>upload 📷</Text>
           </View>
           <TouchableOpacity
             style={styles.buttonContainer}
-            onPress={handleSignUp}
+            onPress={()=>handleSignUp()}
           >
             <Text style={styles.loginText}>Sign up</Text>
           </TouchableOpacity>
+          </View>
         </SafeAreaView>
-    </ImageBackground>
+</>
+      
       
     );
   }
 };
 
 const styles = StyleSheet.create({
-  input: {
-    borderColor: "transparent",
-    height: 60,
-    marginBottom: 30,
-    width: 300,
-    fontSize: 20,
-    borderWidth: 1,
-    borderRadius: 10,
-    margin: 10,
-    padding: 10,
-    backgroundColor: 'white',
+  
+  login_inputsContainer:{
+    marginTop:"30%",
+    borderStyle:"solid",
+
   },
-  buttonContainer: {
-    marginTop: 20,
-    height: 45,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-    width: 300,
-    borderRadius: 30,
-    backgroundColor: '#00b5ec'
+  errorMessage:{
+    color:"red",
+    fontSize:17,
+    marginLeft:10
   },
-  errorMessage: {
-    width:250,
-    borderRadius:10,
-    marginLeft:33,
-    textAlign:"center",
+  previousBtn:{
     fontSize:20,
-    backgroundColor:"red",
-    color: 'white',
-    marginBottom: 10,
+    backgroundColor:"#2f55a4",
+    width:100,
+    height:30,
+    paddingLeft:10,
+   paddingRight:10,
+   borderRadius:10,
+   marginTop:5,
+   marginLeft:5,
+   color:"white"
   },
-  imageSelector:{
-    backgroundColor:"white",
-    paddingTop:5,
-    textAlign:"center",
-    fontSize:20,
+  login_label:{
+    marginBottom:-20,
+    marginTop:30,
+    marginLeft:10,
     color:"black",
-    fontWeight: 'bold',
-    margin: 10,
-    borderRadius:10,
-    height: 40,
+    fontSize:15,
   },
-  safeAreaView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  loginContainer:{
+    alignItems:"center",
+    marginTop:-130
   },
-  loginText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize:20
+  login:{
+    fontSize:30,
+    marginTop:50,
+    textAlign:"center",
+    color:"#2f55a4",
+    fontWeight:"bold"
   },
-  previousBtn: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    margin: 10,
-  }
-});
+    input: {
+      color:"black",
+      fontWeight:"bold",
+      borderColor: "black",
+      borderStyle:"solid",
+      height: 60,
+      width: 400,
+      fontSize: 20,
+      borderWidth: 1,
+      borderRadius: 20,
+      marginTop: 20,
+      paddingLeft: 20,
+    },
+    
+    buttonContainer: {
+      marginTop: 40,
+      height: 45,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 20,
+      width: 400,
+      borderRadius: 30,
+      borderStyle:"solid",
+      backgroundColor: '#2f55a4'
+    },
+      
+      loginText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize:20
+      }
+})
 
 export default SignUp;

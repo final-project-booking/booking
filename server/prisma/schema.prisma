@@ -8,21 +8,23 @@ generator client {
 }
 
 model User {
-  id          Int          @id @default(autoincrement())
-  imgUrl      String
-  firstName   String
-  lastName    String
-  email       String       @unique
-  password    String
-  phoneNumber Int
-  longitude   Float?
-  latitude    Float?
-  role        Role?        @default(user)
-  owner       Owner?       @relation(fields: [ownerId], references: [id])
-  ownerId     Int?         @unique
-  reservation Reservation?
-  message     Message[]
-  join        JoinChat[]
+  id             Int          @id @default(autoincrement())
+  imgUrl         String
+  firstName      String
+  lastName       String
+  email          String       @unique
+  password       String
+  phoneNumber    Int
+  longitude      Float?
+  latitude       Float?
+  isActive       Boolean      @default(false)
+  activationCode String
+  role           Role?        @default(user)
+  owner          Owner?       @relation(fields: [ownerId], references: [id])
+  ownerId        Int?         @unique
+  reservation    Reservation?
+  message        Message[]
+  join           JoinChat[]
 }
 
 enum Role {
