@@ -1,4 +1,5 @@
 const {hotel}=require('../database/index');
+
 // console.log(hotel)
 module.exports={
   getHotelByName:async function(req,res) {
@@ -7,11 +8,7 @@ module.exports={
       const hotels = await hotel.findMany({
         where: {
           location: req.params.location,
-          rooms: {
-      some: {
-        availability: true
-      }
-          }
+         
         }
       });
       res.status(200).send(hotels);
@@ -86,6 +83,19 @@ module.exports={
         } catch (error) {
            throw error
         }
-    }
+    },
+    searchHotelByLocation: async function(req, res) {
+      try {
+        const { location } = req.params;
+        const hotels = await hotel.findMany({
+          where: {
+            location: location
+          }
+        });
+        res.status(200).send(hotels);
+      } catch (error) {
+        res.status(500).send(error);
+      }
+    },
    
 }

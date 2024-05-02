@@ -1,4 +1,3 @@
-
 import React,{ useState } from 'react'
 import { View, Text, StyleSheet,Image  ,TextInput,TouchableOpacity,SafeAreaView} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
@@ -7,6 +6,7 @@ import { ListItem, SearchBar } from "react-native-elements";
 export default function Home() {
   const [isCalendarVisible, setCalendarVisible] = useState(false);
   const [selectedCity, setSelectedCity] = useState('sousse');
+
   handleButton=()=>{
     // navigation.navvigate("UserProfile")
   }
