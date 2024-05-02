@@ -1,12 +1,12 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 
-  import signUpSlice from './reduce/authentication/signUpReducer';
-  import user from './SliceAction/chat'
+  import signUpSlice from './SliceAction/authentication/signUpAction';
+  import signInSlice from './SliceAction/authentication/signInAction';
 const store = configureStore({
   reducer: {
     userSignUp:signUpSlice,
-    user:user
+    userSignIn:signInSlice
 }
 });
 

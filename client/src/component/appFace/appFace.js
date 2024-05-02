@@ -1,35 +1,45 @@
-import React from 'react'
-import { View, Text, StyleSheet, ViewBase,Image,Button ,ImageBackground,TouchableOpacity} from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import Home from "../HomePage/Home"
+import Login from "../authentication/Login"
+import SignUp from '../authentication/SigneUp';
+import nav from '../../../screens/Nav';
+const AppFace = ({ navigation }) => {
+  const handleButton = () => {
+    navigation.navigate('Home');
+  };
 
-const appFace = () => {
+  const handleLogin = () => {
+    navigation.navigate('Login');
+  };
 
- 
+  const handleSignup = () => {
+    navigation.navigate('Signup');
+  };
 
-    return (
-      <View >
+  return (
+    <View>
       <ImageBackground
         source={require('../../Photo/face.png')}
         style={styles.image}
       >
         <View style={styles.content}>
-        <TouchableOpacity
-            style={styles.buttonContainer}
-            >
-            <Text style={styles.Text}>Get Start</Text>
-            </TouchableOpacity>
-          <Text style={styles.text}>If you have an Account? Login</Text>
-          <Text style={styles.text}>If you don't have an Account? Sign Up</Text>
+          <TouchableOpacity style={styles.button} onPress={handleButton}>
+            <Text>Get Started</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text>If you have an Account? Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleSignup}>
+            <Text>If you don't have an Account? Sign Up</Text>
+          </TouchableOpacity>
         </View>
       </ImageBackground>
-      
     </View>
-      );
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   image: {
     resizeMode: 'cover',
     justifyContent: 'center',
@@ -38,30 +48,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
-    marginBottom: 20, 
-    top:200,
-    lineHeight: 24,
+    marginTop: 200,
+  },
+  button: {
+    backgroundColor: '#007bff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 10,
   },
   text: {
     color: 'white',
     marginBottom: 10,
   },
   buttonContainer: {
-    marginTop: 20,
-    height: 45,
-    justifyContent: 'center',
-    alignItems: 'center',
     marginBottom: 20,
-    width: 250,
-    borderRadius: 30,
-    borderStyle:"solid",
-    backgroundColor: '#00b5ec'
   },
-  Text:{
-    color:'white',
-    fontSize:20,
-    fontWeight: 'bold',
-  }
 });
 
-export default appFace
+export default AppFace;
