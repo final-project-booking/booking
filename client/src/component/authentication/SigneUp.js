@@ -6,7 +6,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {signUpAsync} from '../../SliceAction/authentication/signUpAction'
 
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
   const [view, setView] = useState('firstView');
   const [signUp, setSignUp] = useState({
     firstName: '',
