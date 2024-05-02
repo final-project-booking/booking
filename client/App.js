@@ -1,5 +1,6 @@
 import React from 'react';
 import {Picker} from '@react-native-picker/picker';
+import Login from "./src/component/authentication/Login"
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import EditProfile from './src/component/editprofile/EditProfile';
 import UserProfile from './src/component/UserProfile/UserProfile'
@@ -15,7 +16,8 @@ const Tab = createBottomTabNavigator();
 import Nav from './screens/Nav';
 function App() {
   return (
-    <Nav/>
+    <Login/>
+    // <Nav/>ytdy
       //  < Home/>
   // <Payment/>
   );                                     

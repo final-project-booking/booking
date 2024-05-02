@@ -17,6 +17,7 @@ const Login = () => {
     password:''
   })
   const error = useSelector(state => state.userSignIn.error);
+
   const dispatch=useDispatch()
   console.log(error);
   const handleInputChange = (name, value) => {
@@ -27,15 +28,14 @@ const Login = () => {
         dispatch(signInAsync(login))
       }
 
-      const isError = error && (error.email || error.password);
+      const isError = error || (error.email || error.password);
+      console.log(isError,"boolean");
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
           <Text style={styles.previousBtn}>Previous</Text>
           <Text style={styles.login}>Log in</Text>
-          {isError && (
-        <Text style={styles.errorText}>Invalid email or password</Text>
-      )}
+          
           <View style={styles.loginContainer}>
           <View style={styles.login_inputsContainer}>
             <Text style={styles.login_label}>Email</Text>
@@ -45,6 +45,7 @@ const Login = () => {
             onChangeText={(text) => handleInputChange('email', text)}
             value={login.email}
             />
+            
             <Text style={styles.login_label}>Password</Text>
             <TextInput
             style={styles.input}
@@ -53,6 +54,11 @@ const Login = () => {
             onChangeText={(text) => handleInputChange('password', text)}
             value={login.password}
             />
+          </View><View>
+            
+          {isError && (
+        <Text style={styles.errorText}>Invalid email or password</Text>
+      )}
           </View>
           <Text style={styles.login_forget}>Forget password ?</Text>
             <TouchableOpacity
@@ -74,6 +80,12 @@ const styles = StyleSheet.create({
     marginTop:"40%",
     borderStyle:"solid",
 
+  },
+  errorText:{
+    color:"red",
+    marginTop:15,
+    fontSize:15,
+    fontWeight:"bold"
   },
   previousBtn:{
     fontSize:20,
