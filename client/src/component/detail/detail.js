@@ -1,8 +1,10 @@
 import React,{useState,useEffect,useRef} from 'react'
-import { View, Text, StyleSheet, Linking ,ScrollView,Image,Dimensions, Button,TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, Linking ,ScrollView,Image,Dimensions,TouchableOpacity} from 'react-native';
 import { ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 // import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Button } from 'react-native-paper';
+
 
 
 export default function detail() {
@@ -10,6 +12,15 @@ export default function detail() {
     const [dimension, setDimension] = useState(Dimensions.get('window'));
     const [selectedIndex, setSelectedIndex] = useState(0);
     const scrollRef = useRef();
+    useEffect(() => {
+      const onChange = ({ window }) => {
+        setDimension(window);
+      };
+      Dimensions.addEventListener('change', onChange)
+      return () => {
+        Dimensions.removeEventListener('change', onChange)
+      };
+    }, []);
     useEffect(() => {
         const interval = setInterval(() => {
           setSelectedIndex(prevSelectedIndex =>
@@ -28,8 +39,8 @@ export default function detail() {
           { url: 'https://loveincorporated.blob.core.windows.net/contentimages/gallery/dbeb3be8-2a3f-48b0-86fb-168010585fe7-Atlantis_Palm_underwatersuite.jpg' },
           { url: 'https://www.usatoday.com/gcdn/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg' },
         { url: 'https://images.pexels.com/photos/2467285/pexels-photo-2467285.jpeg?cs=srgb&dl=pexels-julieaagaard-2467285.jpg&fm=jpg' },
-        { url: 'https://housing.com/news/wp-content/uploads/2022/11/hotel-room-design-compressed-1.jpg'},
         { url: 'https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/294/146/75/vision-dam/digital/parks-platform/parks-global-assets/disneyland/resorts/disneyland-hotel/rooms/room-b4-g00-16x9.jpg?2022-11-04T17:36:51+00:00' },
+        { url: 'https://housing.com/news/wp-content/uploads/2022/11/hotel-room-design-compressed-1.jpg'},
       ];
 
       const setIndex = event => {
@@ -43,7 +54,7 @@ export default function detail() {
         <View style={styles.container}>
         <View style={styles.carouselContainer}>
             <View style={styles.icon}>
-          <Icon name='arrow-back' size={30} style={{zIndex:1 ,paddingTop:5, }} />
+          <Icon name='arrow-back' size={30} style={{zIndex:1 ,paddingTop:5,backgroundColor:'white',borderRadius:55,marginLeft:7 ,opacity:.6}} />
           </View>
           <ScrollView
             horizontal
@@ -52,7 +63,7 @@ export default function detail() {
             showsHorizontalScrollIndicator={false}
             pagingEnabled
           >
-          <View style={ styles.coverImageContainer }>
+          {/* <View style={ styles.coverImageContainer }> */}
             {carouselImages.map((value, key) => (
               <Image
                 key={key}
@@ -61,7 +72,7 @@ export default function detail() {
                 PlaceholderContent={<ActivityIndicator />}
               />
             ))}
-          </View>
+          {/* </View> */}
           </ScrollView>
          
           <View style={styles.pagination}>
@@ -107,7 +118,9 @@ export default function detail() {
           </View>
           {/* Continue Button */}
           <View style={styles.buttonContainer}>
-            <Button title='Continue' />
+          <Button  mode="contained" >
+          Continue
+         </Button>
           </View>
         </View>
       </View>
@@ -118,6 +131,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
+      
     },
     carouselContainer: {
       width: '100%',
@@ -193,7 +207,8 @@ const styles = StyleSheet.create({
       width: '45%',
     //   flexDirection: 'row',
     //   bottom: 10,
-      alignSelf: 'flex-end'
+      alignSelf: 'flex-end',
+      // backgroundColor:'#DCE2FC',
+      color:'#0000FF'
     },
   });
-  

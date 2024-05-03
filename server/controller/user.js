@@ -5,8 +5,6 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
     register:async function(req,res){
-        
-        
         const char="0123456789azertyuiopqsdfghjklmwxcvbn"
         let activCode=""
         for(let i=0;i<8;i++){
