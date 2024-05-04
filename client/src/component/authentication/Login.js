@@ -1,4 +1,4 @@
-import React,{ useState } from 'react'
+import React,{ useEffect, useState } from 'react'
 import{
     SafeAreaView,
     TextInput,
@@ -7,7 +7,6 @@ import{
     Text,
     View
 }from "react-native"
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch ,useSelector} from 'react-redux';
 import {signInAsync} from "../../reduce/authentication/signInReducer"
 
@@ -25,11 +24,13 @@ const Login = () => {
       };
 
       const handleSignIn=()=>{
-        dispatch(signInAsync(login))
+        // useEffect(()=>{
+          dispatch(signInAsync(login))
+
+        // },[])
       }
 
       const isError = error || (error.email || error.password);
-      console.log(isError,"boolean");
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
   },
   previousBtn:{
     fontSize:20,
-    backgroundColor:"#2f55a4",
+    backgroundColor:"#0000FF",
     width:100,
     height:30,
     paddingLeft:10,
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     fontSize:30,
     marginTop:50,
     textAlign:"center",
-    color:"#2f55a4",
+    color:"#0000FF",
     fontWeight:"bold"
   },
   login_forget:{
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
         width: 400,
         borderRadius: 30,
         borderStyle:"solid",
-        backgroundColor: '#2f55a4'
+        backgroundColor: '#0000FF'
       },
       
       loginText: {

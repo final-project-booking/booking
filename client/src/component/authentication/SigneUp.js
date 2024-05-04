@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
   },
   previousBtn:{
     fontSize:20,
-    backgroundColor:"#2f55a4",
+    backgroundColor:"#0000FF",
     width:100,
     height:30,
     paddingLeft:10,
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     fontSize:30,
     marginTop:50,
     textAlign:"center",
-    color:"#2f55a4",
+    color:"#0000FF",
     fontWeight:"bold"
   },
     input: {
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
       width: 400,
       borderRadius: 30,
       borderStyle:"solid",
-      backgroundColor: '#2f55a4'
+      backgroundColor: '#0000FF'
     },
       
       loginText: {

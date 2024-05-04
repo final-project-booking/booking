@@ -1,19 +1,26 @@
-import {createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { AP_ADRESS } from '../../apAdress';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+export const signInAsync = createAsyncThunk(
+  'signIn/user',
+  async (obj, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`http://${AP_ADRESS}:3000/api/user/login`, obj);
+      
+      // Store token in AsyncStorage
+      try {
+        await AsyncStorage.setItem('token', response.data.token);
+        console.log("Token stored successfully");
+      } catch (err) {
+        console.log("Error storing token:", err);
+      }
 
-
-
-export const signInAsync=createAsyncThunk(
-    "signIn/user",
-    async(obj,{rejectWithValue})=>{
-        try {
-            const response=await axios.post(`http://192.168.11.118:3000/api/user/login`,obj)
-            let token =response.data.token
-            localStorage.setItem("token",token)
-        } catch (error) {
-            return rejectWithValue(error.response.data)
-        }
+      console.log("actionAuth", response.data.token);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
-)
-
+  }
+);
