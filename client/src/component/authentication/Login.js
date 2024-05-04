@@ -1,4 +1,4 @@
-import React,{ useState } from 'react'
+import React,{ useEffect, useState } from 'react'
 import{
     SafeAreaView,
     TextInput,
@@ -7,7 +7,6 @@ import{
     Text,
     View
 }from "react-native"
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch ,useSelector} from 'react-redux';
 import {signInAsync} from "../../reduce/authentication/signInReducer"
 
@@ -17,6 +16,7 @@ const Login = () => {
     password:''
   })
   const error = useSelector(state => state.userSignIn.error);
+
   const dispatch=useDispatch()
   console.log(error);
   const handleInputChange = (name, value) => {
@@ -24,18 +24,19 @@ const Login = () => {
       };
 
       const handleSignIn=()=>{
-        dispatch(signInAsync(login))
+        // useEffect(()=>{
+          dispatch(signInAsync(login))
+
+        // },[])
       }
 
-      const isError = error && (error.email || error.password);
+      const isError = error || (error.email || error.password);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
           <Text style={styles.previousBtn}>Previous</Text>
           <Text style={styles.login}>Log in</Text>
-          {isError && (
-        <Text style={styles.errorText}>Invalid email or password</Text>
-      )}
+          
           <View style={styles.loginContainer}>
           <View style={styles.login_inputsContainer}>
             <Text style={styles.login_label}>Email</Text>
@@ -45,6 +46,7 @@ const Login = () => {
             onChangeText={(text) => handleInputChange('email', text)}
             value={login.email}
             />
+            
             <Text style={styles.login_label}>Password</Text>
             <TextInput
             style={styles.input}
@@ -53,6 +55,11 @@ const Login = () => {
             onChangeText={(text) => handleInputChange('password', text)}
             value={login.password}
             />
+          </View><View>
+            
+          {isError && (
+        <Text style={styles.errorText}>Invalid email or password</Text>
+      )}
           </View>
           <Text style={styles.login_forget}>Forget password ?</Text>
             <TouchableOpacity
@@ -75,9 +82,15 @@ const styles = StyleSheet.create({
     borderStyle:"solid",
 
   },
+  errorText:{
+    color:"red",
+    marginTop:15,
+    fontSize:15,
+    fontWeight:"bold"
+  },
   previousBtn:{
     fontSize:20,
-    backgroundColor:"#2f55a4",
+    backgroundColor:"#0000FF",
     width:100,
     height:30,
     paddingLeft:10,
@@ -102,7 +115,7 @@ const styles = StyleSheet.create({
     fontSize:30,
     marginTop:50,
     textAlign:"center",
-    color:"#2f55a4",
+    color:"#0000FF",
     fontWeight:"bold"
   },
   login_forget:{
@@ -136,7 +149,7 @@ const styles = StyleSheet.create({
         width: 400,
         borderRadius: 30,
         borderStyle:"solid",
-        backgroundColor: '#2f55a4'
+        backgroundColor: '#0000FF'
       },
       
       loginText: {
