@@ -1,35 +1,33 @@
-import {signInAsync} from '../../reduce/authentication/signInReducer'
+import {editeAsync} from '../reduce/editeProfile'
 import { createSlice } from '@reduxjs/toolkit'
-
-console.log("log",signInAsync);
 
 
 
 const initialState={
-    userAuth:{},
+    user:null,
     loading:false,
     error:""
 }
 
 
-const signIn = createSlice({
-    name:"userAuth",
+const editeSlice = createSlice({
+    name:"edit",
     initialState,
     reducers:{},
     extraReducers:(builder)=>{
         builder
-        .addCase(signInAsync.pending,(state)=>{
+        .addCase(editeAsync.pending,(state)=>{
             state.loading=true
         })
-        .addCase(signInAsync.fulfilled,(state,action)=>{
+        .addCase(editeAsync.fulfilled,(state,action)=>{
             state.loading=false
             state.user=action.payload
         })
-        .addCase(signInAsync.rejected,(state)=>{
+        .addCase(editeAsync.rejected,(state)=>{
             state.loading=false
             state.error="invalid email or password"
         })
     }
 })
 
-export default signIn.reducer
+export default editeSlice.reducer

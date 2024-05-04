@@ -1,35 +1,33 @@
-import {signInAsync} from '../../reduce/authentication/signInReducer'
+import {getOneAsync} from '../reduce/getOne'
 import { createSlice } from '@reduxjs/toolkit'
-
-console.log("log",signInAsync);
 
 
 
 const initialState={
-    userAuth:{},
+    user:{},
     loading:false,
     error:""
 }
 
 
-const signIn = createSlice({
-    name:"userAuth",
+const getOneSlice = createSlice({
+    name:"get",
     initialState,
     reducers:{},
     extraReducers:(builder)=>{
         builder
-        .addCase(signInAsync.pending,(state)=>{
+        .addCase(getOneAsync.pending,(state)=>{
             state.loading=true
         })
-        .addCase(signInAsync.fulfilled,(state,action)=>{
+        .addCase(getOneAsync.fulfilled,(state,action)=>{
             state.loading=false
             state.user=action.payload
         })
-        .addCase(signInAsync.rejected,(state)=>{
+        .addCase(getOneAsync.rejected,(state)=>{
             state.loading=false
             state.error="invalid email or password"
         })
     }
 })
 
-export default signIn.reducer
+export default getOneSlice.reducer

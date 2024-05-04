@@ -42,7 +42,7 @@ module.exports = {
         }
     
         const token = jwt.sign({ id: foundUser.id }, process.env.SECRET_KEY);
-        console.log(token);
+        // console.log(token);
         delete foundUser.password;
         res.status(200).send({ token, user: foundUser });
     },
@@ -51,38 +51,23 @@ module.exports = {
     
     getOne:async function(req,res){
         try {
-            const users= await user.findUnique({ where: { id:req.user.userId } })
+            let id=req.params.id
+            console.log(id,"id");
+            const users= await user.findUnique({ where: { id:parseInt(id)} })
             res.status(200).send(users)    
         } catch (error) {
             throw error    
         }
     },
 
-    update: async function(req, res) {
+    update: async (req, res)=>{
         try {
-            const { firstName, lastName, imageUrl, password, email, location } = req.body;
-            const userId = req.user.userId;
-
-            let updateData = {};
-            if (firstName) updateData.firstName = firstName;
-            if (lastName) updateData.lastName = lastName;
-            if (imageUrl) updateData.imageUrl = imageUrl;
-            if (password) {
-                const saltRounds = await bcrypt.genSalt();
-                const passwordHash = await bcrypt.hash(password, saltRounds);
-                updateData.password = passwordHash;
-            }
-            if (email) updateData.email = email;
-            if (location) updateData.location = location;
-
-            const updatedUser = await user.update({
-                where: { id: userId },
-                data: updateData,
-            });
-            delete updatedUser.password;
-            res.status(200).send(updatedUser);
+            let id = req.params.id
+            const {firstName,lastName,email,password,imgUrl,phoneNumber,latitude,longitude}=req.body
+            const users=await user.update({data:{firstName,lastName,email,password,imgUrl,phoneNumber,latitude,longitude},where:{id:parseInt(id)}})
+            res.status(200).send(users)
         } catch (error) {
-            throw error;
+            throw error
         }
     },
 
