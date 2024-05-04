@@ -13,7 +13,7 @@ const users = [
     email: "john@example.com",
     password: "password123",
     phoneNumber: 1234567890,
-    location: "New York",
+    location: "benzart",
     role: "user",
   },
   // Add more user objects as needed

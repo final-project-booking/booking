@@ -13,9 +13,7 @@ const chekSignup=(req,res,next)=>{
     if(!password || password.length<8 ){
         return res.status(400).json('Password must be at least 8 characters long')
     }
-    if(!location){
-        return res.status(400).json('select your location')
-    }
+    
     if(!phoneNumber){
         return res.status(400).json('select your phoneNumber')
     }

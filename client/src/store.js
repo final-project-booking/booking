@@ -1,28 +1,14 @@
 
 import { configureStore } from '@reduxjs/toolkit';
-// import counterReducer from './counterSlice';
-import ownerProfileReducer from './SliceAction/OwnerProfile'
+
+  import signUpSlice from './SliceAction/authentication/signUpAction';
+  import signInSlice from './SliceAction/authentication/signInAction';
 const store = configureStore({
   reducer: {
-    // counter: counterReducer,
-    ownerProfile: ownerProfileReducer,
-    
-  }
-
-
-// import signUpSlice from './reduce/authentication/signUpReducer';
-// const store = configureStore({
-//   reducer: {
-//     userSignUp:signUpSlice,
-
-
+    userSignUp:signUpSlice,
+    userSignIn:signInSlice
+}
 });
-
-
-// export type AppStore = ReturnType<typeof makeStore>
-// export type RootState = ReturnType<AppStore['getState']>
-// export type AppDispatch = AppStore['dispatch']
-
 
 
 export default store;

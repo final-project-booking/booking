@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView ,TouchableOpacity} from 'react-native';
 import EditProfile from '../editprofile/EditProfile';
 // import MapView, { PROVIDER_GOOGLE } from 'UserProfile.js";serProfile.js";eact-native-maps';
-const UserProfile = () => {
+const UserProfile = ({navigation}) => {
   const profile = {
     name: 'John Doe',
     email: 'johndoe@example.com',
@@ -18,7 +18,7 @@ const UserProfile = () => {
   };
 
   const handleEditProfile = () => {
-    // navigation.navigate('EditProfile');
+    navigation.navigate('EditProfile');
   };
 
   return (

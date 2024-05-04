@@ -9,8 +9,7 @@ const EditProfile = ({ profile, onSave }) => {
   });
 
   useEffect(() => {
-    console.log('Profile:', profile); // Log the profile object
-    // Update the editedProfile state whenever the profile prop changes
+    console.log('Profile:', profile); 
     setEditedProfile({
       name: profile ? profile.name : '',
       email: profile ? profile.email : '',

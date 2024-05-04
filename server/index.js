@@ -4,7 +4,7 @@ let app = express()
 const cors=require('cors')
 const ownerRouter=require('./router/owner')
 const userRouter=require('./router/user')
-
+const chat=require('./router/chat')
 
 const userRoute=require('./router/user')
 
@@ -24,7 +24,7 @@ app.use('/api/search',search)
 
 app.use('/api/auth',userRouter)
 app.use('/api/owner',ownerRouter)
-
+app.use('/api/chat',chat)
 
 app.use('/api/search',search)
 

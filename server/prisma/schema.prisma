@@ -2,30 +2,29 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 generator client {
   provider = "prisma-client-js"
 }
-model Owner {
-  id       Int    @id @default(autoincrement())
-  userId   Int?   @unique
-  user     User?  @relation("UserOwner", fields: [userId], references: [id])
-  hotel    Hotel[]
-}
 
 model User {
-  id            Int            @id @default(autoincrement())
-  imgUrl        String
-  firstName     String
-  lastName      String
-  email         String         @unique
-  password      String
-  phoneNumber   Int
-  location      String
-  role          Role?          @default(user)
-  owner         Owner?         @relation("UserOwner")
-  reservation   Reservation?
-  message       Message[]
-  join          JoinChat[]
+  id             Int          @id @default(autoincrement())
+  imgUrl         String
+  firstName      String
+  lastName       String
+  email          String       @unique
+  password       String
+  phoneNumber    Int
+  longitude      Float?
+  latitude       Float?
+  isActive       Boolean      @default(false)
+  activationCode String
+  role           Role?        @default(user)
+  owner          Owner?       @relation(fields: [ownerId], references: [id])
+  ownerId        Int?         @unique
+  reservation    Reservation?
+  message        Message[]
+  join           JoinChat[]
 }
 
 enum Role {
@@ -33,83 +32,96 @@ enum Role {
   user
 }
 
-model Hotel{
-  id Int @id @default(autoincrement())
-  imgUrl String
-  name String
-  location String
+model Hotel {
+  id          Int     @id @default(autoincrement())
+  name        String
+  imgUrl      String?
+  longitude   Float?
+  latitude    Float?
   description String
-  rating Int
-  rooms Int
-  licence String
-  owner Owner @relation(fields: [ownerId],references:[id])
-  ownerId Int @unique
-  room Room[]
-  offres Offer[]
- 
+  rating      Int
+  rooms       Int
+  licence     String
+  owner       Owner   @relation(fields: [ownerId], references: [id])
+  ownerId     Int     @unique
+  room        Room[]
+  offres      Offer[]
 }
+
 enum Option {
-  breakFast 
+  breakFast
   all_Inclusive
   halfBoard
 }
 
+model Owner {
+  id    Int     @id @default(autoincrement())
+  user  User?
+  hotel Hotel[]
+}
+
 model Reservation {
-  id Int @id @default(autoincrement())
- room Room @relation(fields: [roomId],references:[id])
- roomId Int @unique
- user User @relation(fields: [userId],references:[id])
- userId Int @unique
- startDate DateTime
-  endDate DateTime
+  id        Int      @id @default(autoincrement())
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @unique
+  startDate DateTime
+  endDate   DateTime
 }
-model Room{
-  id Int @id @default(autoincrement())
-  hotelId Int
-  hotel Hotel @relation(fields: [hotelId],references: [id])
-  reservation Reservation?
+
+model Room {
+  id              Int               @id @default(autoincrement())
+  hotel           Hotel             @relation(fields: [hotelId], references: [id])
+  hotelId         Int
+  reservation     Reservation?
   dayAvailability DayAvailability[]
-  price Int
-  imgUrl String 
-  option Option?
-  view View
+  price           Int
+  imgUrl          String
+  option          Option?
+  view            View
 }
-enum View{
-    seaView 
-    standardView 
+
+enum View {
+  seaView
+  standerView
 }
-model DayAvailability{
-  id Int @id @default(autoincrement())
-  room Room @relation(fields: [roomId],references: [id])
-  roomId Int @unique
+
+model DayAvailability {
+  id           Int     @id @default(autoincrement())
+  room         Room    @relation(fields: [roomId], references: [id])
+  roomId       Int     @unique
   availability Boolean @default(true)
 }
-model Message{
+model Message {
   id          Int       @id @default(autoincrement()) 
   content     String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  users        User      @relation(fields: [usersId], references: [id])
-  usersId      Int
-  room        RoomChat      @relation(fields: [roomId], references: [id]) 
+  users        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  room        RoomChat      @relation(fields: [roomId], references: [id]) // This establishes a many-to-one relationship with Room
   roomId      Int
+   
 }
+
 model RoomChat {
   id        Int       @id @default(autoincrement())
-  message Message[]
-  join JoinChat[]
-  }
-  model JoinChat {
+  messages  Message[]  
+  join JoinChat[]  
+}
+ model JoinChat {
    id          Int       @id @default(autoincrement()) 
-   rooms    RoomChat  @relation(fields: [roomId], references: [id])
-   roomId  Int
-   users    User  @relation(fields: [userId], references: [id])
-   userId  Int 
-   }
-  
-   model Offer{
-  id Int   @id @default(autoincrement())
-  hotel Hotel @relation(fields: [hotelId],references: [id])
+  users    User  @relation(fields: [userId], references: [id])
+  userId  Int 
+  rooms    RoomChat  @relation(fields: [roomId], references: [id])
+  roomId  Int
+}
+
+
+model Offer {
+  id      Int    @id @default(autoincrement())
+  hotel   Hotel  @relation(fields: [hotelId], references: [id])
   hotelId Int
-  offer String 
-   }
+  offer   String
+}
