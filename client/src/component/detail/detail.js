@@ -117,8 +117,8 @@ export default function detail() {
             </View>
           </View>
           {/* Continue Button */}
-          <View style={styles.buttonContainer}>
-          <Button  mode="contained" >
+          <View style={styles.buttonContainer} >
+          <Button  mode="contained" style={{backgroundColor:'#0000FF'}}>
           Continue
          </Button>
           </View>
@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
     //   bottom: 10,
       alignSelf: 'flex-end',
       // backgroundColor:'#DCE2FC',
+      
       color:'#0000FF'
     },
   });

@@ -41,6 +41,7 @@ function Nav() {
           options={ {headerShown: false }}
         /> 
       </Stack.Navigator>
+      {/* <TabNavigator />  */}
     </NavigationContainer>
   );
 }
