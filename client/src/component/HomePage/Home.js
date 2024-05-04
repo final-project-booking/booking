@@ -29,7 +29,7 @@ const HomeScreen = ({ navigation }) => {
 React.useEffect(() => {
   Animated.timing(scrollX, {
     toValue: 100, 
-    duration: 10000, 
+    duration: 1000, 
     useNativeDriver: true, 
   }).start();
 }, []);
