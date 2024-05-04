@@ -2,12 +2,12 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AppFace from "../src/component/AppFace/AppFace"
+
 import UserProfile from "../src/component/UserProfile/UserProfile"
 import EditProfile from '../src/component/editprofile/EditProfile';
 import Home from "../src/component/HomePage/Home"
 import OwnerProfile from "../src/component/OwnerProfile/OwnerProfile"
-
+import AppFace from "../src/component/AppFace/AppFace";
 // const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
