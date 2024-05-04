@@ -22,6 +22,7 @@ function Nav() {
         <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
       </Stack.Navigator>
+      {/* <TabNavigator />  */}
     </NavigationContainer>
   );
 }

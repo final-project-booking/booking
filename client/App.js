@@ -17,6 +17,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 // import Icon from 'react-native-vector-icons/FontAwesome';
 function App() {
+ 
   return (
     <Nav/>
             //  <Hotelprofile /> 

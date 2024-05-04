@@ -24,7 +24,7 @@ const UserProfile = ({navigation}) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.heading}>User Profile</Text>
+        <Text style={styles.heading}>Your Profile</Text>
         <View style={styles.profileInfo}>
           <Image source={{ uri: profile.imageUrl }} style={styles.image} />
           <Text style={styles.label}>Name:</Text>
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   image: {
-    width: 150,
-    height: 150,
+    width: 130,
+    height: 130,
     borderRadius: 75,
     marginBottom: 10,
   },

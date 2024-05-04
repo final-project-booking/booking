@@ -10,7 +10,7 @@ export const oneUser = createAsyncThunk(
         
         
         const {data} = await axios.get(
-          `http://localhost:3000/api/user/user`,
+          `http://192.168.104.2:3000/api/user/user`,
           {headers:{"Authorization":`Bearer ${token}`}}
           
          
