@@ -10,28 +10,28 @@ const AppFace = ({ navigation }) => {
   };
 
   const handleLogin = () => {
-    navigation.navigate('Login');
+    // navigation.navigate('Login');
   };
 
   const handleSignup = () => {
-    navigation.navigate('Signup');
+    // navigation.navigate('Signup');
   };
 
   return (
     <View>
       <ImageBackground
-        source={require('../../Photo/face.png')}
+        source={require('../../Photo/pexels-tobiasbjorkli-2690807.jpg')}
         style={styles.image}
       >
         <View style={styles.content}>
           <TouchableOpacity style={styles.button} onPress={handleButton}>
-            <Text>Get Started</Text>
+            <Text style ={styles.textbutton}>Get Started</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text>If you have an Account? Login</Text>
+          <TouchableOpacity  onPress={handleLogin}>
+            <Text style ={styles.text} >If you have an Account? Login</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleSignup}>
-            <Text>If you don't have an Account? Sign Up</Text>
+          <TouchableOpacity onPress={handleSignup}>
+            <Text style ={styles.text}  >If you don't have an Account? Sign Up</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -48,21 +48,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
-    marginTop: 200,
+    marginTop: 500,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#161618',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    marginTop: 10,
+    marginBottom:5,
+  },
+  textbutton: {
+    color: '#DCE2FC',
+    fontFamily: 'BoldItalic',
+    justifyContent: 'center',
+    fontSize: 17,
+    textAlign: 'center',
+    marginBottom: 3,
+
   },
   text: {
     color: 'white',
-    marginBottom: 10,
+    fontFamily: 'BoldItalic',
+    justifyContent: 'center',
+    fontSize: 17,
+    textAlign: 'center',
+    marginBottom: 3,
   },
   buttonContainer: {
-    marginBottom: 20,
+    marginTop: 2,
+    backgroundColor: '#112678',
+
   },
 });
 

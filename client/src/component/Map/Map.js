@@ -3,10 +3,9 @@ import MapView, { Marker } from 'react-native-maps';
 import { StyleSheet, View, TextInput, Button, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
-// const GOOGLE_MAPS_API_KEY = 'AIzaSyDYm4cfAj3Lrk6HqMJZHGeB1JevFbEC55o'; 
-Geocoder.init(process.env.GOOGLE_MAPS_API_KEY);
+const GOOGLE_MAPS_API_KEY = 'AIzaSyDYm4cfAj3Lrk6HqMJZHGeB1JevFbEC55o'; 
 
-export default function MapCoffe() {
+export default function Map() {
   const [region, setRegion] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [hotels, sethotels] = useState([]);
