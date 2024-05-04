@@ -36,6 +36,7 @@ const EditProfile = () => {
       form.append("cloud_name",cloud_name)
       const res=await axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`)
       console.log(res.data.secure_url)
+      return res.data.secure_url
     }
     catch(error){
       console.log(error);
