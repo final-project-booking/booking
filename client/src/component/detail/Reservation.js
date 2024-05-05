@@ -4,9 +4,11 @@ import { Calendar } from 'react-native-calendars';
 import { eachDayOfInterval, format } from 'date-fns';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button } from 'react-native-paper';
-export default function MyComponent() {
-  const [selectedDates, setSelectedDates] = useState({});
 
+export default function Reservation({navigation}) {
+  const [selectedDates, setSelectedDates] = useState({});
+ 
+  
   const handleDateChange = (date) => {
     setSelectedDates((prevDates) => {
       if (!prevDates.start) {
@@ -18,20 +20,24 @@ export default function MyComponent() {
       }
     });
   };
-
+  const handleInputChange = ( value) => {
+    setDate(value);
+  };
+  
   const getMarkedDates = () => {
     const start = new Date(selectedDates.start);
     const end = selectedDates.end ? new Date(selectedDates.end) : new Date(selectedDates.start);
     const interval = eachDayOfInterval({ start, end });
     const dates = {};
-
+    
     interval.forEach((date) => {
       const dateString = format(date, 'yyyy-MM-dd');
       dates[dateString] = { selected: true, selectedColor: '#007FFF' };
     });
-
+    
     return dates;
   };
+ 
   const today = format(new Date(), 'yyyy-MM-dd');
   console.log(selectedDates);
   const chek=()=>{
@@ -69,6 +75,7 @@ chek()
     dayTextColor: 'black',
     todayTextColor: '#00adf5', 
   }}
+ 
       />
     </View>
         <View style={styles.buttonX}><Text style={styles.text}>start:{selectedDates.start}</Text><Text style={styles.text}>End:{selectedDates.end}</Text></View>
@@ -76,8 +83,12 @@ chek()
     <Button mode="black" fontWeight='bold'  style={{ width: '30%', backgroundColor: '#DCE2FC', borderWidth: 1, borderColor: 'black', }}>
   Reset
 </Button>
-  <Button  mode="contained" style={{width:'30%',backgroundColor:'#0000FF'}}>
-   Save
+  <Button  mode="contained" style={{width:'30%',backgroundColor:'#0000FF'}}
+    onPress={() =>
+        navigation.navigate('ChooseChildren', {selectedDates:selectedDates})
+      }
+  >
+   Continue
   </Button>
     </View>
   

@@ -8,33 +8,35 @@ import EditProfile from '../src/component/editprofile/EditProfile';
 import Home from "../src/component/HomePage/Home"
 import OwnerProfile from "../src/component/OwnerProfile/OwnerProfile"
 import AppFace from "../src/component/AppFace/AppFace";
-
+import Reservation  from '../src/component/Detail/Reservation';
+import ChooseChildren from '../src/component/Detail/ChooseChildren';
 // const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Reservation" component={Reservation} options={{ headerShown: false }}/>
         <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
-      </Stack.Navigator>
-      {/* <TabNavigator />  */}
+        <Stack.Screen name="ChooseChildren" component={ChooseChildren} options={{ headerShown: false }}/>
+     </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-// function TabNavigator() {
-//   return (
-//     <Tab.Navigator>
-//       <Tab.Screen name="Start" component={AppFace} options={{ headerShown: false }} />
-//       <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
-//       <Tab.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
-//     </Tab.Navigator>
-//   );
-// }
+function TabNavigator() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Start" component={AppFace} options={{ headerShown: false }} />
+      <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
+      <Tab.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
+    </Tab.Navigator>
+  );
+}
 
 export default Nav;
