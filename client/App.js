@@ -13,19 +13,25 @@ import Home from './src/component/HomePage/Home';
 import Nav from './screens/Nav';
 import Map from "./src/component/Map/Map"
 import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
+import Login from './src/component/authentication/Login';
+import SignUp from './src/component/authentication/SigneUp';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 // import Icon from 'react-native-vector-icons/FontAwesome';
 function App() {
  
   return (
-    <Nav/>
+    // <SignUp/>
+    // <Login/>
+    <EditProfile/>
+    // <Nav/>
             //  <Hotelprofile /> 
 //              {/* <Home/>  */}
 // {/* 
 //     <UserProfile/>
-//     <EditProfile/> */}
-// {/* <Map/>   */}
+/* <SignUp/> 
+<EditProfile/>
+// {/* <Map/>   */
 //        {/* <Payment/>  */}
 //       {/* <AppFace/> 
 //        <Inboarding/>  */}

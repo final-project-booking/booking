@@ -9,12 +9,14 @@ import{
 }from "react-native"
 import { useDispatch ,useSelector} from 'react-redux';
 import {signInAsync} from "../../reduce/authentication/signInReducer"
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Login = () => {
   const [login,setLogin]=useState({
     email:'',
     password:''
   })
+
   const error = useSelector(state => state.userSignIn.error);
 
   const dispatch=useDispatch()
@@ -34,7 +36,6 @@ const Login = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-          <Text style={styles.previousBtn}>Previous</Text>
           <Text style={styles.login}>Log in</Text>
           
           <View style={styles.loginContainer}>
@@ -82,24 +83,16 @@ const styles = StyleSheet.create({
     borderStyle:"solid",
 
   },
+  safeAreaView:{
+    marginTop:40
+  },
   errorText:{
     color:"red",
     marginTop:15,
     fontSize:15,
     fontWeight:"bold"
   },
-  previousBtn:{
-    fontSize:20,
-    backgroundColor:"#0000FF",
-    width:100,
-    height:30,
-    paddingLeft:10,
-   paddingRight:10,
-   borderRadius:10,
-   marginTop:5,
-   marginLeft:5,
-   color:"white"
-  },
+  
   login_label:{
     marginBottom:-20,
     marginTop:30,

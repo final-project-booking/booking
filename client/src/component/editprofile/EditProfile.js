@@ -2,48 +2,83 @@ import React, { useState,useEffect } from 'react';
 import { decode } from "base-64";
 global.atob = decode;
 import {cloud_name,preset} from "../../apAdress"
-import axios from 'axios';
 import {jwtDecode} from "jwt-decode";
 import { TextInput, SafeAreaView, StyleSheet, View, Text, TouchableOpacity,Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getOneAsync} from "../../reduce/getOne"
 import {editeAsync} from "../../reduce/editeProfile"
+import {checkOldAsync} from "../../reduce/oldPassReduce"
 import { useDispatch } from 'react-redux'; 
+import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
 
 const EditProfile = () => {
     const [view, setView] = useState("firstView");
     const [user,setUser]=useState({})
-    
+    const [oldPass,setOldPass]=useState("")
+  const [confirmPassword, setConfirmPassword] = useState('');
+console.log("old",oldPass);
+    const arrowleft=<Icon name="arrow-back" size={40} color={"#0000FF"}/>
     const dispatch = useDispatch();
     const tokenGeted = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        console.log(token);
         const decoded = jwtDecode(token);
-        console.log("decoded",decoded.id);
         return decoded.id;
       } catch (error) {
         console.log(error);
       }
     }
     
-    const imageHandler=async(image)=>{
-      try{
-        const form=new FormData()
-      form.append("file",image)
-      form.append("upload_preset",preset)
-      form.append("cloud_name",cloud_name)
-      const res=await axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`)
-      console.log(res.data.secure_url)
-      return res.data.secure_url
-    }
-    catch(error){
-      console.log(error);
-    }
-    }
-
-
+    const imageHandler = async (image) => {
+      console.log("image", image.assets[0].uri);
+      try {
+        const form = new FormData();
+        form.append("file", {
+          uri: image.assets[0].uri,
+          type: image.assets[0].type,
+          name: 'photo.jpg'
+        });
+        form.append("upload_preset", preset);
+        form.append("cloud_name", cloud_name);
+    
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+          method: 'POST',
+          body: form
+        });
+        const data = await res.json();
+        console.log("url", data.secure_url);
+        return data.secure_url;
+      } catch (error) {
+        console.error("Error:", error.message); 
+        console.error("Error Details:", error);   
+        throw error;
+      }
+    };
+    
+    
+    const pickImage = () => {
+      launchImageLibrary({}, async (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else {
+          try {
+            const imageUri = await imageHandler(response);
+            console.log("imageUri", imageUri);
+            setUser({ ...user, imgUrl: imageUri });
+          } catch (error) {
+            console.log('Error uploading image:', error);
+          }
+        }
+      });
+    };
+    
+    
+    
+    
   
     useEffect(() => {
       const fetchUserId = async () => {
@@ -51,7 +86,6 @@ const EditProfile = () => {
         dispatch(getOneAsync(userId))
           .then(data => {
             setUser(data.payload);
-            console.log("User data:", data.payload);
             
           })
           .catch(error => console.log("Error fetching user data:", error)); // Error handling
@@ -59,9 +93,17 @@ const EditProfile = () => {
     
       fetchUserId();
     }, []);
-    console.log("userNumber",user.phoneNumber);
     const handleSave = async () => {
-      try {
+      if (user.password !== confirmPassword) {
+        console.log("Passwords do not match");
+        return;
+      }
+        try {
+          const isOldPassCorrect = await handleOldPass();
+          if (!isOldPassCorrect) {
+            // Optionally, you can add code here to handle the case where the old password is incorrect.
+            return;
+          }
         const userId = await tokenGeted();
         const result =  dispatch(editeAsync({ id: userId, userData: user }));
         const newData = result.payload;
@@ -70,14 +112,16 @@ const EditProfile = () => {
           firstName: newData.firstName,
           lastName: newData.lastName,
           email: newData.email,
-          phoneNumber: newData.phoneNumber,
+          phoneNumber:newData.phoneNumber
         });
       } catch (error) {
         console.log(error);
       }
     };
     
-    
+    const handlepasswordChange = (name, value) => {
+      setOldPass({[name]:value})
+    };
     
   
   
@@ -87,8 +131,28 @@ const EditProfile = () => {
   };
 
   const handleInputChange = (name, value) => {
+    if (name === 'phoneNumber') {
+      value = parseInt(value);
+    }
+    if (name === 'password') {
+      setUser({ ...user, [name]: value });
+    } else if (name === 'confirmPassword') {
+      setConfirmPassword(value);
+    }else{
+
       setUser({ ...user, [name]: value });
     }
+    }
+
+    const handleOldPass = async () => {
+      try {
+        const userId = await tokenGeted();
+        const response = dispatch(checkOldAsync({ id: userId, oldPassword: oldPass }));
+        console.log("response",response.payload);
+      } catch (error) {
+        console.log("Error checking old password:", error);
+      }
+    };
   
     const ImageIcone=<Icon size={25} name='add-a-photo'/>
 
@@ -103,7 +167,7 @@ const EditProfile = () => {
           />
           <View style={styles.camera}>
 
-          <Text style={{color:"black"}}>{ImageIcone}</Text>
+          <Text onPress={()=>{pickImage()}} style={{color:"black"}}>{ImageIcone}</Text>
           </View>
           <View style={styles.inputsContainer}>
             <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>First name</Text>
@@ -137,8 +201,9 @@ const EditProfile = () => {
       </SafeAreaView>
     );
   } else if (view === "secondView") {
-    return (
-      <SafeAreaView>
+    return (<>
+      <Text style={styles.previousBtn} onPress={() => changeView('firstView')}>{arrowleft}</Text>
+      <SafeAreaView style={{marginTop:50}}>
         <View style={styles.editProfileContainer}>
           <View style={styles.inputsContainer}>
             <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>Email</Text>
@@ -150,23 +215,34 @@ const EditProfile = () => {
           <View style={styles.inputsContainer}>
             <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>Old password</Text>
             <TextInput
+            secureTextEntry
+            onChangeText={(text)=>handlepasswordChange("oldPass",text)}
             style={styles.editProfile_inputs} placeholder='********' />
           </View>
           <View style={styles.inputsContainer}>
             <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>New password</Text>
-            <TextInput style={styles.editProfile_inputs} placeholder='********' />
+            <TextInput
+            secureTextEntry
+            onChangeText={(text) => handleInputChange('password', text)}
+            style={styles.editProfile_inputs} placeholder='********' />
           </View>
           <View style={styles.inputsContainer}>
             <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>Confirm new password</Text>
-            <TextInput style={styles.editProfile_inputs} placeholder='********' />
+            <TextInput
+            secureTextEntry
+            onChangeText={(text) => handleInputChange('confirmPassword', text)}
+            style={styles.editProfile_inputs} placeholder='********' />
+            {user.password !== confirmPassword && (
+    <Text style={styles.errorMessage}>Passwords do not match</Text>)}
           </View>
           <View style={styles.inputsContainer}>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() =>handleSave()}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() =>{handleSave()}}>
               <Text style={styles.next}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>
       </SafeAreaView>
+    </>
     );
   }
 };
@@ -181,6 +257,11 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     color: "black",
     fontSize:18
+  },
+  errorMessage:{
+    color:"red",
+    fontSize:17,
+    marginLeft:10
   },
   camera:{
     backgroundColor:"#E7E9F2",
