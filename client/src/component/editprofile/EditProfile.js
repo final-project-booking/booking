@@ -99,11 +99,11 @@ console.log("old",oldPass);
         return;
       }
         try {
-          const isOldPassCorrect = await handleOldPass();
-          if (!isOldPassCorrect) {
-            // Optionally, you can add code here to handle the case where the old password is incorrect.
-            return;
-          }
+          // const isOldPassCorrect = await handleOldPass();
+          // if (!isOldPassCorrect) {
+          //   console.log("Passwords do not match");
+          //   return;
+          // }
         const userId = await tokenGeted();
         const result =  dispatch(editeAsync({ id: userId, userData: user }));
         const newData = result.payload;
@@ -148,7 +148,7 @@ console.log("old",oldPass);
       try {
         const userId = await tokenGeted();
         const response = dispatch(checkOldAsync({ id: userId, oldPassword: oldPass }));
-        console.log("response",response.payload);
+        console.log("response",response);
       } catch (error) {
         console.log("Error checking old password:", error);
       }
