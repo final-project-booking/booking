@@ -21,7 +21,7 @@ console.log('hotel',hotel);
     </View>
     {hotel.map((e)=>{
      return   e.hotel.map((i)=>(
-            <View>
+            <View style={{shadowOffset: {width: 0,height: 1,},shadowOpacity: 0.25, shadowRadius: 3.84,elevation: 5,}}>
     <View style={{marginTop: 75, flexDirection: 'row', alignItems: 'center'}}>
     <View style={{marginRight: 20 }}>
         <Image source={{uri:'https://image.resabooking.com/images/hotel/Concorde_Green_Park_Palace_3.jpg'}} style={{width: 150, height: 150,marginLeft:16,borderRadius:10}} />
