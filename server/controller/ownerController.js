@@ -144,8 +144,38 @@ createRoomsForHotel: async function(req, res) {
         console.error('Failed to create rooms:', error);
         res.status(500).send('Error creating rooms');
     }
-}
+},
+getRoomByCategory:async function(req,res){
 
+     try {
+        const {view,capacity,hotelId}=req.query
+       
+        let whereCondition={}
+        if(view&&capacity){
+            whereCondition={
+                AND:[
+                    {view:{equals:view}},
+                   {capacity: {equals:Number(capacity)}}
+                ]
+            }
+        }else if(view){
+            whereCondition={view:{equals:view}}
+        }else if(capacity){
+            whereCondition={capacity:{equals:Number(capacity)}}
+        }
+         const room = await prisma.room.findFirst({
+             where:{
+                hotelId:Number(hotelId),
+                ...whereCondition,
+            
+             } 
+           });
+           res.status(200).send(room)
+     } catch (error) {
+        throw error
+     }
+}
+  
 
 
 }

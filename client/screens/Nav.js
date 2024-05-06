@@ -7,14 +7,16 @@ import UserProfile from "../src/component/UserProfile/UserProfile"
 import EditProfile from '../src/component/editprofile/EditProfile';
 import Home from "../src/component/HomePage/Home"
 import OwnerProfile from "../src/component/OwnerProfile/OwnerProfile"
-import AppFace from "../src/component/AppFace/AppFace";
+import AppFace from "../src/component/AppFace/AppFace.js";
 import Reservation  from '../src/component/Detail/Reservation';
 import ChooseChildren from '../src/component/Detail/ChooseChildren';
 // const Tab = createBottomTabNavigator();
 import Login from "../src/component/authentication/Login"
 import SignUp from '../src/component/authentication/SigneUp';
-import Detail from '../src/component/detail/Detail';
-import Reservation from "../src/component/detail/Reservation";
+import Detail from '../src/component/Detail/Detail.js';
+import AllHotels from '../src/component/allHotels/AllHotels.js';
+import RoomByHotel from '../src/component/allHotels/RoomByHotel.js';
+// import Reservation from "../src/component/detail/Reservation";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav() {
@@ -32,6 +34,9 @@ function Nav() {
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }}/>
         <Stack.Screen name="Reservation" component={Reservation} options={{ headerShown: false }}/>
+        <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
+        <Stack.Screen name="RoomByHotel" component={RoomByHotel} options={{ headerShown: false }}/>
+
 
 
         {/* <TabNavigator />  */}

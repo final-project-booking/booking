@@ -5,5 +5,5 @@ router.post('/create',verifyUser,owner.promoteToOwner)
 router.get('/all',owner.getAllOwners)
 
 router.post('/Rooms',owner.createRoomsForHotel)
-
+router.get('/',owner.getRoomByCategory)
 module.exports = router;

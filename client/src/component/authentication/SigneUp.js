@@ -34,49 +34,49 @@ const SignUp = ({navigation}) => {
   
   
 
-  // const permission = async () => {
-  //   try {
-  //     const granted = await PermissionsAndroid.request(
-  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //       {
-  //         title: 'location Permission',
-  //         message:
-  //           'This application needs access to your location ' +
-  //           'so you can take awesome pictures.',
-  //         buttonNeutral: 'Ask Me Later',
-  //         buttonNegative: 'Cancel',
-  //         buttonPositive: 'OK',
-  //       },
-  //     );
-  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //       getCurrentLocation()
-  //       console.log('Location used');
-  //     } else {
-  //       console.log('Location permission denied');
-  //     }
-  //   } catch (err) {
-  //     console.warn(err);
-  //   }
-  // };
-  // const getCurrentLocation=()=>{
-  //   Geolocation.getCurrentPosition(
-  //     position=>{
-  //     const {latitude,longitude}=position.coords;
-  //     setSignUp((prevState) => ({
-  //       ...prevState,
-  //       longitude:longitude,
-  //       latitude:latitude
-  //     }))
-  //     console.log(latitude,longitude);
-  //     },
-  //     error=>alert("Error",error.message),
-  //     {enableHighAccuracy: true,
-  //     timeout:15000,
-  //     maximumAge:10000
-  //     }
-  //   )
+  const permission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'location Permission',
+          message:
+            'This application needs access to your location ' +
+            'so you can take awesome pictures.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        getCurrentLocation()
+        console.log('Location used');
+      } else {
+        console.log('Location permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  const getCurrentLocation=()=>{
+    Geolocation.getCurrentPosition(
+      position=>{
+      const {latitude,longitude}=position.coords;
+      setSignUp((prevState) => ({
+        ...prevState,
+        longitude:longitude,
+        latitude:latitude
+      }))
+      console.log(latitude,longitude);
+      },
+      error=>alert("Error",error.message),
+      {enableHighAccuracy: true,
+      timeout:15000,
+      maximumAge:10000
+      }
+    )
     
-  // }
+  }
 
   
   
@@ -145,7 +145,7 @@ const SignUp = ({navigation}) => {
       console.log("Passwords do not match");
       return;
     }
-    // imageUpload();
+    permission()
     dispatch(signUpAsync(signUp));
     navigation.navigate("Login")
   };
