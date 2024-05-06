@@ -13,13 +13,14 @@ import Home from './src/component/HomePage/Home';
 import Nav from './screens/Nav';
 import Map from "./src/component/Map/Map"
 import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
+import OwnerProfile from './src/component/OwnerProfile/OwnerProfile';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 // import Icon from 'react-native-vector-icons/FontAwesome';
 function App() {
  
   return (
-    <Nav/>
+    <OwnerProfile/>
             //  <Hotelprofile /> 
 //              {/* <Home/>  */}
 // {/* 
