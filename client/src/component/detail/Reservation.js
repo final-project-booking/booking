@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View ,Text,StyleSheet} from 'react-native';
-import { Calendar } from 'react-native-calendars';
 import { eachDayOfInterval, format } from 'date-fns';
+import { Calendar } from 'react-native-calendars';
+
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button } from 'react-native-paper';
 export default function MyComponent() {

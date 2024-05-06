@@ -125,6 +125,3 @@ model RoomChat {
   rooms    RoomChat  @relation(fields: [roomId], references: [id])
   roomId  Int
 }
-
-
-
