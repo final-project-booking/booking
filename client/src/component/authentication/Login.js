@@ -10,7 +10,10 @@ import{
 import { useDispatch ,useSelector} from 'react-redux';
 import {signInAsync} from "../../reduce/authentication/signInReducer"
 
-const Login = () => {
+const Login = ({navigation}) => {
+  const handleLogin = ()=>{
+navigation.navigate("Home");
+  }
   const [login,setLogin]=useState({
     email:'',
     password:''
@@ -66,7 +69,7 @@ const Login = () => {
             style={styles.buttonContainer}
             onPress={handleSignIn}
             >
-            <Text style={styles.loginText}>Login</Text>
+            <Text style={styles.loginText}>Login {handleLogin}</Text>
             </TouchableOpacity>
           </View>
             

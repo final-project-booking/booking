@@ -15,7 +15,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {signUpAsync} from '../../reduce/authentication/signUpReducer'
 
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
+  
   const arrowleft=<Icon name='arrowleft' size={30} color={"black"}/>
   const [view, setView] = useState('firstView');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -146,6 +147,7 @@ const SignUp = () => {
     }
     // imageUpload();
     dispatch(signUpAsync(signUp));
+    navigation.navigate("Login")
   };
   
 // const user=useSelector((s) =>s.userSignUp.user)

@@ -7,8 +7,10 @@ import { Button } from 'react-native-paper';
 
 
 
-export default function detail() {
-
+export default function detail({navigation}) {
+const handleicon=()=>{
+  navigation.navigate('Reservation')
+}
     const [dimension, setDimension] = useState(Dimensions.get('window'));
     const [selectedIndex, setSelectedIndex] = useState(0);
     const scrollRef = useRef();
@@ -118,7 +120,7 @@ export default function detail() {
           </View>
           {/* Continue Button */}
           <View style={styles.buttonContainer} >
-          <Button  mode="contained" style={{backgroundColor:'#0000FF'}}>
+          <Button  mode="contained" style={{backgroundColor:'#0000FF'}}  onPress={handleicon}>
           Continue
          </Button>
           </View>
