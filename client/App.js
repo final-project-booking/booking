@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator();
 function App() {
  
   return (
-    <Nav/>
+    <OwnerProfile/>
             //  <Hotelprofile /> 
 //              {/* <Home/>  */}
 // {/* 
