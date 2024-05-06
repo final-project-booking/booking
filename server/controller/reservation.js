@@ -36,6 +36,9 @@ module.exports={
     
           
           const newReservation = await reservation.create({
+            where:{
+            hotelId:req.params.hotelId
+            },
             data: {
               startDate: new Date(startDate),
               endDate: new Date(endDate),
@@ -51,11 +54,7 @@ module.exports={
                   id: userId
                 }
               },
-              hotel: {
-                connect: {
-                  id: hotelId
-                }
-              }
+              
             }
           })
     
