@@ -23,15 +23,16 @@ function App() {
  
   return (
     // <OwnerProfile/>
-    // <Nav/>
+    <Nav/>
             //  <Hotelprofile /> 
 //              {/* <Home/>  */}
 // {/* 
     // <UserProfile/>
-    <EditProfile/> 
+    // <EditProfile/> 
 // {/* <Map/>    */}
 //        {/* <Payment/>  */}
 //       {/* <AppFace/> 
 //        <Inboarding/>  */}
   )}
+  
 export default App;
