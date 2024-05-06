@@ -28,11 +28,12 @@ function App() {
             //  <Hotelprofile /> 
 //              {/* <Home/>  */}
 // {/* 
-//     <UserProfile/>
-//     <EditProfile/> */}
+    // <UserProfile/>
+    // <EditProfile/> 
 // {/* <Map/>    */}
 //        {/* <Payment/>  */}
 //       {/* <AppFace/> 
 //        <Inboarding/>  */}
   )}
+  
 export default App;
