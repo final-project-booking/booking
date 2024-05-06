@@ -33,7 +33,7 @@ function Nav() {
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
         {/* <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }}/>
         <Stack.Screen name="Reservation" component={Reservation} options={{ headerShown: false }}/> */}
-
+        
 
         {/* <TabNavigator />  */}
       </Stack.Navigator>
