@@ -11,7 +11,10 @@ import { useDispatch ,useSelector} from 'react-redux';
 import {signInAsync} from "../../reduce/authentication/signInReducer"
 
 
-const Login = () => {
+const Login = ({navigation}) => {
+  const handleLogin = ()=>{
+navigation.navigate("Home");
+  }
   const [login,setLogin]=useState({
     email:'',
     password:''
@@ -67,7 +70,7 @@ const Login = () => {
             style={styles.buttonContainer}
             onPress={handleSignIn}
             >
-            <Text style={styles.loginText}>Login</Text>
+            <Text style={styles.loginText}>Login {handleLogin}</Text>
             </TouchableOpacity>
           </View>
             
@@ -122,13 +125,13 @@ const styles = StyleSheet.create({
     input: {
       color:"black",
       fontWeight:"bold",
-      borderColor: "black",
+      borderColor: "#DCE2FC",
       borderWidth:20,
       borderStyle:"solid",
       height: 60,
       width: 380,
       fontSize: 20,
-      borderWidth: 1,
+      borderWidth: 3,
       borderRadius: 20,
       marginTop: 20,
       paddingLeft: 20,

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView ,TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import EditProfile from '../editprofile/EditProfile';
-// import MapView, { PROVIDER_GOOGLE } from 'UserProfile.js";serProfile.js";eact-native-maps';
-export  default  UserProfile = ({navigation}) => {
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const UserProfile = ({ navigation }) => {
   const profile = {
     name: 'John Doe',
     email: 'johndoe@example.com',
@@ -13,30 +14,45 @@ export  default  UserProfile = ({navigation}) => {
       longitude: -122.4324,
     }
   };
-  const handleSave = () => {
-    console.log('Changes saved');
-  };
 
   const handleEditProfile = () => {
     navigation.navigate('EditProfile');
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.heading}>Your Profile</Text>
-        <View style={styles.profileInfo}>
+    <ScrollView style={styles.container}>
+      <View style={styles.card}>
+        <View style={styles.imageContainer}>
           <Image source={{ uri: profile.imageUrl }} style={styles.image} />
-          <Text style={styles.label}>Name:</Text>
-          <Text style={styles.infoText}>{profile.name}</Text>
-          <Text style={styles.label}>Email:</Text>
-          <Text style={styles.infoText}>{profile.email}</Text>
-          <Text style={styles.label}>Location:</Text>
-          <Text style={styles.infoText}>{`Latitude: ${profile.location.latitude}, Longitude: ${profile.location.longitude}`}</Text>
-          <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
-            <Text style={styles.editButtonText}>Edit Profile</Text>
-          </TouchableOpacity>
+          <View style={styles.imageOverlay} />
         </View>
+        <Text style={styles.heading}>Your Profile</Text>
+        <View style={styles.infoContainer}>
+          <View style={styles.infoBox}>
+            <Icon name="user" size={30} color="#000" />
+            <View style={styles.infoTextContainer}>
+              <Text style={styles.label}>Name:</Text>
+              <Text style={styles.infoText}>{profile.name}</Text>
+            </View>
+          </View>
+          <View style={styles.infoBox}>
+            <Icon name="envelope" size={30} color="#000" />
+            <View style={styles.infoTextContainer}>
+              <Text style={styles.label}>Email:</Text>
+              <Text style={styles.infoText}>{profile.email}</Text>
+            </View>
+          </View>
+          <View style={styles.infoBox}>
+            <Icon name="map-marker" size={30} color="#000" />
+            <View style={styles.infoTextContainer}>
+              <Text style={styles.label}>Location:</Text>
+              <Text style={styles.infoText}>{`Latitude: ${profile.location.latitude}, Longitude: ${profile.location.longitude}`}</Text>
+            </View>
+          </View>
+        </View>
+        <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
+          <Text style={styles.editButtonText}>Edit Profile</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -45,43 +61,73 @@ export  default  UserProfile = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#ffffff',
+  },
+  card: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  imageContainer: {
+    position: 'relative',
+    marginBottom: 20,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+  },
+  imageOverlay: {
+    position: 'absolute',
+    backgroundColor: '#DCF2EC', // Background color that extends halfway down the image
+    width: '100%',
+    height: '50%',
+    bottom: 0,
+    borderRadius: 100,
   },
   heading: {
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center',
     marginBottom: 20,
   },
-  profileInfo: {
+  infoContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  infoBox: {
+    flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-  },
-  image: {
-    width: 130,
-    height: 130,
-    borderRadius: 75,
-    marginBottom: 10,
+    backgroundColor: '#DCF2EC',
+    padding: 10,
+    borderRadius: 10,
+    width: '80%',
   },
   label: {
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginRight: 5,
+    fontSize: 18,
+  },
+  infoTextContainer: {
+    flex: 1,
+    marginLeft: 10,
   },
   infoText: {
-    marginBottom: 10,
+    fontSize: 18,
   },
   editButton: {
     backgroundColor: '#007bff',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    marginTop: 20,
   },
   editButtonText: {
     color: '#ffffff',
     fontWeight: 'bold',
+    fontSize: 18,
   },
 });
 
-// export default UserProfile;
+export default UserProfile;

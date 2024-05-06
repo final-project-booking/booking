@@ -245,7 +245,8 @@ const EditProfile = () => {
 const styles = StyleSheet.create({
   editProfile_inputs: {
     borderStyle: "solid",
-    borderWidth: 1,
+    borderWidth: 3,
+    borderColor:"#DCE2FC",
     width: 380,
     borderRadius: 20,
     paddingLeft: 20,

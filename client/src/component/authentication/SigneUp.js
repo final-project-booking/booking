@@ -146,6 +146,7 @@ const SignUp = () => {
     }
     permission()
     dispatch(signUpAsync(signUp));
+    navigation.navigate("Login")
   };
   
 // const user=useSelector((s) =>s.userSignUp.user)
@@ -292,12 +293,12 @@ const styles = StyleSheet.create({
     input: {
       color:"black",
       fontWeight:"bold",
-      borderColor: "black",
+      borderColor: "#DCE2FC",
       borderStyle:"solid",
       height: 60,
       width: 380,
       fontSize: 20,
-      borderWidth: 1,
+      borderWidth: 3,
       borderRadius: 20,
       marginTop: 20,
       paddingLeft: 20,

@@ -9,29 +9,27 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AppFace from './src/component/AppFace/AppFace';
 import Inboarding from './src/component/Inboarding/Inboarding';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Home from './src/component/HomePage/Home';
 import Nav from './screens/Nav';
 import Map from "./src/component/Map/Map"
 import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
-import Login from './src/component/authentication/Login';
-import SignUp from './src/component/authentication/SigneUp';
+// import Detail from './src/component/detail/Detail';
+import OwnerProfile from './src/component/OwnerProfile/OwnerProfile';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 // import Icon from 'react-native-vector-icons/FontAwesome';
 function App() {
  
   return (
-    // <SignUp/>
-    // <Login/>
-    <EditProfile/>
-    // <Map/>
+    // <OwnerProfile/>
+    // <Nav/>
             //  <Hotelprofile /> 
 //              {/* <Home/>  */}
 // {/* 
-//     <UserProfile/>
-/* <SignUp/> 
-<EditProfile/>
-// {/* <Map/>   */
+    // <UserProfile/>
+    <EditProfile/> 
+// {/* <Map/>    */}
 //        {/* <Payment/>  */}
 //       {/* <AppFace/> 
 //        <Inboarding/>  */}

@@ -10,11 +10,11 @@ const AppFace = ({ navigation }) => {
   };
 
   const handleLogin = () => {
-    // navigation.navigate('Login');
+    navigation.navigate('Login');
   };
 
   const handleSignup = () => {
-    // navigation.navigate('Signup');
+    navigation.navigate('SignUp');
   };
 
   return (

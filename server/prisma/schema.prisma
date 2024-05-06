@@ -33,7 +33,7 @@ enum Role {
 }
 
 model Hotel {
-  id          Int     @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   name        String
   imgUrl      String?
   longitude   Float?
@@ -42,22 +42,30 @@ model Hotel {
   rating      Int
   rooms       Int
   licence     String
-  owner       Owner   @relation(fields: [ownerId], references: [id])
-  ownerId     Int     @unique
+  owner       Owner         @relation(fields: [ownerId], references: [id])
+  ownerId     Int
   room        Room[]
-  offres      Offer[]
+  reservation Reservation[]
 }
 
-enum Option {
+enum MealPlan {
   breakFast
   all_Inclusive
   halfBoard
 }
 
+model Option {
+  id        Int      @id @default(autoincrement())
+  Meal_Plan MealPlan
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId    Int      @unique
+}
+
 model Owner {
-  id    Int     @id @default(autoincrement())
-  user  User?
-  hotel Hotel[]
+  id     Int     @id @default(autoincrement())
+  user   User?
+  userId Int
+  hotel  Hotel[]
 }
 
 model Reservation {
@@ -66,6 +74,9 @@ model Reservation {
   roomId    Int      @unique
   user      User     @relation(fields: [userId], references: [id])
   userId    Int      @unique
+  hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  hotelId   Int
+  people    Int
   startDate DateTime
   endDate   DateTime
 }
@@ -81,6 +92,8 @@ model Room {
   imgUrl          String
   option          Option?
   view            View
+  reduction       Boolean           @default(false)
+  rate            Int
 }
 
 enum View {
@@ -118,11 +131,4 @@ model JoinChat {
   userId Int
   rooms  RoomChat @relation(fields: [roomId], references: [id])
   roomId Int
-}
-
-model Offer {
-  id      Int    @id @default(autoincrement())
-  hotel   Hotel  @relation(fields: [hotelId], references: [id])
-  hotelId Int
-  offer   String
 }
