@@ -10,18 +10,15 @@ import OwnerProfile from "../src/component/OwnerProfile/OwnerProfile"
 import AppFace from "../src/component/AppFace/AppFace";
 import Reservation  from '../src/component/Detail/Reservation';
 import ChooseChildren from '../src/component/Detail/ChooseChildren';
-// const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 import Login from "../src/component/authentication/Login"
 import SignUp from '../src/component/authentication/SigneUp';
-import Detail from '../src/component/detail/Detail';
-import Reservation from "../src/component/detail/Reservation";
-const Tab = createBottomTabNavigator();
+import Detail from '../src/component/Detail/Detail';
 const Stack = createNativeStackNavigator();
-function Nav() {
+const Nav = () =>{
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Reservation" component={Reservation} options={{ headerShown: false }}/>
         <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
@@ -30,12 +27,10 @@ function Nav() {
         <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
-        <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }}/>
+        <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }}/> 
         <Stack.Screen name="Reservation" component={Reservation} options={{ headerShown: false }}/>
-
-
-        {/* <TabNavigator />  */}
-      </Stack.Navigator>
+        <Stack.Screen name="ChooseChildren" component={ChooseChildren} options={{ headerShown: false }}/>
+     </Stack.Navigator>
     </NavigationContainer>
 
   );

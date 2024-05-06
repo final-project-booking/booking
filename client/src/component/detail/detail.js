@@ -7,7 +7,7 @@ import { Button } from 'react-native-paper';
 
 
 
-export default function detail({navigation}) {
+export default function Detail({navigation}) {
 const handleicon=()=>{
   navigation.navigate('Reservation')
 }
