@@ -7,25 +7,24 @@ import {
     Text,
     TouchableOpacity,
     ImageBackground,
-    // PermissionsAndroid
+    PermissionsAndroid
 } from 'react-native';
-// import Geolocation from '@react-native-community/geolocation';
+import Geolocation from '@react-native-community/geolocation';
 import { useDispatch } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {signUpAsync} from '../../reduce/authentication/signUpReducer'
 
 
-const SignUp = ({navigation}) => {
-  
-  const arrowleft=<Icon name='arrowleft' size={30} color={"black"}/>
+const SignUp = () => {
+  const arrowleft=<Icon name="arrow-back" size={40} color={"#112678"}/>
   const [view, setView] = useState('firstView');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signUp, setSignUp] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    password: '',
-    phoneNumber: '',
+    password: "",
+    phoneNumber: "",
     longitude: 0,
     latitude:0,
     imgUrl:"https://res.cloudinary.com/dockwpvkl/image/upload/v1714576558/default-avatar-icon-of-social-media-user-vector_jy16if.jpg"
@@ -34,49 +33,49 @@ const SignUp = ({navigation}) => {
   
   
 
-  // const permission = async () => {
-  //   try {
-  //     const granted = await PermissionsAndroid.request(
-  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //       {
-  //         title: 'location Permission',
-  //         message:
-  //           'This application needs access to your location ' +
-  //           'so you can take awesome pictures.',
-  //         buttonNeutral: 'Ask Me Later',
-  //         buttonNegative: 'Cancel',
-  //         buttonPositive: 'OK',
-  //       },
-  //     );
-  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //       getCurrentLocation()
-  //       console.log('Location used');
-  //     } else {
-  //       console.log('Location permission denied');
-  //     }
-  //   } catch (err) {
-  //     console.warn(err);
-  //   }
-  // };
-  // const getCurrentLocation=()=>{
-  //   Geolocation.getCurrentPosition(
-  //     position=>{
-  //     const {latitude,longitude}=position.coords;
-  //     setSignUp((prevState) => ({
-  //       ...prevState,
-  //       longitude:longitude,
-  //       latitude:latitude
-  //     }))
-  //     console.log(latitude,longitude);
-  //     },
-  //     error=>alert("Error",error.message),
-  //     {enableHighAccuracy: true,
-  //     timeout:15000,
-  //     maximumAge:10000
-  //     }
-  //   )
+  const permission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'location Permission',
+          message:
+            'This application needs access to your location ' +
+            'so you can take awesome pictures.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        getCurrentLocation()
+        console.log('Location used');
+      } else {
+        console.log('Location permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  const getCurrentLocation=()=>{
+    Geolocation.getCurrentPosition(
+      position=>{
+      const {latitude,longitude}=position.coords;
+      setSignUp((prevState) => ({
+        ...prevState,
+        longitude:longitude,
+        latitude:latitude
+      }))
+      console.log(latitude,longitude);
+      },
+      error=>alert("Error",error.message),
+      {enableHighAccuracy: true,
+      timeout:15000,
+      maximumAge:10000
+      }
+    )
     
-  // }
+  }
 
   
   
@@ -145,7 +144,7 @@ const SignUp = ({navigation}) => {
       console.log("Passwords do not match");
       return;
     }
-    // imageUpload();
+    permission()
     dispatch(signUpAsync(signUp));
     navigation.navigate("Login")
   };
@@ -160,8 +159,8 @@ const SignUp = ({navigation}) => {
     return (
       
       
-        <SafeAreaView style={styles.safeAreaView}>
-          <Text style={styles.previousBtn}>Previous</Text>
+        <SafeAreaView style={styles.safeAreaView1}>
+
           <Text style={styles.login}>Sign up</Text>
           <View style={styles.loginContainer}>
           <View style={styles.login_inputsContainer}>
@@ -206,9 +205,9 @@ const SignUp = ({navigation}) => {
   } else if (view === '2ndView') {
     return (
 <>
-        <Text style={styles.previousBtn} onPress={() => switchView('firstView')}>Previous</Text>
+        <Text style={styles.previousBtn} onPress={() => switchView('firstView')}>{arrowleft}</Text>
         <Text style={styles.login}>Sign up</Text>
-        <SafeAreaView style={styles.safeAreaView}>
+        <SafeAreaView >
         <View style={styles.loginContainer}>
           <View style={styles.login_inputsContainer}>
           <Text style={styles.login_label}>Email</Text>
@@ -269,23 +268,16 @@ const styles = StyleSheet.create({
     marginLeft:10
   },
   previousBtn:{
-    fontSize:20,
-    backgroundColor:"#0000FF",
-    width:100,
-    height:30,
-    paddingLeft:10,
-   paddingRight:10,
-   borderRadius:10,
    marginTop:5,
-   marginLeft:5,
    color:"white"
   },
   login_label:{
-    marginBottom:-20,
+    marginBottom:-10,
     marginTop:30,
-    marginLeft:10,
+    marginLeft:5,
     color:"black",
     fontSize:15,
+    fontWeight:"bold"
   },
   loginContainer:{
     alignItems:"center",
@@ -295,33 +287,35 @@ const styles = StyleSheet.create({
     fontSize:30,
     marginTop:50,
     textAlign:"center",
-    color:"#0000FF",
+    color:"#112678",
     fontWeight:"bold"
   },
     input: {
       color:"black",
       fontWeight:"bold",
-      borderColor: "black",
+      borderColor: "#DCE2FC",
       borderStyle:"solid",
       height: 60,
-      width: 400,
+      width: 380,
       fontSize: 20,
-      borderWidth: 1,
+      borderWidth: 3,
       borderRadius: 20,
       marginTop: 20,
       paddingLeft: 20,
     },
-    
+    safeAreaView1:{
+      marginTop:45
+    },
     buttonContainer: {
       marginTop: 40,
       height: 45,
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom: 20,
-      width: 400,
+      width: 380,
       borderRadius: 30,
       borderStyle:"solid",
-      backgroundColor: '#0000FF'
+      backgroundColor: '#112678'
     },
       
       loginText: {

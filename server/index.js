@@ -6,7 +6,7 @@ const ownerRouter=require('./router/owner')
 const userRouter=require('./router/user')
 const chat=require('./router/chat')
 const reservation=require('./router/reservation')
-// const userRoute=require('./router/user')
+const userRoute=require('./router/user')
 
 const search=require('./router/search')
 
@@ -30,7 +30,7 @@ app.use('/api/search',search)
 
 
 
-// app.use("/api/user",userRoute)
+app.use("/api/user",userRoute)
 
 let port = 3000
 
