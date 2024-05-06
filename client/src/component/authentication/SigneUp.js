@@ -16,7 +16,7 @@ import {signUpAsync} from '../../reduce/authentication/signUpReducer'
 
 
 const SignUp = () => {
-  const arrowleft=<Icon name="arrow-back" size={40} color={"#0000FF"}/>
+  const arrowleft=<Icon name="arrow-back" size={40} color={"#112678"}/>
   const [view, setView] = useState('firstView');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signUp, setSignUp] = useState({
@@ -271,11 +271,12 @@ const styles = StyleSheet.create({
    color:"white"
   },
   login_label:{
-    marginBottom:-20,
+    marginBottom:-10,
     marginTop:30,
-    marginLeft:10,
+    marginLeft:5,
     color:"black",
     fontSize:15,
+    fontWeight:"bold"
   },
   loginContainer:{
     alignItems:"center",
@@ -285,7 +286,7 @@ const styles = StyleSheet.create({
     fontSize:30,
     marginTop:50,
     textAlign:"center",
-    color:"#0000FF",
+    color:"#112678",
     fontWeight:"bold"
   },
     input: {
@@ -294,7 +295,7 @@ const styles = StyleSheet.create({
       borderColor: "black",
       borderStyle:"solid",
       height: 60,
-      width: 400,
+      width: 380,
       fontSize: 20,
       borderWidth: 1,
       borderRadius: 20,
@@ -310,10 +311,10 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom: 20,
-      width: 400,
+      width: 380,
       borderRadius: 30,
       borderStyle:"solid",
-      backgroundColor: '#0000FF'
+      backgroundColor: '#112678'
     },
       
       loginText: {

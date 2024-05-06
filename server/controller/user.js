@@ -46,33 +46,7 @@ module.exports = {
         delete foundUser.password;
         res.status(200).send({ token, user: foundUser });
     },
-    checkOldPassword: async (req, res) => {
-        const { oldPassword } = req.body;
-        const { id } = req.params;
-      
-        try {
-          const foundUser = await user.findUnique({ where: { id: parseInt(id) } });
-          if (!foundUser) {
-            return res.status(404).json({ error: 'User not found' });
-          }
-      
-          const hashedPassword = foundUser.password;
-      
-          
-      
-          const passwordMatches = await bcrypt.compare(String(oldPassword), String(hashedPassword));
-          if (!passwordMatches) {
-            return res.status(401).json({ isTrue: false });
-          }
-      
-          return res.status(200).json({ isTrue: true });
-        } catch (error) {
-          console.error('Error checking old password:', error);
-          return res.status(500).json({ error: 'Internal server error' });
-        }
-      }
     
-      ,
 
     
     getOne:async function(req,res){
@@ -86,18 +60,39 @@ module.exports = {
         }
     },
 
-    update: async (req, res)=>{
+    update: async (req, res) => {
         try {
-            let id = req.params.id
-            const {firstName,lastName,email,password,imgUrl,phoneNumber}=req.body
-            const saltRounds = await bcrypt.genSalt();
-        const passwordHash = await bcrypt.hash(password, saltRounds);
-            const users=await user.update({data:{firstName,lastName,email,password:passwordHash,imgUrl,phoneNumber},where:{id:parseInt(id)}})
-            res.status(200).send(users)
+            console.log("reached")
+          let id = req.params.id
+          const {firstName, lastName, email, password, imgUrl, phoneNumber, oldPassword} = req.body
+            
+          const userRecord = await user.findUnique({ where: { id: parseInt(id) } })
+      
+          if (!userRecord) {
+            return res.status(404).send({ error: 'User not found' })
+          }
+      
+          const passwordMatches = await bcrypt.compare(String(oldPassword), String(userRecord.password))
+      
+          if (!passwordMatches) {
+            return res.status(400).json('Incorrect old password')
+          }
+      
+          const saltRounds = await bcrypt.genSalt()
+          const passwordHash = await bcrypt.hash(password, saltRounds)
+      
+          const updatedUser = await user.update({
+            data: {firstName, lastName, email, password: passwordHash, imgUrl, phoneNumber},
+            where: {id: parseInt(id)}
+          })
+      
+          res.status(200).send(updatedUser)
         } catch (error) {
-            throw error
+            console.log(error)
+        //   console.error('Failed to update user:', error)
+        //   res.status(500).send({ error: 'Error updating user' })
         }
-    },
+      },
 
     getAll:async function(req,res){
         try {

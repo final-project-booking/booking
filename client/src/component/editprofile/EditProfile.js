@@ -7,19 +7,28 @@ import { TextInput, SafeAreaView, StyleSheet, View, Text, TouchableOpacity,Image
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getOneAsync} from "../../reduce/getOne"
 import {editeAsync} from "../../reduce/editeProfile"
-import {checkOldAsync} from "../../reduce/oldPassReduce"
-import { useDispatch } from 'react-redux'; 
+import { useDispatch,useSelector } from 'react-redux'; 
 import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 const EditProfile = () => {
     const [view, setView] = useState("firstView");
-    const [user,setUser]=useState({})
-    const [oldPass,setOldPass]=useState("")
+    const [user,setUser]=useState({
+      email:"",
+      firstName:"",
+      lastName:"",
+      phoneNumber:"",
+      imgUrl:"",
+      password:"",
+      oldPassword:"",
+      confirmPassword:""
+    })
+    const error = useSelector(state => state.userSignIn.error);
+
+    console.log("err",error);
   const [confirmPassword, setConfirmPassword] = useState('');
-console.log("old",oldPass);
-    const arrowleft=<Icon name="arrow-back" size={40} color={"#0000FF"}/>
+    const arrowleft=<Icon name="arrow-back" size={40} color={"#112678"}/>
     const dispatch = useDispatch();
     const tokenGeted = async () => {
       try {
@@ -30,9 +39,11 @@ console.log("old",oldPass);
         console.log(error);
       }
     }
+    const isError = error || (error.oldPassword);
+
     
     const imageHandler = async (image) => {
-      console.log("image", image.assets[0].uri);
+      // console.log("image", image.assets[0].uri);
       try {
         const form = new FormData();
         form.append("file", {
@@ -48,7 +59,7 @@ console.log("old",oldPass);
           body: form
         });
         const data = await res.json();
-        console.log("url", data.secure_url);
+        // console.log("url", data.secure_url);
         return data.secure_url;
       } catch (error) {
         console.error("Error:", error.message); 
@@ -99,29 +110,17 @@ console.log("old",oldPass);
         return;
       }
         try {
-          // const isOldPassCorrect = await handleOldPass();
-          // if (!isOldPassCorrect) {
-          //   console.log("Passwords do not match");
-          //   return;
-          // }
+         
         const userId = await tokenGeted();
-        const result =  dispatch(editeAsync({ id: userId, userData: user }));
-        const newData = result.payload;
-        setUser({
-          ...user,
-          firstName: newData.firstName,
-          lastName: newData.lastName,
-          email: newData.email,
-          phoneNumber:newData.phoneNumber
-        });
+        // console.log("user",user);
+        dispatch(editeAsync({ id: userId, userData: user }));
+      
       } catch (error) {
         console.log(error);
       }
     };
     
-    const handlepasswordChange = (name, value) => {
-      setOldPass({[name]:value})
-    };
+    
     
   
   
@@ -138,21 +137,14 @@ console.log("old",oldPass);
       setUser({ ...user, [name]: value });
     } else if (name === 'confirmPassword') {
       setConfirmPassword(value);
-    }else{
+    }
+    else{
 
       setUser({ ...user, [name]: value });
     }
     }
 
-    const handleOldPass = async () => {
-      try {
-        const userId = await tokenGeted();
-        const response = dispatch(checkOldAsync({ id: userId, oldPassword: oldPass }));
-        console.log("response",response);
-      } catch (error) {
-        console.log("Error checking old password:", error);
-      }
-    };
+    
   
     const ImageIcone=<Icon size={25} name='add-a-photo'/>
 
@@ -170,21 +162,21 @@ console.log("old",oldPass);
           <Text onPress={()=>{pickImage()}} style={{color:"black"}}>{ImageIcone}</Text>
           </View>
           <View style={styles.inputsContainer}>
-            <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>First name</Text>
+            <Text style={{color:'black',fontSize:18,marginLeft:5,marginBottom:10,fontWeight:"bold"}}>First name</Text>
             <TextInput
             value={user.firstName}
             onChangeText={(text)=>handleInputChange("firstName", text)}
             style={styles.editProfile_inputs}  />
           </View>
           <View style={styles.inputsContainer}>
-            <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>Last name</Text>
+            <Text style={{color:'black',fontSize:18,marginLeft:5,marginBottom:10,fontWeight:"bold"}}>Last name</Text>
             <TextInput
             value={user.lastName}
             onChangeText={(text)=>handleInputChange("lastName",text)}
             style={styles.editProfile_inputs}  />
           </View>
           <View style={styles.inputsContainer}>
-            <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>Phone number</Text>
+            <Text style={{color:'black',fontSize:18,marginLeft:5,marginBottom:10,fontWeight:"bold"}}>Phone number</Text>
             <TextInput
             value={user.phoneNumber? (user.phoneNumber).toString() : ''}
             onChangeText={(text)=>handleInputChange("phoneNumber",text)}
@@ -206,34 +198,37 @@ console.log("old",oldPass);
       <SafeAreaView style={{marginTop:50}}>
         <View style={styles.editProfileContainer}>
           <View style={styles.inputsContainer}>
-            <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>Email</Text>
+            <Text style={{color:'black',fontSize:18,marginLeft:5,marginBottom:10,fontWeight:"bold"}}>Email</Text>
             <TextInput
             value={user.email}
             onChangeText={(text)=>handleInputChange("email",text)}
             style={styles.editProfile_inputs}  />
           </View>
           <View style={styles.inputsContainer}>
-            <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>Old password</Text>
+            <Text style={{color:'black',fontSize:18,marginLeft:5,marginBottom:10,fontWeight:"bold"}}>Old password</Text>
             <TextInput
             secureTextEntry
-            onChangeText={(text)=>handlepasswordChange("oldPass",text)}
+            onChangeText={(text)=>handleInputChange("oldPassword",text)}
             style={styles.editProfile_inputs} placeholder='********' />
           </View>
           <View style={styles.inputsContainer}>
-            <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>New password</Text>
-            <TextInput
-            secureTextEntry
-            onChangeText={(text) => handleInputChange('password', text)}
-            style={styles.editProfile_inputs} placeholder='********' />
-          </View>
-          <View style={styles.inputsContainer}>
-            <Text style={{color:'black',fontSize:18,marginLeft:9,marginBottom:10}}>Confirm new password</Text>
+            <Text style={{color:'black',fontSize:18,marginLeft:5,marginBottom:10,fontWeight:"bold"}}>New password</Text>
             <TextInput
             secureTextEntry
             onChangeText={(text) => handleInputChange('confirmPassword', text)}
             style={styles.editProfile_inputs} placeholder='********' />
+          </View>
+          <View style={styles.inputsContainer}>
+            <Text style={{color:'black',fontSize:18,marginLeft:5,marginBottom:10,fontWeight:"bold"}}>Confirm new password</Text>
+            <TextInput
+            secureTextEntry
+            onChangeText={(text) => handleInputChange('password', text)}
+            style={styles.editProfile_inputs} placeholder='********' />
             {user.password !== confirmPassword && (
-    <Text style={styles.errorMessage}>Passwords do not match</Text>)}
+            <Text style={styles.errorMessage}>Passwords do not match</Text>)}
+            {isError && (
+        <Text style={styles.errorMessage}>invalid old password</Text>
+      )}
           </View>
           <View style={styles.inputsContainer}>
             <TouchableOpacity style={styles.buttonContainer} onPress={() =>{handleSave()}}>
@@ -251,7 +246,7 @@ const styles = StyleSheet.create({
   editProfile_inputs: {
     borderStyle: "solid",
     borderWidth: 1,
-    width: 400,
+    width: 380,
     borderRadius: 20,
     paddingLeft: 20,
     paddingRight: 20,
@@ -286,10 +281,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
-    width: 400,
+    width: 380,
     borderRadius: 30,
     borderStyle: "solid",
-    backgroundColor: '#0000FF'
+    backgroundColor: '#112678'
   },
   next: {
     color: 'white',

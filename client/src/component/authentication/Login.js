@@ -9,7 +9,7 @@ import{
 }from "react-native"
 import { useDispatch ,useSelector} from 'react-redux';
 import {signInAsync} from "../../reduce/authentication/signInReducer"
-import Icon from 'react-native-vector-icons/MaterialIcons';
+
 
 const Login = () => {
   const [login,setLogin]=useState({
@@ -17,7 +17,7 @@ const Login = () => {
     password:''
   })
 
-  const error = useSelector(state => state.userSignIn.error);
+  const error = useSelector(state => state.edite.error);
 
   const dispatch=useDispatch()
   console.log(error);
@@ -42,7 +42,7 @@ const Login = () => {
           <View style={styles.login_inputsContainer}>
             <Text style={styles.login_label}>Email</Text>
             <TextInput
-            placeholder='----------------------------------------------'
+            placeholder='Example@gmail.com'
             style={styles.input}
             onChangeText={(text) => handleInputChange('email', text)}
             value={login.email}
@@ -52,7 +52,7 @@ const Login = () => {
             <TextInput
             style={styles.input}
             secureTextEntry
-            placeholder='********'
+            placeholder='Ex@mPl3'
             onChangeText={(text) => handleInputChange('password', text)}
             value={login.password}
             />
@@ -94,11 +94,12 @@ const styles = StyleSheet.create({
   },
   
   login_label:{
-    marginBottom:-20,
+    marginBottom:-10,
     marginTop:30,
-    marginLeft:10,
+    marginLeft:5,
     color:"black",
     fontSize:15,
+    fontWeight:"bold"
   },
   loginContainer:{
     alignItems:"center",
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     fontSize:30,
     marginTop:50,
     textAlign:"center",
-    color:"#0000FF",
+    color:"#112678",
     fontWeight:"bold"
   },
   login_forget:{
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
       borderWidth:20,
       borderStyle:"solid",
       height: 60,
-      width: 400,
+      width: 380,
       fontSize: 20,
       borderWidth: 1,
       borderRadius: 20,
@@ -139,10 +140,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 20,
-        width: 400,
+        width: 380,
         borderRadius: 30,
         borderStyle:"solid",
-        backgroundColor: '#0000FF'
+        backgroundColor: '#112678'
       },
       
       loginText: {

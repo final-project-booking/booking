@@ -24,7 +24,7 @@ function App() {
     // <SignUp/>
     // <Login/>
     <EditProfile/>
-    // <Nav/>
+    // <Map/>
             //  <Hotelprofile /> 
 //              {/* <Home/>  */}
 // {/* 
