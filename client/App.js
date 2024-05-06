@@ -13,6 +13,7 @@ import Home from './src/component/HomePage/Home';
 import Nav from './screens/Nav';
 import Map from "./src/component/Map/Map"
 import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
+import Detail from './src/component/detail/Detail';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -25,7 +26,7 @@ function App() {
 // {/* 
 //     <UserProfile/>
 //     <EditProfile/> */}
-// {/* <Map/>   */}
+// {/* <Map/>    */}
 //        {/* <Payment/>  */}
 //       {/* <AppFace/> 
 //        <Inboarding/>  */}

@@ -34,7 +34,9 @@ React.useEffect(() => {
   }).start();
 }, []);
 
-
+const handleicon=()=>{
+  navigation.navigate('UserProfile')
+}
 const scale = scrollX.interpolate({
   inputRange: [0, 100],
   outputRange: [1, 1],
@@ -99,7 +101,7 @@ const opacity = scrollX.interpolate({
       <TouchableOpacity
         disabled={activeCardIndex != index}
         activeOpacity={1}
-        onPress={() => navigation.navigate('DetailsScreen', hotel)}>
+        onPress={() => navigation.navigate('Detail', hotel)}>
       
  <Animated.View style={{ ...styles.card, transform: [{ scale }] }}>
     <Animated.View style={{ ...styles.cardOverlay, opacity }} />
@@ -192,7 +194,7 @@ const opacity = scrollX.interpolate({
             </Text>
           </View>
         </View>
-        <Icon name="person-outline" size={38} color={COLORS.grey} />
+        <Icon name="person-outline" size={38} color={COLORS.grey} onPress={handleicon} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.searchInputContainer}>

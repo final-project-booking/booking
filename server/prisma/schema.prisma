@@ -26,7 +26,6 @@ model User {
   message        Message[]
   join           JoinChat[]
 }
-
 enum Role {
   owner
   user
@@ -43,20 +42,26 @@ model Hotel {
   rooms       Int
   licence     String
   owner       Owner   @relation(fields: [ownerId], references: [id])
-  ownerId     Int     @unique
-  room        Room[]
-  offres      Offer[]
+  ownerId     Int
+  room        Room[]  
 }
 
-enum Option {
+enum MealPlan {
   breakFast
   all_Inclusive
   halfBoard
+}
+model Option {
+  id     Int    @id @default(autoincrement())
+  Meal_Plan MealPlan
+  room    Room  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId  Int   @unique
 }
 
 model Owner {
   id    Int     @id @default(autoincrement())
   user  User?
+  userId Int
   hotel Hotel[]
 }
 
@@ -77,10 +82,12 @@ model Room {
   reservation     Reservation?
   dayAvailability DayAvailability[]
   price           Int
-  capacity       Int
+  capacity        Int
   imgUrl          String
   option          Option?
   view            View
+  reduction       Boolean  @default(false)
+  rate            Int
 }
 
 enum View {
@@ -117,12 +124,4 @@ model RoomChat {
   userId  Int 
   rooms    RoomChat  @relation(fields: [roomId], references: [id])
   roomId  Int
-}
-
-
-model Offer {
-  id      Int    @id @default(autoincrement())
-  hotel   Hotel  @relation(fields: [hotelId], references: [id])
-  hotelId Int
-  offer   String
 }
