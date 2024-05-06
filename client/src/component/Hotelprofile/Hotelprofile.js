@@ -52,7 +52,7 @@ const Hotelprofile = () => {
 
       const Tab=createBottomTabNavigator();
   return (
-    <View>
+   
 
     <View style={{ width: dimension.width }}>
     <ScrollView
@@ -88,18 +88,7 @@ const Hotelprofile = () => {
         </Text>
       ))}
     </View>
-  </View>
-   
-    <NavigationContainer>
-   <Tab.Navigator>
-       <Tab.Screen name="Offer" component={Offer}/>
-       <Tab.Screen name="Details" component={Details}/>
-       <Tab.Screen name="Reviews" component={Reviews}/>
-   </Tab.Navigator>
-   </NavigationContainer>
-
-    </View>
-    
+  </View>  
 );
 };
 
