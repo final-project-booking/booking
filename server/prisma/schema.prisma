@@ -43,7 +43,8 @@ model Hotel {
   licence     String
   owner       Owner   @relation(fields: [ownerId], references: [id])
   ownerId     Int
-  room        Room[]  
+  room        Room[]
+  reservation Reservation[]
 }
 
 enum MealPlan {
@@ -71,6 +72,9 @@ model Reservation {
   roomId    Int      @unique
   user      User     @relation(fields: [userId], references: [id])
   userId    Int      @unique
+   hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  hotelId   Int
+  people   Int
   startDate DateTime
   endDate   DateTime
 }

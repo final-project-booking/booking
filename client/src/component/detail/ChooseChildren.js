@@ -3,9 +3,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { IconButton,Button } from 'react-native-paper';
 import { View ,Text} from 'react-native';
 
-export default function ChooseChildren() {
+export default function ChooseChildren({navigation, route}) {
     const [count, setCount] = useState(0);
-
+console.log('hello',route.params.selectedDates);
+console.log('count',count);
     const plus = () => {
       if (count < 3){
 
@@ -19,9 +20,7 @@ export default function ChooseChildren() {
       }
     };
 
-
-
-
+    
   return (
     <View style={{backgroundColor:'#DCE2FC',flex:1}}>
     <View style={{ flexDirection: 'row', alignItems: 'center' ,marginTop:20,marginLeft:20}}>

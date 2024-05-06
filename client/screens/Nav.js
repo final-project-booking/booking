@@ -8,6 +8,9 @@ import EditProfile from '../src/component/editprofile/EditProfile';
 import Home from "../src/component/HomePage/Home"
 import OwnerProfile from "../src/component/OwnerProfile/OwnerProfile"
 import AppFace from "../src/component/AppFace/AppFace";
+import Reservation  from '../src/component/Detail/Reservation';
+import ChooseChildren from '../src/component/Detail/ChooseChildren';
+// const Tab = createBottomTabNavigator();
 import Login from "../src/component/authentication/Login"
 import SignUp from '../src/component/authentication/SigneUp';
 import Detail from '../src/component/detail/Detail';
@@ -18,6 +21,7 @@ function Nav() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Reservation" component={Reservation} options={{ headerShown: false }}/>
         <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
