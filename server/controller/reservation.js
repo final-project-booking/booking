@@ -24,7 +24,7 @@ module.exports={
             return res.status(400).json({ error: 'Room is already reserved' })
           }
       
-         rooms = await room.findUnique({
+       const  rooms = await room.findUnique({
             where: {
               id: roomId
             }
