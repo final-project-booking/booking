@@ -35,15 +35,16 @@ model Hotel {
   id          Int     @id @default(autoincrement())
   name        String
   imgUrl      String?
-  location    String
+  longitude   Float?
+  latitude    Float?
   description String
   rating      Int
   rooms       Int
   licence     String
   owner       Owner   @relation(fields: [ownerId], references: [id])
-  ownerId     Int     @unique
+  ownerId     Int
   room        Room[]
-  reservations Reservation[]
+  reservation Reservation[]
 }
 
 enum MealPlan {
