@@ -108,7 +108,7 @@ model Message {
   updatedAt   DateTime  @updatedAt
   users        User      @relation(fields: [userId], references: [id])
   userId      Int
-  room        RoomChat      @relation(fields: [roomId], references: [id]) // This establishes a many-to-one relationship with Room
+  room        RoomChat    @relation(fields: [roomId], references: [id]) // This establishes a many-to-one relationship with Room
   roomId      Int
    
 }
