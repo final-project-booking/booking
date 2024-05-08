@@ -13,8 +13,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFa from 'react-native-vector-icons/FontAwesome';
 import Hotels, { FA5Style } from 'react-native-vector-icons/FontAwesome5'
 import Favorite from "react-native-vector-icons/MaterialIcons"
-import Reservation  from '../src/component/Detail/Reservation';
-import ChooseChildren from '../src/component/Detail/ChooseChildren';
+import Reservation  from '../src/component/Detail/Reservation.js';
+import ChooseChildren from '../src/component/Detail/ChooseChildren.js';
 import Login from "../src/component/authentication/Login"
 import SignUp from '../src/component/authentication/SigneUp';
 import Detail from '../src/component/Detail/Detail.js';
