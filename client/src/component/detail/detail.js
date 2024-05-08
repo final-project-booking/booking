@@ -7,16 +7,13 @@ import { Button } from 'react-native-paper';
 
 
 
-export default function detail({route,navigation}) {
-  
-const room=useSelector(state=>state.getRoomByCategory.room)
-console.log('room',room);
-const handleicon=()=>{
-  navigation.navigate('Reservation')
-}
+export default function Detail({route,navigation}) {
+    
     const [dimension, setDimension] = useState(Dimensions.get('window'));
     const [selectedIndex, setSelectedIndex] = useState(0);
     const scrollRef = useRef();
+    const room=useSelector(state=>state.getRoomByCategory.room)
+    console.log('room',room);
     const onChange = ({ window }) => {
       setDimension(window);
     };
@@ -155,7 +152,7 @@ const handleicon=()=>{
           </View>
           {/* Continue Button */}
           <View style={styles.buttonContainer} >
-          <Button  mode="contained" style={{backgroundColor:'#0000FF',top:-20}}  onPress={handleicon}>
+          <Button  mode="contained" style={{backgroundColor:'#0000FF',top:-20}}  >
           Reservation
          </Button>
           </View>
