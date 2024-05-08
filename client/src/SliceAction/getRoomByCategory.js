@@ -3,7 +3,7 @@ import { fetchRoomByCategory } from '../reduce/getRoomByCategory';
 
 
 const initialState={
-    room:null,
+    room:[],
     loading:false,
     error:""
 }

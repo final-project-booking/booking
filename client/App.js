@@ -17,14 +17,17 @@ import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
 import AllHotels from './src/component/allHotels/AllHotels';
 import RoomByHotel from './src/component/allHotels/RoomByHotel';
 import Detail from './src/component/Detail/Detail';
+import ChooseChildren from './src/component/Detail/ChooseChildren';
+import ChooseGategory from './src/component/allHotels/ChooseGategory';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-// import Icon from 'react-native-vector-icons/FontAwesome';
+
 function App() {
  
   return (
+    
     <GestureHandlerRootView style={{flex: 1}}>
-      <Detail/>
+      <Nav />
     </GestureHandlerRootView>
   )}
 export default App;

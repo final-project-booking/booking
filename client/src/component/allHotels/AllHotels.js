@@ -4,14 +4,15 @@ import { ScrollView } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector ,useDispatch} from 'react-redux';
 import { AllHotell } from '../../reduce/AllHotels';
-export default function AllHotels({navigation}) {
+
+ function AllHotels({navigation}) {
 
 const dispatch=useDispatch()
 useEffect(()=>{
 dispatch(AllHotell())
 },[])
 const hotel=useSelector(state=>state.allHotels.hotels)
-console.log('hotel',hotel);
+console.log('hotel');
 
   return (
     <ScrollView>
@@ -21,7 +22,7 @@ console.log('hotel',hotel);
     </View>
     {hotel.map((e)=>{
      return   e.hotel.map((i)=>(
-       <TouchableOpacity style={{shadowOffset: {width: 0,height: 1,},shadowOpacity: 0.25, shadowRadius: 3.84,elevation: 5}} onPress={()=>{navigation.navigate('RoomByHotel', {id:i.id},{room:i.room})}}>
+       <TouchableOpacity style={{shadowOffset: {width: 0,height: 1,},shadowOpacity: 0.25, shadowRadius: 3.84,elevation: 5}} onPress={()=>navigation.navigate('ChooseGategory',{hotelId:i.id})} >
     <View style={{marginTop: 75, flexDirection: 'row', alignItems: 'center'}}>
     <View style={{marginRight: 20 }}>
         <Image source={{uri:'https://image.resabooking.com/images/hotel/Concorde_Green_Park_Palace_3.jpg'}} style={{width: 150, height: 150,marginLeft:16,borderRadius:10}} />
@@ -50,3 +51,4 @@ console.log('hotel',hotel);
  </ScrollView>
   )
 }
+export default AllHotels
