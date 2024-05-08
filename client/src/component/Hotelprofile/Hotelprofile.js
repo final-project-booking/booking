@@ -1,55 +1,86 @@
-import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity } from 'react-native';
 import React, { useRef, useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Title, Caption, Divider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity } from 'react-native';
+// import BottomSheet from '@gorhom/bottom-sheet';
 
-const OverviewScreen = () => (
-  <ScrollView style={styles.overviewContainer}>
-      <Text style={styles.overviewTitle}>About Grand Hotel</Text>
-      <Text style={styles.overviewText}>
-          Welcome to the Grand Hotel, a luxurious retreat located in the heart of the city. With elegant suites, exceptional dining, and stunning views, we offer an unforgettable experience for both leisure and business travelers.
-      </Text>
-      <Divider style={styles.overviewDivider} />
-      
-      <Text style={styles.overviewTitle}>Key Amenities</Text>
-      <View style={styles.amenitiesContainer}>
-          <View style={styles.amenityItem}>
-              <MaterialCommunityIcons name="wifi" size={30} color="#007BFF" />
-              <Text style={styles.amenityLabel}>Free WiFi</Text>
-          </View>
-          <View style={styles.amenityItem}>
-              <MaterialCommunityIcons name="pool" size={30} color="#007BFF" />
-              <Text style={styles.amenityLabel}>Swimming Pool</Text>
-          </View>
-          <View style={styles.amenityItem}>
-              <MaterialCommunityIcons name="bed-king-outline" size={30} color="#007BFF" />
-              <Text style={styles.amenityLabel}>Luxury Suites</Text>
-          </View>
-          <View style={styles.amenityItem}>
-              <MaterialCommunityIcons name="car" size={30} color="#007BFF" />
-              <Text style={styles.amenityLabel}>Free Parking</Text>
-          </View>
-      </View>
-      <Divider style={styles.overviewDivider} />
+const OverviewScreen = () => {
+//   const bottomSheetRef = useRef(null);
 
-      <Text style={styles.overviewTitle}>Gallery</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <Image
-              source={{ uri: 'https://images.lifestyleasia.com/wp-content/uploads/sites/2/2021/03/08103440/best-suites-hk-grand-hyatt-3-1024x767.png' }}
-              style={styles.galleryImage}
-          />
-          <Image
-              source={{ uri: 'https://thumbs.dreamstime.com/b/luxury-hotel-4480742.jpg' }}
-              style={styles.galleryImage}
-          />
-          <Image
-              source={{ uri: 'https://c4.wallpaperflare.com/wallpaper/146/867/628/luxury-hotel-wallpaper-preview.jpg' }}
-              style={styles.galleryImage}
-          />
-      </ScrollView>
-  </ScrollView>
-);
+//   // Define snap points for the bottom sheet
+//   const snapPoints = useMemo(() => ['25%', '50%', '80%'], []);
+
+//   // Bottom sheet content
+//   const BottomSheetContent = () => (
+//       <View style={styles.bottomSheetContent}>
+//           <Text style={styles.bottomSheetTitle}>Book Your Stay</Text>
+//           <TextInput style={styles.input} placeholder="Full Name" />
+//           <TextInput style={styles.input} placeholder="Email" />
+//           <TextInput style={styles.input} placeholder="Phone Number" />
+//           <TextInput style={styles.input} placeholder="Room Type" />
+//           <TextInput style={styles.input} placeholder="Number of Guests" keyboardType="numeric" />
+//           <Button title="Submit" onPress={() => alert('Booking Submitted!')} />
+//       </View>
+//   );
+
+//   return (
+//       <ScrollView style={styles.overviewContainer}>
+//           <Text style={styles.overviewTitle}>About Grand Hotel</Text>
+//           <Text style={styles.overviewText}>
+//               Welcome to the Grand Hotel, a luxurious retreat located in the heart of the city. With elegant suites, exceptional dining, and stunning views, we offer an unforgettable experience for both leisure and business travelers.
+//           </Text>
+//           <Divider style={styles.overviewDivider} />
+          
+//           <Text style={styles.overviewTitle}>Key Amenities</Text>
+//           <View style={styles.amenitiesContainer}>
+//               <View style={styles.amenityItem}>
+//                   <MaterialCommunityIcons name="wifi" size={30} color="#007BFF" />
+//                   <Text style={styles.amenityLabel}>Free WiFi</Text>
+//               </View>
+//               <View style={styles.amenityItem}>
+//                   <MaterialCommunityIcons name="pool" size={30} color="#007BFF" />
+//                   <Text style={styles.amenityLabel}>Swimming Pool</Text>
+//               </View>
+//               <View style={styles.amenityItem}>
+//                   <MaterialCommunityIcons name="bed-king-outline" size={30} color="#007BFF" />
+//                   <Text style={styles.amenityLabel}>Luxury Suites</Text>
+//               </View>
+//               <View style={styles.amenityItem}>
+//                   <MaterialCommunityIcons name="car" size={30} color="#007BFF" />
+//                   <Text style={styles.amenityLabel}>Free Parking</Text>
+//               </View>
+//           </View>
+//           <Divider style={styles.overviewDivider} />
+
+//           <Text style={styles.overviewTitle}>Gallery</Text>
+//           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+//               <Image
+//                   source={{ uri: 'https://images.lifestyleasia.com/wp-content/uploads/sites/2/2021/03/08103440/best-suites-hk-grand-hyatt-3-1024x767.png' }}
+//                   style={styles.galleryImage}
+//               />
+//               <Image
+//                   source={{ uri: 'https://thumbs.dreamstime.com/b/luxury-hotel-4480742.jpg' }}
+//                   style={styles.galleryImage}
+//               />
+//               <Image
+//                   source={{ uri: 'https://c4.wallpaperflare.com/wallpaper/146/867/628/luxury-hotel-wallpaper-preview.jpg' }}
+//                   style={styles.galleryImage}
+//               />
+//           </ScrollView>
+//           <Divider style={styles.overviewDivider} />
+
+//           <BottomSheet
+//               ref={bottomSheetRef}
+//               index={0}
+//               snapPoints={snapPoints}
+//               style={styles.bottomSheet}
+//           >
+//               <BottomSheetContent />
+//           </BottomSheet>
+//       </ScrollView>
+//   );
+};
 
 const DetailsScreen = () => (
   <ScrollView style={styles.detailsContainer}>
@@ -316,6 +347,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#007BFF',
         marginTop: 2,
     },
+    //////////////////
     overviewContainer: {
       flex: 1,
       padding: 16,
@@ -355,6 +387,28 @@ const styles = StyleSheet.create({
       marginRight: 10,
       resizeMode: 'cover',
   },
+  bottomSheet: {
+      paddingHorizontal: 16,
+  },
+  bottomSheetContent: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+  },
+  bottomSheetTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 16,
+  },
+  input: {
+      width: '100%',
+      padding: 10,
+      marginBottom: 10,
+      borderWidth: 1,
+      borderColor: '#ddd',
+      borderRadius: 5,
+  },
+  ////////////////////
   detailsContainer: {
     flex: 1,
     padding: 16,

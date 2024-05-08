@@ -25,9 +25,9 @@ const Tab = createBottomTabNavigator();
 function App() {
  
   return (
-    <Hotelprofile/>
 
-    
+
+    <Hotelprofile/>
 // <AdvancedFilter/> 
     // <Nav/>
     // <OwnerProfile/>
