@@ -13,6 +13,7 @@ const store = configureStore({
     userSignIn:signInSlice,
     edite:editeSlice,
     getOne:getOneSlice,
+    getOne:getOneSlice,
     reservation:reservation,
     allHotels:allHotels,
     getRoomByCategory:getRoomByCategory

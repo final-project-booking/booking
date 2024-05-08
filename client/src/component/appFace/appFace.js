@@ -6,8 +6,10 @@ import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react
 // import nav from '../../../screens/Nav';
 const AppFace = ({ navigation }) => {
   const handleButton = () => {
+    
     navigation.navigate('Home');
   };
+
 
   const handleLogin = () => {
     navigation.navigate('Login');

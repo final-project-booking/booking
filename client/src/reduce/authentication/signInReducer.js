@@ -9,7 +9,6 @@ export const signInAsync = createAsyncThunk(
     try {
       const response = await axios.post(`http://${AP_ADRESS}:3000/api/user/login`, obj);
       
-      // Store token in AsyncStorage
       try {
         await AsyncStorage.setItem('token', response.data.token);
         console.log("Token stored successfully");

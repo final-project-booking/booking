@@ -8,18 +8,24 @@ import EditProfile from '../src/component/editprofile/EditProfile';
 import Home from "../src/component/HomePage/Home"
 import OwnerProfile from "../src/component/OwnerProfile/OwnerProfile"
 import AppFace from "../src/component/AppFace/AppFace.js";
+import AppFace from "../src/component/AppFace/AppFace";
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import IconFa from 'react-native-vector-icons/FontAwesome';
+import Hotels, { FA5Style } from 'react-native-vector-icons/FontAwesome5'
+import Favorite from "react-native-vector-icons/MaterialIcons"
 import Reservation  from '../src/component/Detail/Reservation';
 import ChooseChildren from '../src/component/Detail/ChooseChildren';
-// const Tab = createBottomTabNavigator();
 import Login from "../src/component/authentication/Login"
 import SignUp from '../src/component/authentication/SigneUp';
 import Detail from '../src/component/Detail/Detail.js';
 import AllHotels from '../src/component/allHotels/AllHotels.js';
 import RoomByHotel from '../src/component/allHotels/RoomByHotel.js';
 import ChooseGategory from '../src/component/allHotels/ChooseGategory.js';
+import Detail from '../src/component/Detail/Detail';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav() {
+  
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -27,31 +33,79 @@ function Nav() {
         <Stack.Screen name="ChooseGategory" component={ChooseGategory} options={{ headerShown: false }}/>
         <Stack.Screen name="Reservation" component={Reservation} options={{ headerShown: false }}/>
         <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
+
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-        <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+        <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
-        <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+        <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }}/>
-        <Stack.Screen name="RoomByHotel" component={RoomByHotel} options={{ headerShown: false }}/>
-
-
-
-
-       
+        <Stack.Screen name="Reservation" component={Reservation} options={{ headerShown: false }}/> 
+        <Stack.Screen name="ChooseChildren" component={ChooseChildren} options={{headerShown:false}}/>
       </Stack.Navigator>
     </NavigationContainer>
 
   );
 }
+
 function TabNavigator() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Start" component={AppFace} options={{ headerShown: false }} />
-      <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
-      <Tab.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
+      <Tab.Screen
+  name="Home"
+  component={Home}
+  options={{
+    headerShown: false,
+    tabBarIcon: ({ color, size }) => (
+      <Icon name="home" color={color} size={size} />
+    ),
+    tabBarLabelStyle: {
+      fontSize: 14
+    }
+  }}
+/>
+<Tab.Screen
+  name="Hotel"
+  component={UserProfile}
+  options={{
+    headerShown: false,
+    tabBarIcon: ({ color, size }) => (
+      <Hotels name="hotel" color={color} size={20} />
+    ),
+    tabBarLabelStyle: {
+      fontSize: 14
+    }
+  }}
+/>
+<Tab.Screen
+  name="Favorite"
+  component={Home}
+  options={{
+    headerShown: false,
+    tabBarIcon: ({ color, size }) => (
+      <Favorite name="favorite" color={color} size={size} />
+    ),
+    tabBarLabelStyle: {
+      fontSize: 14
+    }
+  }}
+/>
+<Tab.Screen
+  name="Profile"
+  component={UserProfile}
+  options={{
+    headerShown: false,
+    tabBarIcon: ({ color, size }) => (
+      <IconFa name="user-circle-o" color={color} size={size} />
+    ),
+    tabBarLabelStyle: {
+      fontSize: 14
+    }
+  }}
+/>
     </Tab.Navigator>
   );
 }

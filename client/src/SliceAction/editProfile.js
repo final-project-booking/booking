@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 const initialState={
-    user:null,
+    user:{},
     loading:false,
     error:""
 }
@@ -25,7 +25,7 @@ const editeSlice = createSlice({
         })
         .addCase(editeAsync.rejected,(state)=>{
             state.loading=false
-            state.error="invalid email or password"
+            state.error="something happened"
         })
     }
 })
