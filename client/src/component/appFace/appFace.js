@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
-import Home from "../HomePage/Home"
-import Login from "../authentication/Login"
-import SignUp from '../authentication/SigneUp';
-import nav from '../../../screens/Nav';
+// import Home from "../HomePage/Home"
+// import Login from "../authentication/Login"
+// import SignUp from '../authentication/SigneUp';
+// import nav from '../../../screens/Nav';
 const AppFace = ({ navigation }) => {
   const handleButton = () => {
     

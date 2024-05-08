@@ -5,7 +5,7 @@ import { View ,Text} from 'react-native';
 
 export default function ChooseChildren({navigation, route}) {
     const [count, setCount] = useState(0);
-console.log('hello',route.params.selectedDates);
+
 console.log('count',count);
     const plus = () => {
       if (count < 3){
