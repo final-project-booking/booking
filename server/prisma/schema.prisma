@@ -76,10 +76,11 @@ model Reservation {
   userId    Int      @unique
   startDate DateTime
   endDate   DateTime
+  
 }
 
 model Room {
-  id              Int               @id @default(autoincrement())
+  id              Int      @unique       @id @default(autoincrement())
   hotel           Hotel             @relation(fields: [hotelId], references: [id])
   hotelId         Int
   reservation     Reservation?

@@ -1,3 +1,4 @@
+const { create } = require("domain");
 const prisma = require("../database");
 
 module.exports={
@@ -144,8 +145,59 @@ createRoomsForHotel: async function(req, res) {
         console.error('Failed to create rooms:', error);
         res.status(500).send('Error creating rooms');
     }
-}
+},
+getRoomByCategory:async function(req,res){
 
+     try {
+        const {hotelId,view,capacity}=req.params
+       
+console.log(req.params);
+            let whereCondition={}
+            if(view&&capacity){
+                whereCondition={
+                    AND:[
+                        {view:{equals:view}},
+                       {capacity: {equals:Number(capacity)}},
+                      
+                    ]
+                }
+            }else if(view){
+                whereCondition={view:{equals:view}}
+            }else if(capacity){
+                whereCondition={capacity:{equals:Number(capacity)}}
+            }
+
+             const room = await prisma.room.findFirst({
+                 where:{
+                    hotelId:Number(hotelId),
+                    ...whereCondition,
+                
+                 },
+                 include:{
+                    hotel:true,
+                    
+                 },
+                 
+               });
+               const chekRoom=await prisma.reservation.findFirst({
+                where:{
+                    roomId:Number(room.id)
+                }
+            
+            })
+            if(chekRoom){
+                return res.status(400).send({error:"room is already reserved"})
+            }else{
+
+                res.status(200).send(room)
+            }
+        
+     } catch (error) {
+        throw error
+     }
+}
+       
+  
 
 
 }
