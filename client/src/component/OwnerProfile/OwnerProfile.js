@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
-import {Picker} from '@react-native-picker/picker'
-import Map from '../Map/Map';
+import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+// import MapboxGL from '@react-native-mapbox-gl/maps';
+// MapboxGL.setAccessToken('pk.eyJ1IjoicmlhZGhsb3VkaGFpZWYiLCJhIjoiY2x2Z2o5bmcwMG84cDJpbzV0MnVsd3UyNSJ9.rxoADhSxn7klh-OQFuafPg');
+
+// import MapView, { Marker } from 'react-native-maps';
 
 const OwnerProfile = () => {
   const [profile, setProfile] = useState({
-    firsttName: 'John ',
-    lastName: 'Doe',
+    name:'Joh Doe',
     email: 'johndoe@example.com',
     password: 'password',
-    phoneNumber: '99999999',
-    imageUrl: 'https://th.bing.com/th/id/OIP.2i5UaEHaQM3PYAYXQyM1AAAAAA?w=177&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+    imageUrl: 'https://th.bing.com/th/id/OIP.2i5UaEHaQM3PYAYXQyM1AAAAAA?w=177&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7', // Provided image URL
     location: {
       latitude: 37.78825,
       longitude: -122.4324,
@@ -18,108 +19,99 @@ const OwnerProfile = () => {
   });
 
   const [rating, setRating] = useState('');
-  const [view, setView] = useState('profile');
-  const { firsttName, lastName, email, phoneNumber, imageUrl, location } = profile;
+  const { name, email, imageUrl,location} = profile;
+
+  // const location = {
+  //   latitude: 37.78825,
+  //   longitude: -122.4324,
+  //   latitudeDelta: 0.0922,
+  //   longitudeDelta: 0.0421,
+  // };
 
   const handleSave = () => {
     console.log('Changes saved');
   };
 
   return (
-    <ScrollView style={styles.scrollContainer}>
+    <ScrollView>
       <View style={styles.container}>
-        {view === 'profile' && (
-          <>
             <Text style={styles.heading}>Hotel Owner</Text>
             <View style={styles.profileInfo}>
               <Image source={{ uri: imageUrl }} style={styles.image} />
-              <Text style={styles.label}>First Name:</Text>
-              <Text style={styles.infoText}>{firsttName}</Text>
-              <Text style={styles.label}>Last Name:</Text>
-              <Text style={styles.infoText}>{lastName}</Text>
+          <Text style={styles.label}>Name:</Text>
+          <Text style={styles.infoText}>{name}</Text>
               <Text style={styles.label}>Email:</Text>
               <Text style={styles.infoText}>{email}</Text>
-              <Text style={styles.label}>Phone Number:</Text>
-              <Text style={styles.infoText}>{phoneNumber}</Text>
               <Text style={styles.label}>Location:</Text>
               <Text style={styles.infoText}>{`Latitude: ${location.latitude}, Longitude: ${location.longitude}`}</Text>
             </View>
-
-            <TouchableOpacity style={styles.button} onPress={() => setView('inputs')}>
-              <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
-          </>
-        )}
-
-        {view === 'inputs' && (
-          <>
-            <TouchableOpacity style={styles.button} onPress={() => setView('profile')}>
-              <Text style={styles.buttonText}>Back</Text>
-            </TouchableOpacity>
+        <View style={styles.separator} />
             <View style={styles.formContainer}>
-              <Text style={styles.formHeading}>Create Your Hotel</Text>
-              <TextInput style={styles.input} placeholder="Hotel Name" />
+          <Text style={styles.formHeading}>Create ur Hotel</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Hotel Name"
+          />
               <TextInput
                 style={styles.input}
+            onChangeText={(value) => setProfile({ ...profile, email: value })}
                 placeholder="Hotel Image"
-                onChangeText={(value) => setProfile({ ...profile, imageUrl: value })}
-              />
-              <TextInput style={styles.input} placeholder="Hotel Licence" />
-              <TextInput style={styles.input} placeholder="Description" />
-              <TextInput style={styles.input} placeholder="Rooms" />
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Hotel Licence"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="description"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Rooms"
+          />
               <Text style={styles.label}>Rating:</Text>
-              <Picker selectedValue={rating} style={styles.picker} onValueChange={(itemValue) => setRating(itemValue)}>
+         <Picker
+         selectedValue={rating}
+         style={styles.picker}
+         onValueChange={(itemValue, itemIndex) =>
+          setRating(itemValue)
+         }>
                 <Picker.Item label="Please select a rating" value="" />
                 <Picker.Item label="3 Stars" value="3" />
                 <Picker.Item label="4 Stars" value="4" />
                 <Picker.Item label="5 Stars" value="5" />
               </Picker>
-            </View>
+    
 
-            <TouchableOpacity style={styles.button} onPress={() => setView('map')}>
-              <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
-          </>
-        )}
-
-        {view === 'map' && (
-          <>
-            <TouchableOpacity style={styles.button} onPress={() => setView('inputs')}>
-              <Text style={styles.buttonText}>Back</Text>
-            </TouchableOpacity>
-            <View style={styles.mapContainer}>
-              <Map />
+        <Text style={styles.label}>Location:</Text>
+        {/* <SafeAreaView>
+        <Text>Welcome to Mapbox</Text>
+        <MapboxGL.MapView style={{ height: 300 }}>
+        <MapboxGL.Camera
+          zoomLevel={8}
+          centerCoordinate={[-73.970895, 40.723279]}
+        />
+         </MapboxGL.MapView>
+        </SafeAreaView> */}
+          <Button title="Submit" onPress={handleSave} />
+          
             </View>
-            <Button title="Submit" onPress={handleSave} color="#4CAF50" />
-          </>
-        )}
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    backgroundColor: '#f4f4f4',
-  },
   container: {
     flex: 1,
     padding: 20,
     backgroundColor: '#ffffff',
-    borderRadius: 10,
-    margin: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
   },
   heading: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
-    color: '#333',
   },
   profileInfo: {
     alignItems: 'center',
@@ -130,65 +122,56 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 75,
     marginBottom: 10,
-    borderWidth: 2,
-    borderColor: '#ccc',
   },
   label: {
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#333',
   },
   infoText: {
     marginBottom: 10,
-    color: '#555',
   },
-  button: {
-    backgroundColor: '#007BFF',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
+  separator: {
+    borderBottomColor: '#cccccc',
+    borderBottomWidth: 1,
     marginBottom: 20,
-    elevation: 2,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
   },
   formContainer: {
     marginTop: 20,
   },
   formHeading: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#333',
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#cccccc',
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
     width: '100%',
-    backgroundColor: '#fff',
-  },
-  picker: {
-    height: 50,
-    width: '100%',
-    marginBottom: 10,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
   },
   mapContainer: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    overflow: 'hidden',
     height: 300,
+    width: '100%',
   },
+  map: {
+    flex: 1,
+  },
+  markerContainer: {
+    width: 30,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderRadius: 15,
+  },
+  marker: {
+    width: 15,
+    height: 15,
+    borderRadius: 7.5,
+    backgroundColor: 'red',
+  }
 });
 
 export default OwnerProfile;

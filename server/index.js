@@ -5,7 +5,7 @@ const cors=require('cors')
 const ownerRouter=require('./router/owner')
 const userRouter=require('./router/user')
 const chat=require('./router/chat')
-
+const reservation=require('./router/reservation')
 const userRoute=require('./router/user')
 
 const search=require('./router/search')
@@ -20,7 +20,7 @@ app.use(cors())
 
 app.use(express.json());
 app.use('/api/search',search)
-
+app.use('/api/reservation',reservation)
 
 app.use('/api/auth',userRouter)
 app.use('/api/owner',ownerRouter)

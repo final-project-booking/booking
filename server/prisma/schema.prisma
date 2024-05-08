@@ -26,6 +26,7 @@ model User {
   message        Message[]
   join           JoinChat[]
 }
+
 enum Role {
   owner
   user
@@ -35,16 +36,16 @@ model Hotel {
   id          Int     @id @default(autoincrement())
   name        String
   imgUrl      String?
-  longitude   Float?
-  latitude    Float?
+  longitude      Float?
+  latitude       Float?
   description String
   rating      Int
   rooms       Int
   licence     String
   owner       Owner   @relation(fields: [ownerId], references: [id])
-  ownerId     Int
+  ownerId     Int     @unique
   room        Room[]  
-}
+  }
 
 enum MealPlan {
   breakFast
@@ -101,6 +102,7 @@ model DayAvailability {
   roomId       Int     @unique
   availability Boolean @default(true)
 }
+
 model Message {
   id          Int       @id @default(autoincrement()) 
   content     String
@@ -108,7 +110,7 @@ model Message {
   updatedAt   DateTime  @updatedAt
   users        User      @relation(fields: [userId], references: [id])
   userId      Int
-  room        RoomChat    @relation(fields: [roomId], references: [id]) // This establishes a many-to-one relationship with Room
+  room        RoomChat      @relation(fields: [roomId], references: [id]) // This establishes a many-to-one relationship with Room
   roomId      Int
    
 }

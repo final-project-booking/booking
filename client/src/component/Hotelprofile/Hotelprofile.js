@@ -1,19 +1,92 @@
-import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity } from 'react-native';
 import React, { useRef, useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Title, Caption, Divider, BottomNavigation } from 'react-native-paper';
+import { Title, Caption, Divider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const OverviewScreen = () => (
-    <View style={styles.screenContainer}>
-        <Text>Overview Content</Text>
-    </View>
+  <ScrollView style={styles.overviewContainer}>
+      <Text style={styles.overviewTitle}>About Grand Hotel</Text>
+      <Text style={styles.overviewText}>
+          Welcome to the Grand Hotel, a luxurious retreat located in the heart of the city. With elegant suites, exceptional dining, and stunning views, we offer an unforgettable experience for both leisure and business travelers.
+      </Text>
+      <Divider style={styles.overviewDivider} />
+      
+      <Text style={styles.overviewTitle}>Key Amenities</Text>
+      <View style={styles.amenitiesContainer}>
+          <View style={styles.amenityItem}>
+              <MaterialCommunityIcons name="wifi" size={30} color="#007BFF" />
+              <Text style={styles.amenityLabel}>Free WiFi</Text>
+          </View>
+          <View style={styles.amenityItem}>
+              <MaterialCommunityIcons name="pool" size={30} color="#007BFF" />
+              <Text style={styles.amenityLabel}>Swimming Pool</Text>
+          </View>
+          <View style={styles.amenityItem}>
+              <MaterialCommunityIcons name="bed-king-outline" size={30} color="#007BFF" />
+              <Text style={styles.amenityLabel}>Luxury Suites</Text>
+          </View>
+          <View style={styles.amenityItem}>
+              <MaterialCommunityIcons name="car" size={30} color="#007BFF" />
+              <Text style={styles.amenityLabel}>Free Parking</Text>
+          </View>
+      </View>
+      <Divider style={styles.overviewDivider} />
+
+      <Text style={styles.overviewTitle}>Gallery</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <Image
+              source={{ uri: 'https://images.lifestyleasia.com/wp-content/uploads/sites/2/2021/03/08103440/best-suites-hk-grand-hyatt-3-1024x767.png' }}
+              style={styles.galleryImage}
+          />
+          <Image
+              source={{ uri: 'https://thumbs.dreamstime.com/b/luxury-hotel-4480742.jpg' }}
+              style={styles.galleryImage}
+          />
+          <Image
+              source={{ uri: 'https://c4.wallpaperflare.com/wallpaper/146/867/628/luxury-hotel-wallpaper-preview.jpg' }}
+              style={styles.galleryImage}
+          />
+      </ScrollView>
+  </ScrollView>
 );
 
 const DetailsScreen = () => (
-    <View style={styles.screenContainer}>
-        <Text>Details Content</Text>
-    </View>
+  <ScrollView style={styles.detailsContainer}>
+      <Text style={styles.detailsTitle}>Hotel Details</Text>
+      
+      <Text style={styles.detailsHeading}>Check-In/Check-Out</Text>
+      <Text style={styles.detailsText}>Check-In: 7:00 AM</Text>
+      <Text style={styles.detailsText}>Check-Out: 12:00 PM</Text>
+      <Divider style={styles.detailsDivider} />
+
+      <Text style={styles.detailsHeading}>Address</Text>
+      <Text style={styles.detailsText}>123 Main Street, City, Country</Text>
+      <Divider style={styles.detailsDivider} />
+
+      <Text style={styles.detailsHeading}>Contact Information</Text>
+      <Text style={styles.detailsText}>Phone: +123 456 7890</Text>
+      <Text style={styles.detailsText}>Email: info@grandhotel.com</Text>
+      <Divider style={styles.detailsDivider} />
+
+      <Text style={styles.detailsHeading}>Policies</Text>
+      <Text style={styles.detailsText}>- No smoking inside the rooms.</Text>
+      <Text style={styles.detailsText}>- Pets allowed with prior notice.</Text>
+      <Text style={styles.detailsText}>- Free cancellation up to 24 hours before arrival.</Text>
+      <Divider style={styles.detailsDivider} />
+
+      <Text style={styles.detailsHeading}>Room Information</Text>
+      <Text style={styles.detailsText}>- Standard Room: 1 King Bed, City View</Text>
+      <Text style={styles.detailsText}>- Deluxe Room: 2 Queen Beds, Ocean View</Text>
+      <Text style={styles.detailsText}>- Suite: 1 King Bed, Balcony, Ocean View</Text>
+      <Divider style={styles.detailsDivider} />
+
+      <Text style={styles.detailsHeading}>Dining Options</Text>
+      <Text style={styles.detailsText}>- The Grand Restaurant: Fine Dining</Text>
+      <Text style={styles.detailsText}>- Ocean Breeze Café: Casual Breakfast & Lunch</Text>
+      <Text style={styles.detailsText}>- Poolside Bar: Cocktails & Snacks</Text>
+      <Divider style={styles.detailsDivider} />
+  </ScrollView>
 );
 
 const ReviewsScreen = () => (
@@ -38,18 +111,7 @@ const Hotelprofile = () => {
     const scrollRef = useRef();
     const [dimension, setDimension] = useState(Dimensions.get('window'));
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [index, setIndex] = useState(0);
-    const [routes] = useState([
-        { key: 'overview', title: 'Overview', icon: '' },
-        { key: 'details', title: 'Details', icon: '' },
-        { key: 'reviews', title: 'Reviews', icon: '' },
-    ]);
-
-    const renderScene = BottomNavigation.SceneMap({
-        overview: OverviewScreen,
-        details: DetailsScreen,
-        reviews: ReviewsScreen,
-    });
+    const [selectedTab, setSelectedTab] = useState('overview');
 
     const setIndexCarousel = event => {
         let viewSize = event.nativeEvent.layoutMeasurement.width;
@@ -99,6 +161,19 @@ const Hotelprofile = () => {
         return stars;
     };
 
+    const renderSelectedTab = () => {
+        switch (selectedTab) {
+            case 'overview':
+                return <OverviewScreen />;
+            case 'details':
+                return <DetailsScreen />;
+            case 'reviews':
+                return <ReviewsScreen />;
+            default:
+                return <OverviewScreen />;
+        }
+    };
+
     return (
         <SafeAreaProvider>
             <ScrollView style={styles.container}>
@@ -123,8 +198,7 @@ const Hotelprofile = () => {
                         <Text
                             key={key}
                             style={key === selectedIndex ? styles.activeDot : styles.inactiveDot}
-                        >
-                            ¤
+                        >  
                         </Text>
                     ))}
                 </View>
@@ -142,20 +216,32 @@ const Hotelprofile = () => {
                     <Caption style={styles.captionText}>{hotelLocation}</Caption>
                 </View>
                 <Divider style={styles.divider} />
-
-                <BottomNavigation
-                    style={styles.tabBar}
-                    navigationState={{ index, routes }}
-                    onIndexChange={setIndex}
-                    renderScene={renderScene}
-                    labelStyle={styles.tabBarLabel}
-                    sceneAnimationEnabled={false}
-                />
+                {/* Custom Navigation Bar */}
+                <View style={styles.tabBar}>
+                    {['overview', 'details', 'reviews'].map((tab) => (
+                        <TouchableOpacity
+                            key={tab}
+                            style={styles.tabItem}
+                            onPress={() => setSelectedTab(tab)}
+                        >
+                            <Text
+                                style={[
+                                    styles.tabLabel,
+                                    selectedTab === tab && styles.selectedTabLabel
+                                ]}
+                            >
+                                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                            </Text>
+                            {selectedTab === tab && <View style={styles.tabIndicator} />}
+                        </TouchableOpacity>
+                    ))}
+                </View>
+                <Divider style={styles.divider} />
+                {renderSelectedTab()}
             </ScrollView>
         </SafeAreaProvider>
     );
 };
-
 
 const styles = StyleSheet.create({
     container: {
@@ -207,16 +293,93 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     tabBar: {
-        position: 'relative',
-        marginHorizontal: '10%',
-        borderRadius: 15,
-        elevation: 4,
-        backgroundColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        paddingHorizontal: 15,
+        paddingVertical: 8,
     },
-    tabBarLabel: {
-        fontSize: 12,
+    tabItem: {
+        alignItems: 'center',
+        flex: 1,
+    },
+    tabLabel: {
+        fontSize: 16,
+        color: '#666',
+    },
+    selectedTabLabel: {
+        color: '#007BFF',
         fontWeight: 'bold',
     },
+    tabIndicator: {
+        width: '100%',
+        height: 3,
+        backgroundColor: '#007BFF',
+        marginTop: 2,
+    },
+    overviewContainer: {
+      flex: 1,
+      padding: 16,
+  },
+  overviewTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 8,
+      color: '#333',
+  },
+  overviewText: {
+      fontSize: 14,
+      color: '#555',
+      marginBottom: 16,
+      lineHeight: 20,
+  },
+  overviewDivider: {
+      marginVertical: 16,
+  },
+  amenitiesContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 16,
+  },
+  amenityItem: {
+      alignItems: 'center',
+  },
+  amenityLabel: {
+      fontSize: 12,
+      color: '#555',
+      marginTop: 4,
+  },
+  galleryImage: {
+      width: 250,
+      height: 150,
+      borderRadius: 8,
+      marginRight: 10,
+      resizeMode: 'cover',
+  },
+  detailsContainer: {
+    flex: 1,
+    padding: 16,
+},
+detailsTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#333',
+},
+detailsHeading: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginBottom: 4,
+    color: '#555',
+},
+detailsText: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 8,
+},
+detailsDivider: {
+    marginVertical: 16,
+},
 });
 
 export default Hotelprofile;
