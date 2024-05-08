@@ -16,14 +16,15 @@ import Map from "./src/component/Map/Map"
 import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
 import Detail from './src/component/Detail/Detail';
 import Reservation from './src/component/Detail/Reservation';
+import AdvancedFilter from './src/component/AdvancedFilter/AdvancedFilter';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 // import Icon from 'react-native-vector-icons/FontAwesome';
 function App() {
  
   return (
-
-    <Nav/>
+<AdvancedFilter/>
+    // <Nav/>
     // <OwnerProfile/>
             //  <Hotelprofile /> 
 //              {/* <Home/>  */}
