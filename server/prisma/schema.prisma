@@ -37,8 +37,8 @@ model Hotel {
   id          Int      @id @default(autoincrement())
   name        String
   imgUrl      String?
-  longitude   Float?
-  latitude    Float?
+  longitude      Float?
+  latitude       Float?
   description String
   rating      Int
   rooms       Int
@@ -54,19 +54,18 @@ enum MealPlan {
   all_Inclusive
   halfBoard
 }
-
 model Option {
-  id        Int      @id @default(autoincrement())
+  id     Int    @id @default(autoincrement())
   Meal_Plan MealPlan
-  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  roomId    Int      @unique
+  room    Room  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId  Int   @unique
 }
 
 model Owner {
-  id     Int     @id @default(autoincrement())
-  user   User?
+  id    Int     @id @default(autoincrement())
+  user  User?
   userId Int
-  hotel  Hotel[]
+  hotel Hotel[]
 }
 
 model Reservation {
@@ -75,7 +74,6 @@ model Reservation {
   roomId    Int      @unique
   user      User     @relation(fields: [userId], references: [id])
   userId    Int      @unique
-  people    Int
   startDate DateTime
   endDate   DateTime
 }
@@ -91,7 +89,7 @@ model Room {
   imgUrl          String
   option          Option?
   view            View
-  reduction       Boolean           @default(false)
+  reduction       Boolean  @default(false)
   rate            Int
 }
 
@@ -108,28 +106,28 @@ model DayAvailability {
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users     User     @relation(fields: [userId], references: [id])
-  userId    Int
-  room      RoomChat @relation(fields: [roomId], references: [id]) // This establishes a many-to-one relationship with Room
-  roomId    Int
+  id          Int       @id @default(autoincrement()) 
+  content     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  users        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  room        RoomChat      @relation(fields: [roomId], references: [id]) // This establishes a many-to-one relationship with Room
+  roomId      Int
+   
 }
 
 model RoomChat {
-  id       Int        @id @default(autoincrement())
-  messages Message[]
-  join     JoinChat[]
+  id        Int       @id @default(autoincrement())
+  messages  Message[]  
+  join JoinChat[]  
 }
-
-model JoinChat {
-  id     Int      @id @default(autoincrement())
-  users  User     @relation(fields: [userId], references: [id])
-  userId Int
-  rooms  RoomChat @relation(fields: [roomId], references: [id])
-  roomId Int
+ model JoinChat {
+   id          Int       @id @default(autoincrement()) 
+  users    User  @relation(fields: [userId], references: [id])
+  userId  Int 
+  rooms    RoomChat  @relation(fields: [roomId], references: [id])
+  roomId  Int
 }
 
 model Review {

@@ -12,11 +12,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFa from 'react-native-vector-icons/FontAwesome';
 import Hotels, { FA5Style } from 'react-native-vector-icons/FontAwesome5'
 import Favorite from "react-native-vector-icons/MaterialIcons"
-import Reservation  from '../src/component/detail/Reservation';
-import ChooseChildren from '../src/component/detail/ChooseChildren';
+import Reservation  from '../src/component/Detail/Reservation';
+import ChooseChildren from '../src/component/Detail/ChooseChildren';
 import Login from "../src/component/authentication/Login"
 import SignUp from '../src/component/authentication/SigneUp';
-import Detail from '../src/component/detail/Detail';
+import Detail from '../src/component/Detail/Detail';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav() {
