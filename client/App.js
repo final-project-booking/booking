@@ -16,8 +16,8 @@ import Home from './src/component/HomePage/Home';
 import Nav from './screens/Nav';
 import Map from "./src/component/Map/Map"
 import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
-import Detail from './src/component/Detail/Detail';
-import Reservation from './src/component/Detail/Reservation';
+import Detail from './src/component/detail/Detail';
+import Reservation from './src/component/detail/Reservation';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 // import Icon from 'react-native-vector-icons/FontAwesome';
