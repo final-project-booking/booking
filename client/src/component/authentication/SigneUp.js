@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {signUpAsync} from '../../reduce/authentication/signUpReducer'
 
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
   const arrowleft=<Icon name="arrow-back" size={40} color={"#112678"}/>
   const [view, setView] = useState('firstView');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -283,6 +283,7 @@ const styles = StyleSheet.create({
     alignItems:"center",
     marginTop:-130
   },
+  
   login:{
     fontSize:30,
     marginTop:50,
