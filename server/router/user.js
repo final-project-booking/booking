@@ -17,4 +17,5 @@ router.get("/allUser",user.getAll)
 
 
 
+
 module.exports = router;

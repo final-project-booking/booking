@@ -25,6 +25,7 @@ model User {
   reservation    Reservation?
   message        Message[]
   join           JoinChat[]
+  reviw          Review[]
 }
 
 enum Role {
@@ -33,7 +34,7 @@ enum Role {
 }
 
 model Hotel {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   imgUrl      String?
   longitude      Float?
@@ -42,10 +43,11 @@ model Hotel {
   rating      Int
   rooms       Int
   licence     String
-  owner       Owner   @relation(fields: [ownerId], references: [id])
-  ownerId     Int     @unique
-  room        Room[]  
-  }
+  owner       Owner    @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+  room        Room[]
+  review      Review[]
+}
 
 enum MealPlan {
   breakFast
@@ -128,5 +130,12 @@ model RoomChat {
   roomId  Int
 }
 
-
-
+model Review {
+  id      Int    @id @default(autoincrement())
+  stars   Int    @default(1)
+  content String
+  hotel   Hotel  @relation(fields: [hotelId], references: [id])
+  hotelId Int
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int
+}

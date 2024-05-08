@@ -34,9 +34,10 @@ React.useEffect(() => {
   }).start();
 }, []);
 
-const handleicon=()=>{
-  navigation.navigate('UserProfile')
+const handleNav=()=>{
+  navigation.navigate('TabNavigator')
 }
+handleNav()
 const scale = scrollX.interpolate({
   inputRange: [0, 100],
   outputRange: [1, 1],
@@ -194,7 +195,7 @@ const opacity = scrollX.interpolate({
             </Text>
           </View>
         </View>
-        <Icon name="person-outline" size={38} color={COLORS.grey} onPress={handleicon} />
+        <Icon name="person-outline" size={38} color={COLORS.grey} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.searchInputContainer}>

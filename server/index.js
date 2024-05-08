@@ -7,7 +7,7 @@ const userRouter=require('./router/user')
 const chat=require('./router/chat')
 const reservation=require('./router/reservation')
 const userRoute=require('./router/user')
-
+const review=require("./router/review")
 const search=require('./router/search')
 
 
@@ -26,6 +26,7 @@ app.use('/api/auth',userRouter)
 app.use('/api/owner',ownerRouter)
 app.use('/api/chat',chat)
 
+app.use("/api/review",review)
 app.use('/api/search',search)
 
 
