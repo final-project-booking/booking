@@ -1,9 +1,10 @@
-const {reservation,room,user,dayAvailability}=require('../database/index')
+const {reservation,room,user,dayAvailability, hotel}=require('../database/index')
 
 module.exports={
     addReservation: async function(req, res) {
         try {
-          const { userId, hotelId, startDate, endDate, roomId, people } = req.body
+          const { userId,hotelId, startDate, endDate, roomId, people } = req.body
+          
           const users = await user.findUnique({
             where: {
               id: userId
@@ -13,67 +14,90 @@ module.exports={
           if (!users) {
             return res.status(400).send({ error: 'User not found' })
           }
-         
-          const existingReservation = await reservation.findUnique({
-            where: {
-              roomId: roomId
+          const checkHotel=await hotel.findUnique({
+            where:{
+              id:parseInt(hotelId)
             }
           })
-    
+          if(!checkHotel){
+            return res.status(400).send({ error: 'Hotel not found' })
+          }
+         
+          
+           const  rooms = await room.findFirst({
+                where: {
+                  hotelId: parseInt(hotelId)
+                }
+              })
+              
+              if (!rooms) {
+                return res.status(400).json({ error: 'Room not found' })
+              }
+          const existingReservation = await reservation.findFirst({
+            where: {
+              AND: [
+                { roomId: roomId },
+                { hotelId: parseInt(hotelId) },
+                // {
+                //   OR: [
+                //     { startDate: { lte: new Date(endDate) }, endDate: { gte: new Date(startDate) } },
+                //     { startDate: { lte: new Date(startDate) }, endDate: { gte: new Date(endDate) } }
+                //   ]
+                // }
+              ]
+            }
+          })
+          
           if (existingReservation) {
             return res.status(400).json({ error: 'Room is already reserved' })
-          }
-      
-       const  rooms = await room.findUnique({
-            where: {
-              id: roomId
-            }
-          })
-          
-          if (!rooms) {
-            return res.status(400).json({ error: 'Room not found' })
-          }
-    
-          
-          const newReservation = await reservation.create({
-            where:{
-            hotelId:req.params.hotelId
-            },
-            data: {
-              startDate: new Date(startDate),
-              endDate: new Date(endDate),
-              people: people,
+          }else{
+            const newReservation = await reservation.create({
             
-              room: {
-                connect: {
-                  id: roomId
-                }
-              },
-              user: {
-                connect: {
-                  id: userId
-                }
-              },
-              
-            }
-          })
-    
-         
-          await room.update({
-            where: {
-                id: roomId
-              },
               data: {
-               
-                reservation: {
+                
+                startDate: new Date(startDate),
+                endDate: new Date(endDate),
+                people: people,
+              
+                room: {
                   connect: {
-                    id: newReservation.id
+                    id: roomId
+                  }
+                },
+                user: {
+                  connect: {
+                    id: userId
+                  }
+                },
+                hotel:{
+                  connect:{
+                    id:parseInt(hotelId)
                   }
                 }
+                
               }
-          })
+            })
+      
+           
+            await room.update({
+              where: {
+                  id: roomId
+                },
+                data: {
+                 
+                  reservation: {
+                    connect: {
+                      id: newReservation.id
+                    }
+                  }
+                }
+            })
+      
+            res.status(200).send(newReservation)
+
+          }
     
-          res.status(200).send(newReservation)
+          
         } catch (error) {
           throw error
         }

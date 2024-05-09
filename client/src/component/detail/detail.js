@@ -1,26 +1,26 @@
 import React,{useState,useEffect,useRef} from 'react'
 import { View, Text, StyleSheet, Linking ,ScrollView,Image,Dimensions,TouchableOpacity} from 'react-native';
 import { ActivityIndicator } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-// import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Button } from 'react-native-paper';
 
 
 
-export default function Detail({navigation}) {
-const handleicon=()=>{
-  navigation.navigate('Reservation')
-}
+export default function Detail({route,navigation}) {
+    
     const [dimension, setDimension] = useState(Dimensions.get('window'));
     const [selectedIndex, setSelectedIndex] = useState(0);
     const scrollRef = useRef();
+    const room=useSelector(state=>state.getRoomByCategory.room)
+    console.log('room',room);
+    const onChange = ({ window }) => {
+      setDimension(window);
+    };
     useEffect(() => {
-      const onChange = ({ window }) => {
-        setDimension(window);
-      };
-      Dimensions.addEventListener('change', onChange)
+     const subscription= Dimensions.addEventListener('change', onChange)
       return () => {
-        Dimensions.removeEventListener('change', onChange)
+        subscription.remove();
       };
     }, []);
     useEffect(() => {
@@ -38,11 +38,11 @@ const handleicon=()=>{
       }, [dimension.width, selectedIndex]);
 
       const carouselImages = [
-          { url: 'https://loveincorporated.blob.core.windows.net/contentimages/gallery/dbeb3be8-2a3f-48b0-86fb-168010585fe7-Atlantis_Palm_underwatersuite.jpg' },
-          { url: 'https://www.usatoday.com/gcdn/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg' },
-        { url: 'https://images.pexels.com/photos/2467285/pexels-photo-2467285.jpeg?cs=srgb&dl=pexels-julieaagaard-2467285.jpg&fm=jpg' },
-        { url: 'https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/294/146/75/vision-dam/digital/parks-platform/parks-global-assets/disneyland/resorts/disneyland-hotel/rooms/room-b4-g00-16x9.jpg?2022-11-04T17:36:51+00:00' },
-        { url: 'https://housing.com/news/wp-content/uploads/2022/11/hotel-room-design-compressed-1.jpg'},
+          { url: 'https://img.freepik.com/free-photo/luxury-classic-modern-bedroom-suite-hotel_105762-1787.jpg' },
+          { url: 'https://hips.hearstapps.com/hmg-prod/images/grand-hotel-tremezzo-6479210d9dae0.jpeg' },
+        { url: 'https://media.istockphoto.com/id/1084656062/photo/interior-of-a-hotel-bathroom.jpg?s=612x612&w=0&k=20&c=rZxxHZ_QxV4SZtNwi1izI1jKLckdS9Uz0LZc_M41_OE=' },
+        { url: 'https://www.santoriniview-hotel.gr/media/idijrdoe/santorini-view-hotel-junior-suite-panoramic-caldera-view-10.jpg?rxy=0.612,0.551051051051051&width=800&height=550&rnd=133330453672900000&quality=70' },
+        { url: 'https://hamiltonisland.imgix.net/hamiltonisland/media/originals/accommodation/reef-view-hotel/rvh-pool-(1).jpg?width=480&height=600&fit=crop&d=20221101093418'},
       ];
 
       const setIndex = event => {
@@ -52,11 +52,11 @@ const handleicon=()=>{
     setSelectedIndex(carouselIndex);
 };
     return (
-   
+      <ScrollView>
         <View style={styles.container}>
         <View style={styles.carouselContainer}>
             <View style={styles.icon}>
-          <Icon name='arrow-back' size={30} style={{zIndex:1 ,paddingTop:5,backgroundColor:'white',borderRadius:55,marginLeft:7 ,opacity:.6}} />
+          <Icon name='arrow-back' size={30} style={{zIndex:1 ,paddingTop:5,backgroundColor:'white',borderRadius:55,marginLeft:7 ,opacity:.6}} onPress={()=>navigation.navigate('AllHotels')}/>
           </View>
           <ScrollView
             horizontal
@@ -89,18 +89,50 @@ const handleicon=()=>{
           </View>
         </View>
         
-        {/* Hotel Details */}
-        <View style={styles.detailsContainer}>
+        <View style={styles.detailsContainer}>       
+
+       <View>
           <Text style={styles.hotelName}>The Carlton Hotel</Text>
+          <Text style={styles.detailsText}>HotelName:{room.hotel.name}</Text>
           <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
           <Text style={styles.detailsText}>Phone: +1 212-532-4100</Text>
+           
           <Text style={styles.rating}>
-            <Icon name='star' size={20} style={{ color: 'yellow' }} /> 4.5 (200 reviews)
+         <View style={{flexDirection:'row'}}>
+        <Icon size={20} name='star-border'style={{color:'yellow',marginBottom:19}} color='yellow'/>
+        <Icon size={20} name='star-border'style={{color:'yellow'}} />
+        <Icon size={20} name='star-border'style={{color:'yellow'}} />
+        <Icon size={20} name='star-border'style={{color:'yellow'}} />
+        <Icon size={20} name='star-border'style={{color:'yellow'}} />
+        </View>
+        {room.hotel.rating} (200 reviews)
           </Text>
-          {/* Amenities */}
+          <View style={{padding:10}}>
+<Text style={{height:1,width:'100%', backgroundColor:'#DCE2FC',marginTop:18}}>h</Text>
+</View>
+         
+          <TouchableOpacity style={{shadowOffset: {width: 0,height: 1,},shadowOpacity: 0.25, shadowRadius: 3.84,elevation: 5}}  >
+    <View style={{marginTop: 40, flexDirection: 'row', alignItems: 'center'}}>
+    <View style={{marginRight: 20 }}>
+        <Image source={{uri:'https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill'}} style={{width: 150, height: 150,marginLeft:16,borderRadius:10}} />
+    </View>
+    <View style={{marginTop:-20}}>
+        <Text style={{fontSize:20,color:'black',marginBottom:12,color:'black'}}>{room.view}</Text>
+        
+        <Text style={{marginLeft:1,marginBottom:15,color:'black'}}>People:{room.capacity}</Text>
+        <Text style={{color:'black'}}>Price:${room.price}</Text>
+    </View>
+</View>
+
+ </TouchableOpacity>
+</View>
+       
+
+
+
+
           <View style={{justifyContent:'space-between',marginTop:30}}>
           <View style={{backgroundColor:'#E6E6FA',height:1,width:'100%'}}>
-            <Text>Location</Text>
           </View>
           <View >
           <Text style={{ fontSize: 30,textAlign: 'center',margin: 5,color: '#333333',}}>What We Offer</Text>
@@ -120,13 +152,13 @@ const handleicon=()=>{
           </View>
           {/* Continue Button */}
           <View style={styles.buttonContainer} >
-          <Button  mode="contained" style={{backgroundColor:'#0000FF'}}  onPress={handleicon}>
-          Continue
+          <Button  mode="contained" style={{backgroundColor:'#0000FF',top:-20}}  >
+          Reservation
          </Button>
           </View>
         </View>
       </View>
-          
+      </ScrollView>
     );
 }
 const styles = StyleSheet.create({
@@ -190,6 +222,8 @@ const styles = StyleSheet.create({
       fontSize: 16,
       marginBottom: 10,
       color: '#888',
+      flexDirection:'row',
+     justifyContent:'space-around'
     },
     amenitiesContainer: {
       marginTop: 30,

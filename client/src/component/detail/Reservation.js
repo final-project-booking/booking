@@ -7,10 +7,11 @@ import { Calendar } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button } from 'react-native-paper';
 
-export default function Reservation({navigation}) {
+export default function Reservation({route,navigation}) {
   const [selectedDates, setSelectedDates] = useState({});
- 
-  
+  const [hotelId,setHotelId]=useState(route.params.hotelId)
+
+  console.log('hotelId',hotelId);
   const handleDateChange = (date) => {
     setSelectedDates((prevDates) => {
       if (!prevDates.start) {
@@ -87,7 +88,7 @@ chek()
 </Button>
   <Button  mode="contained" style={{width:'30%',backgroundColor:'#0000FF'}}
     onPress={() =>
-        navigation.navigate('ChooseChildren', {selectedDates:selectedDates})
+        navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId})
       }
   >
    Continue

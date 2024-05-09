@@ -8,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Payment from "./src/component/Payment/Payment"
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import AppFace from './src/component/AppFace/AppFace';
 // import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AppFace from './src/component/AppFace/AppFace';
 import Inboarding from './src/component/Inboarding/Inboarding';
@@ -16,18 +17,23 @@ import Home from './src/component/HomePage/Home';
 import Nav from './screens/Nav';
 import Map from "./src/component/Map/Map"
 import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
+import AllHotels from './src/component/allHotels/AllHotels';
+import RoomByHotel from './src/component/allHotels/RoomByHotel';
 import Detail from './src/component/Detail/Detail';
-import Reservation from './src/component/Detail/Reservation';
+import ChooseChildren from './src/component/Detail/ChooseChildren';
+import ChooseGategory from './src/component/allHotels/ChooseGategory';
+
+import Calendar from './src/component/Detail/Reservation';
 import AdvancedFilter from './src/component/AdvancedFilter/AdvancedFilter';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-// import Icon from 'react-native-vector-icons/FontAwesome';
+
 function App() {
  
   return (
 
 
-    <Hotelprofile/>
+    // <Hotelprofile/>
 // <AdvancedFilter/> 
     // <Nav/>
     // <OwnerProfile/>
@@ -40,6 +46,10 @@ function App() {
 //        {/* <Payment/>  */}
 //       {/* <AppFace/> 
 //        <Inboarding/>  */}
+    
+    <GestureHandlerRootView style={{flex: 1}}>
+      <Hotelprofile />
+    </GestureHandlerRootView>
   )}
   
 export default App;
