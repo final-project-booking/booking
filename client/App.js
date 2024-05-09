@@ -31,9 +31,24 @@ const Tab = createBottomTabNavigator();
 function App() {
  
   return (
+
+
+    // <Hotelprofile/>
+// <AdvancedFilter/> 
+    // <Nav/>
+    // <OwnerProfile/>
+            //  <Hotelprofile /> 
+//              {/* <Home/>  */}
+// {/* 
+    // <UserProfile/>
+    // <EditProfile/> 
+// {/* <Map/>    */}
+//        {/* <Payment/>  */}
+//       {/* <AppFace/> 
+//        <Inboarding/>  */}
     
     <GestureHandlerRootView style={{flex: 1}}>
-      <Nav />
+      <Hotelprofile />
     </GestureHandlerRootView>
   )}
   
