@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, FlatList, Modal, Image } from 'react-native'; 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import MapView, { Marker } from 'react-native-maps';
-
-const AdvancedFilter = ({ onFilter }) => {
+import hotels from '../const/Hotels'; 
+const AdvancedFilter = () => {
   const [rating, setRating] = useState(null);
   const [priceRange, setPriceRange] = useState([50, 5000]);
   const [location, setLocation] = useState(null);
+  const [filteredHotels, setFilteredHotels] = useState(hotels);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const applyFilter = () => {
+    let filtered = hotels;
+  
+    if (filtered !== null) {
+      filtered = filtered.filter((hotel) => hotel.price >= priceRange[0] && hotel.price <= priceRange[1]);
+    }
+  
+    setFilteredHotels(filtered);
+    setModalVisible(true);
+  };
 
   const handleReset = () => {
     setRating(null);
     setPriceRange([50, 5000]);
     setLocation(null);
-    onFilter(null, [50, 5000], null);
-  };
-
-  const applyFilter = () => {
-    onFilter(rating, priceRange, location);
+    setFilteredHotels(hotels);
   };
 
   const handleRatingSelect = (selectedRating) => {
@@ -107,6 +116,38 @@ const AdvancedFilter = ({ onFilter }) => {
       <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
         <Text style={styles.resetText}>Reset Filters</Text>
       </TouchableOpacity>
+
+      {/* Modal for displaying filtered hotels */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+        <FlatList
+  data={filteredHotels}
+  renderItem={({ item }) => (
+    <View style={styles.hotelItem}>
+<Image source={item.image} style={styles.hotelImage} />
+      <View style={styles.hotelDetails}>
+        <Text style={styles.hotelName}>{item.name}</Text>
+        <Text style={styles.hotelLocation}>Location: {item.location}</Text>
+        <Text style={styles.hotelPrice}>Price: ${item.price}</Text>
+      </View>
+    </View>
+  )}
+  keyExtractor={(item) => item.id}
+/>
+
+        <TouchableOpacity
+            onPress={() => setModalVisible(false)}
+            style={styles.closeButton}
+          >
+            <Text style={styles.closeButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -166,6 +207,61 @@ const styles = StyleSheet.create({
     height: 200,
     marginTop: 8,
   },
+  hotelItem: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    overflow: 'hidden',
+  },
+  
+  
+  modalContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeButton: {
+    backgroundColor: 'blue',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 16,
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  hotelImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+  },
+  hotelDetails: {
+    padding: 16,
+  },
+  hotelName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  hotelLocation: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  hotelPrice: {
+    fontSize: 16,
+    color: 'green',
+  },
+  
 });
 
 export default AdvancedFilter;

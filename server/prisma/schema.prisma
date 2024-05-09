@@ -1,3 +1,4 @@
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -22,7 +23,7 @@ model User {
   role           Role?        @default(user)
   owner          Owner?       @relation(fields: [ownerId], references: [id])
   ownerId        Int?         @unique
-  reservation    Reservation?
+  reservation    Reservation[]
   message        Message[]
   join           JoinChat[]
   reviw          Review[]
@@ -43,8 +44,8 @@ model Hotel {
   rating      Int
   rooms       Int
   licence     String
-  owner       Owner    @relation(fields: [ownerId], references: [id])
-  ownerId     Int
+  owner       Owner?    @relation(fields: [ownerId], references: [id])
+  ownerId     Int?
   room        Room[]
   review      Review[]
 }
@@ -64,16 +65,15 @@ model Option {
 model Owner {
   id    Int     @id @default(autoincrement())
   user  User?
-  userId Int
   hotel Hotel[]
 }
 
 model Reservation {
   id        Int      @id @default(autoincrement())
   room      Room     @relation(fields: [roomId], references: [id])
-  roomId    Int      @unique
+  roomId    Int      
   user      User     @relation(fields: [userId], references: [id])
-  userId    Int      @unique
+  userId    Int      
   startDate DateTime
   endDate   DateTime
   
@@ -83,7 +83,7 @@ model Room {
   id              Int      @unique       @id @default(autoincrement())
   hotel           Hotel             @relation(fields: [hotelId], references: [id])
   hotelId         Int
-  reservation     Reservation?
+  reservation     Reservation[]
   dayAvailability DayAvailability[]
   price           Int
   capacity        Int
