@@ -3,12 +3,12 @@ const prisma = require("../database");
 
 module.exports={
     promoteToOwner: async function(req, res) {
-        const userId = req.user.userId;
+        const id = req.user.userId;
         const { hotelData } = req.body;
     
         try {
             const existingUser = await prisma.user.findUnique({
-                where: { id: userId }
+                where: { id: id }
             });
     
             if (!existingUser) {
@@ -17,7 +17,7 @@ module.exports={
     
             // Check if the user is already an owner
             const existingOwner = await prisma.owner.findFirst({
-                where: { userId: userId }
+                where: { id: id }
             });
     
             let result;
@@ -42,7 +42,7 @@ module.exports={
                 result = await prisma.$transaction(async (prisma) => {
                     const owner = await prisma.owner.create({
                         data: {
-                            userId: userId,
+                            id: id,
                             hotel: {
                                 create: {
                                     imgUrl: hotelData.imgUrl,
@@ -59,7 +59,7 @@ module.exports={
                     });
     
                     await prisma.user.update({
-                        where: { id: userId },
+                        where: { id: id },
                         data: { role: 'owner' }
                     });
     
@@ -73,6 +73,7 @@ module.exports={
             res.status(500).send('Error promoting user to owner');
         }
     },
+
     
     
 

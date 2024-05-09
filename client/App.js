@@ -31,7 +31,7 @@ function App() {
     // <UserProfile/>
   //  <AdvancedFilter/> 
     <GestureHandlerRootView style={{flex: 1}}>
-      <Nav />
+      <Hotelprofile />
     </GestureHandlerRootView>
   )}
   

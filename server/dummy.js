@@ -27,10 +27,10 @@ let counterDate=count()
 // let roomCount=count()
     // Adjust the number of seeds you want for each model
     const ownercount=50
-    const hotelCount=5;
+    const hotelCount=300
     const userCount = 50;
-    const roomsCount=10
-    const reservationsCount=30
+    const roomsCount=1000
+    const reservationsCount=3000
  let current=userCount
   
     // Generate random users
