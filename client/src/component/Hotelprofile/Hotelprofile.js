@@ -1,8 +1,19 @@
-import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text,Modal,Pressable, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity } from 'react-native';
 import React, { useRef, useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import  Icon from 'react-native-vector-icons/FontAwesome';
 import { Title, Caption, Divider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { TextInput } from 'react-native-gesture-handler';
+import {reviewAsync} from "../../reduce/review"
+import {useDispatch, useSelector} from "react-redux"
+import { decode } from "base-64";
+global.atob = decode;
+import {jwtDecode} from "jwt-decode";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {fetchReviewAsync} from "../../reduce/fetchReview"
+
+
 
 const OverviewScreen = () => (
   <ScrollView style={styles.overviewContainer}>
@@ -88,12 +99,128 @@ const DetailsScreen = () => (
       <Divider style={styles.detailsDivider} />
   </ScrollView>
 );
+const ReviewsScreen = () => {
+    const [review, setReview] = useState({
+        rating: 1,
+        content: '',
+    });
 
-const ReviewsScreen = () => (
-    <View style={styles.screenContainer}>
-        <Text>Reviews Content</Text>
-    </View>
-);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [maxRating] = useState([1, 2, 3, 4, 5]);
+    // console.log("rating",review.rating);
+    // console.log("comment",review.comment);
+    const dispatch=useDispatch()
+    useEffect( () => {
+        
+      dispatch(fetchReviewAsync({ id: 1 }));
+    
+        
+      
+      
+    }, []);
+       const reviews=useSelector(state=>state.fetchReview.reviews)
+    const postReview = async (hotelId) => {
+        try {
+            const userId = await tokenGeted();
+            dispatch(reviewAsync({ userId, hotelId:1, obj: review }));
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    
+    const tokenGeted = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            const decoded = jwtDecode(token);
+            console.log("userId",decoded.id);
+            return decoded.id;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    };
+    // console.log("userId",tokenGeted());
+
+
+    const handleInputChange = (name, value) => {
+        
+        setReview({...review,[name]: value });
+        } 
+
+        
+        
+
+    return (<ScrollView  >
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+            
+        <View style={{alignItems:"center"}}>
+        <View style={styles.review}>
+        <Icon onPress={() => setModalVisible(!modalVisible)} name='remove' color="red" size={30} style={{marginLeft:315}}/>
+            
+            <View style={{alignItems:"center"}}>
+            <Text style={{color:"#112678",fontSize:20,fontWeight:"bold",marginLeft:-190}}>Comment</Text>
+            <TextInput
+            textAlignVertical="top"
+            multiline={true}
+            onChangeText={(text)=>handleInputChange("content",text)}
+            style={{borderWidth:2,borderRadius:20,fontSize:20,width:300,height:55,borderColor:"#112678",backgroundColor:"white"}}/>
+            </View>
+        <View style={{justifyContent:"center",flexDirection:"row"}}>
+            {maxRating.map((e, i) => (
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    key={i}
+                    onPress={() => setReview({
+                        ...review,
+                        rating:e
+                    })}
+                >
+                    <Image
+                    style={{width:40,height:40,resizeMode:"cover",marginBottom:-15,marginTop:5,borderWidth:2}}
+                        source={
+                            e <= review.rating
+                                ? require("../../Photo/star_filled.png")
+                                : require("../../Photo/star_corner.png")
+                        }
+                    />
+                </TouchableOpacity>
+            ))}
+        </View>
+            <TouchableOpacity style={styles.buttonContainer} onPress={postReview}>
+              <Text style={styles.next}>add</Text>
+            </TouchableOpacity>
+        </View>
+        </View>
+        </Modal>
+        <ScrollView>
+
+        {reviews.map((e,i)=>{
+            return<View key={i}>
+                <Text>{e.user.firstName} {e.user.lastName}</Text>
+                <Text>{e.content}</Text>
+            </View>
+        })}
+        </ScrollView>
+        <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={{color:"white"}}>Add reviews</Text>
+            </TouchableOpacity>
+    </ScrollView>
+    );
+};
+
+    
+    
+
+
+
 
 const Hotelprofile = () => {
     const carouselImages = [
@@ -124,9 +251,9 @@ const Hotelprofile = () => {
         const onChange = ({ window }) => {
             setDimension(window);
         };
-        Dimensions.addEventListener('change', onChange);
+        const x=Dimensions.addEventListener('change', onChange);
         return () => {
-            Dimensions.removeEventListener('change', onChange);
+            x.remove()
         };
     }, []);
 
@@ -246,6 +373,30 @@ const Hotelprofile = () => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#f8f9fa',
+    },
+    buttonContainer: {
+        marginTop: 20,
+        height: 45,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+        width: 80,
+        borderRadius: 30,
+        borderStyle: "solid",
+        backgroundColor: '#112678',
+        textAlign:"center"
+      },
+      next: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 20
+      },
+    review:{
+        backgroundColor:"#E0FFFF",
+        alignItems:"center",
+        width:350,
+        height:230,
+        borderRadius:20
     },
     dotContainer: {
         flexDirection: 'row',

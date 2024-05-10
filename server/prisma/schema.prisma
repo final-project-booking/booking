@@ -8,21 +8,21 @@ generator client {
 }
 
 model User {
-  id             Int          @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   imgUrl         String
   firstName      String
   lastName       String
-  email          String       @unique
+  email          String        @unique
   password       String
   phoneNumber    Int
   longitude      Float?
   latitude       Float?
-  isActive       Boolean      @default(false)
+  isActive       Boolean       @default(false)
   activationCode String
-  role           Role?        @default(user)
-  owner          Owner?       @relation(fields: [ownerId], references: [id])
-  ownerId        Int?         @unique
-  reservation    Reservation?
+  role           Role?         @default(user)
+  owner          Owner?        @relation(fields: [ownerId], references: [id])
+  ownerId        Int?          @unique
+  reservation    Reservation[]
   message        Message[]
   join           JoinChat[]
   reviw          Review[]
@@ -37,14 +37,14 @@ model Hotel {
   id          Int      @id @default(autoincrement())
   name        String
   imgUrl      String?
-  longitude      Float?
-  latitude       Float?
+  longitude   Float?
+  latitude    Float?
   description String
   rating      Int
   rooms       Int
   licence     String
-  owner       Owner    @relation(fields: [ownerId], references: [id])
-  ownerId     Int
+  owner       Owner?   @relation(fields: [ownerId], references: [id])
+  ownerId     Int?
   room        Room[]
   review      Review[]
 }
@@ -54,43 +54,42 @@ enum MealPlan {
   all_Inclusive
   halfBoard
 }
+
 model Option {
-  id     Int    @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   Meal_Plan MealPlan
-  room    Room  @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  roomId  Int   @unique
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId    Int
 }
 
 model Owner {
   id    Int     @id @default(autoincrement())
   user  User?
-  userId Int
   hotel Hotel[]
 }
 
 model Reservation {
   id        Int      @id @default(autoincrement())
   room      Room     @relation(fields: [roomId], references: [id])
-  roomId    Int      @unique
+  roomId    Int
   user      User     @relation(fields: [userId], references: [id])
-  userId    Int      @unique
+  userId    Int
   startDate DateTime
   endDate   DateTime
-  
 }
 
 model Room {
-  id              Int      @unique       @id @default(autoincrement())
+  id              Int               @id @unique @default(autoincrement())
   hotel           Hotel             @relation(fields: [hotelId], references: [id])
   hotelId         Int
-  reservation     Reservation?
+  reservation     Reservation[]
   dayAvailability DayAvailability[]
   price           Int
   capacity        Int
   imgUrl          String
-  option          Option?
+  option          Option[]
   view            View
-  reduction       Boolean  @default(false)
+  reduction       Boolean           @default(false)
   rate            Int
 }
 
@@ -107,28 +106,28 @@ model DayAvailability {
 }
 
 model Message {
-  id          Int       @id @default(autoincrement()) 
-  content     String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  users        User      @relation(fields: [userId], references: [id])
-  userId      Int
-  room        RoomChat      @relation(fields: [roomId], references: [id]) // This establishes a many-to-one relationship with Room
-  roomId      Int
-   
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User     @relation(fields: [userId], references: [id])
+  userId    Int
+  room      RoomChat @relation(fields: [roomId], references: [id]) // This establishes a many-to-one relationship with Room
+  roomId    Int
 }
 
 model RoomChat {
-  id        Int       @id @default(autoincrement())
-  messages  Message[]  
-  join JoinChat[]  
+  id       Int        @id @default(autoincrement())
+  messages Message[]
+  join     JoinChat[]
 }
- model JoinChat {
-   id          Int       @id @default(autoincrement()) 
-  users    User  @relation(fields: [userId], references: [id])
-  userId  Int 
-  rooms    RoomChat  @relation(fields: [roomId], references: [id])
-  roomId  Int
+
+model JoinChat {
+  id     Int      @id @default(autoincrement())
+  users  User     @relation(fields: [userId], references: [id])
+  userId Int
+  rooms  RoomChat @relation(fields: [roomId], references: [id])
+  roomId Int
 }
 
 model Review {

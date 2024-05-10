@@ -16,17 +16,16 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Home from './src/component/HomePage/Home';
 import Nav from './screens/Nav';
 import Map from "./src/component/Map/Map"
-import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
 import AllHotels from './src/component/allHotels/AllHotels';
 import RoomByHotel from './src/component/allHotels/RoomByHotel';
-import Detail from './src/component/detail/Detail';
-import ChooseChildren from './src/component/Detail/ChooseChildren';
+import ChooseChildren from './src/component/detail/ChooseChildren';
 import ChooseGategory from './src/component/allHotels/ChooseGategory';
-
-import Calendar from './src/component/Detail/Reservation';
+import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
+import OwnerProfile from './src/component/OwnerProfile/OwnerProfile';
 import AdvancedFilter from './src/component/AdvancedFilter/AdvancedFilter';
-import Detail from './src/component/detail/';
+import Detail from './src/component/detail/Detail';
 import Reservation from './src/component/detail/Reservation';
+import { race } from 'core-js/library/es6/promise';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -35,7 +34,10 @@ function App() {
   return (
     
     <GestureHandlerRootView style={{flex: 1}}>
-      <Nav />
+      {/* <Nav /> */}
+      <Hotelprofile/>
+      {/* <OwnerProfile/> */}
+      {/* <Login/> */}
     </GestureHandlerRootView>
   )}
   

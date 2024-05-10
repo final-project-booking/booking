@@ -3,6 +3,7 @@ const { review } = require("../database/index");
 module.exports = {
     addReview: async (req, res) => {
         try {
+            console.log(req.body);
             const { stars, content } = req.body;
 
             if (stars < 1 || stars > 5) {
@@ -23,5 +24,21 @@ module.exports = {
             console.error("Error adding review:", error);
             res.status(500).json({ error: "Failed to add review" });
         }
+    },
+    getReviews:async(req,res)=>{
+        try {
+            const reviews=await review.findMany({
+                where:{
+                    hotelId:parseInt(req.params.id)
+                },
+                include:{
+                    user:true
+                }
+            })
+            res.status(200).send(reviews)
+        } catch (error) {
+            throw error
+        }
     }
-};
+}
+

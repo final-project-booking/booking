@@ -13,8 +13,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFa from 'react-native-vector-icons/FontAwesome';
 import Hotels, { FA5Style } from 'react-native-vector-icons/FontAwesome5'
 import Favorite from "react-native-vector-icons/MaterialIcons"
-import Reservation  from '../src/component/Detail/Reservation.js';
-import ChooseChildren from '../src/component/Detail/ChooseChildren.js';
+import Reservation  from '../src/component/detail/Reservation.js';
+import ChooseChildren from '../src/component/detail/ChooseChildren.js';
 import Login from "../src/component/authentication/Login"
 import SignUp from '../src/component/authentication/SigneUp';
 import Detail from '../src/component/detail/Detail.js';
@@ -29,7 +29,6 @@ function Nav() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
         <Stack.Screen name="ChooseGategory" component={ChooseGategory} options={{ headerShown: false }}/>
         <Stack.Screen name="Reservation" component={Reservation} options={{ headerShown: false }}/>
         <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
@@ -38,6 +37,7 @@ function Nav() {
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />

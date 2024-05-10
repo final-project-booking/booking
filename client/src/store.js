@@ -8,6 +8,7 @@ import { configureStore } from '@reduxjs/toolkit';
   import allHotels from './SliceAction/AllHotels'
   import reviewSlice from "./SliceAction/review"
   import getRoomByCategory from './SliceAction/getRoomByCategory';
+  import fetchReview from './SliceAction/fetchReview';
 const store = configureStore({
   reducer: {
     userSignUp:signUpSlice,
@@ -18,7 +19,8 @@ const store = configureStore({
     reservation:reservation,
     allHotels:allHotels,
     review:reviewSlice,
-    getRoomByCategory:getRoomByCategory
+    getRoomByCategory:getRoomByCategory,
+    fetchReview:fetchReview
 }
 });
 
