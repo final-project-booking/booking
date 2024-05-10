@@ -6,4 +6,5 @@ router.get('/all',owner.getAllOwners)
 
 router.post('/Rooms',owner.createRoomsForHotel)
 router.get('/:hotelId/:view/:capacity',owner.getRoomByCategory)
+router.get('/:hotelId',owner.getRoomByhotlId)
 module.exports = router;

@@ -22,7 +22,7 @@ model User {
   role           Role?        @default(user)
   owner          Owner?       @relation(fields: [ownerId], references: [id])
   ownerId        Int?         @unique
-  reservation    Reservation?
+  reservation    Reservation[]
   message        Message[]
   join           JoinChat[]
   reviw          Review[]
@@ -43,10 +43,11 @@ model Hotel {
   rating      Int
   rooms       Int
   licence     String
-  owner       Owner    @relation(fields: [ownerId], references: [id])
-  ownerId     Int
+  owner       Owner?    @relation(fields: [ownerId], references: [id])
+  ownerId     Int?
   room        Room[]
   review      Review[]
+  media       Media[]
 }
 
 enum MealPlan {
@@ -64,45 +65,58 @@ model Option {
 model Owner {
   id    Int     @id @default(autoincrement())
   user  User?
-  userId Int
   hotel Hotel[]
 }
 
-model Reservation {
-  id        Int      @id @default(autoincrement())
-  room      Room     @relation(fields: [roomId], references: [id])
-  roomId    Int      @unique
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int      @unique
-  startDate DateTime
-  endDate   DateTime
-  
-}
+  model Reservation {
+    id        Int      @id @default(autoincrement())
+    room      Room     @relation(fields: [roomId], references: [id])
+    roomId    Int      
+    user      User     @relation(fields: [userId], references: [id])
+    userId    Int     
+    startDate DateTime
+    endDate   DateTime
+  }
 
 model Room {
   id              Int      @unique       @id @default(autoincrement())
   hotel           Hotel             @relation(fields: [hotelId], references: [id])
   hotelId         Int
-  reservation     Reservation?
+  reservation     Reservation[]
   dayAvailability DayAvailability[]
   price           Int
   capacity        Int
   imgUrl          String
   option          Option?
   view            View
+  media           Media[]
   reduction       Boolean  @default(false)
   rate            Int
 }
 
+enum media {
+  photo
+  pdf
+}
 enum View {
   seaView
   standerView
+}
+model Media {
+  id           Int     @id @default(autoincrement())
+  room         Room    @relation(fields: [roomId], references: [id])
+  roomId       Int     
+ type          media 
+ link          String
+ hotel         Hotel    @relation(fields: [hotelId], references: [id])
+  hotelId       Int 
 }
 
 model DayAvailability {
   id           Int     @id @default(autoincrement())
   room         Room    @relation(fields: [roomId], references: [id])
-  roomId       Int     @unique
+  roomId       Int 
+  nigth        DateTime
   availability Boolean @default(true)
 }
 
@@ -113,7 +127,7 @@ model Message {
   updatedAt   DateTime  @updatedAt
   users        User      @relation(fields: [userId], references: [id])
   userId      Int
-  room        RoomChat      @relation(fields: [roomId], references: [id]) // This establishes a many-to-one relationship with Room
+  room        RoomChat      @relation(fields: [roomId], references: [id])
   roomId      Int
    
 }

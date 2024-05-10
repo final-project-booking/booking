@@ -1,4 +1,4 @@
-const {reservation,room,hotel,user,options,owner, option}=require('./database/index')
+const {reservation,room,hotel,user,options,owner, option, roomChat}=require('./database/index')
 const bcrypt=require("bcrypt")
 const { faker ,Randomizer} = require('@faker-js/faker');
 
@@ -8,14 +8,31 @@ function getRandomElementFromArray(arr) {
     // Return the element at the random index
     return arr[randomIndex];
   }
-const seed = async (sequelize) => {
+  let count =function(){
+    let res=0
+    return function(){
+        res=res+1
+        return res
+    
+    }
+  }
+  const SEED = async (sequelize) => {
+    let local=faker.location.nearbyGPSCoordinate({ origin: [35.84160807475632, 10.629283816082914], radius: 6000, isMetric: true })
+    console.log("hello",local)
     const saltRounds = await bcrypt.genSalt()
-
+let counterOwner=count()
+let hotelCounter=count()
+let counterRoom=count()
+let counterDate=count()
+// let optionCount=count()
+// let hotelcount=count()
+// let roomCount=count()
     // Adjust the number of seeds you want for each model
-    const ownercount=10
-    const hotelCount=50
+    const ownercount=50
+    const hotelCount=300
     const userCount = 50;
     const roomsCount=1000
+    const reservationsCount=3000
  let current=userCount
   
     // Generate random users
@@ -49,31 +66,31 @@ const seed = async (sequelize) => {
     );
     const createUerrOwner = await Promise.all(
         Array.from({ length: ownercount}).map(async () => {
-            const owne = owners[Math.floor(Math.random() * ownercount)];
-
+        
+            const owne = counterOwner()
           return await user.create({
          data:   {
             imgUrl:faker.person.lastName(),
           firstName: faker.person.firstName(),
           lastName: faker.person.lastName(),
             email: faker.internet.email(),
-          password: await bcrypt.hash("12345", saltRounds), // Replace with a secure password hashing mechanism
-
+          password: await bcrypt.hash("12345", saltRounds), // Replace with a secure password hashing mechanismrol
             phoneNumber: faker.number.int({ min: 1, max: 100}), // Uncomment if you want phone numbers
             isActive:faker.datatype.boolean(),
             activationCode:faker.phone.number(),
             latitude:faker.location.latitude({ max: 10, min: -10, precision: 5 }), 
           longitude:faker.location.longitude({ max: 10, min: -10 }),
-        
-          ownerId:owne.id
+          role:"owner",
+          ownerId:owne 
       }
           });
         })
       );
     const hotels= await Promise.all(
         Array.from({ length: hotelCount }).map(async () => {
-            
-          const owne = owners[Math.floor(Math.random() * ownercount)];
+            let local=faker.location.nearbyGPSCoordinate({ origin: [35.84160807475632, 10.629283816082914], radius: 6000, isMetric: true })
+            console.log("hello",local)
+          let owne = owners[Math.floor(Math.random() * ownercount)];
           return await hotel.create({
             data:{
 
@@ -83,8 +100,8 @@ const seed = async (sequelize) => {
                 rooms:faker.number.int({ min: 1, max: 100}),
                 licence:faker.commerce.productName(),
                 ownerId: owne.id, 
-                latitude:faker.location.latitude({ max: 10, min: -10, precision: 5 }), 
-                longitude:faker.location.longitude({ max: 10, min: -10 }),
+                latitude:local[0], 
+                longitude:local[1],
             }
            
           });
@@ -111,15 +128,15 @@ const seed = async (sequelize) => {
         })
       )
       const options =await Promise.all(
-        Array.from({ length: 49 }).map(async () => {
-    const roomfor = rooms[Math.floor(Math.random() * roomsCount)];
+        Array.from({ length: roomsCount }).map(async () => {
+    const roomfor = counterRoom()
         
           return await option.create({
             data:{
                 Meal_Plan:getRandomElementFromArray([   "breakFast",
                     "all_Inclusive",
                     "halfBoard"]),
-                    roomId:roomfor.id
+                    roomId:roomfor
             }
           
            
@@ -127,15 +144,17 @@ const seed = async (sequelize) => {
         })
       )
       const reservations =await Promise.all(
-        Array.from({ length: 49 }).map(async () => {
-        current-=1
+        Array.from({ length:reservationsCount }).map(async () => {
+      const allUsers=users[Math.floor(Math.random() * userCount)]
+        const roomfor =rooms[Math.floor(Math.random() * roomsCount)]
 
           return await reservation.create({
             data:{
-                userId:current,
-                people:faker.number.int({ min: 1, max: 5 }),
+              roomId:roomfor.id,
+                userId:allUsers.id,
                 startDate:faker.date.soon(),
-                endDate:faker.date.soon()
+                endDate:faker.date.soon(),
+               
             }
           
            
@@ -143,6 +162,4 @@ const seed = async (sequelize) => {
         })
       )
     }
-
-
-seed()
+    SEED()

@@ -3,7 +3,7 @@ const {reservation,room,user,dayAvailability, hotel}=require('../database/index'
 module.exports={
     addReservation: async function(req, res) {
         try {
-          const { userId,hotelId, startDate, endDate, roomId, people } = req.body
+          const { userId, startDate, endDate, roomId } = req.body
           
           const users = await user.findUnique({
             where: {
@@ -14,30 +14,30 @@ module.exports={
           if (!users) {
             return res.status(400).send({ error: 'User not found' })
           }
-          const checkHotel=await hotel.findUnique({
-            where:{
-              id:parseInt(hotelId)
-            }
-          })
-          if(!checkHotel){
-            return res.status(400).send({ error: 'Hotel not found' })
-          }
+          // const checkHotel=await hotel.findUnique({
+          //   where:{
+          //     id:parseInt(hotelId)
+          //   }
+          // })
+          // if(!checkHotel){
+          //   return res.status(400).send({ error: 'Hotel not found' })
+          // }
          
           
-           const  rooms = await room.findFirst({
-                where: {
-                  hotelId: parseInt(hotelId)
-                }
-              })
+          //  const  rooms = await room.findFirst({
+          //       where: {
+          //         hotelId: parseInt(hotelId)
+          //       }
+          //     })
               
-              if (!rooms) {
-                return res.status(400).json({ error: 'Room not found' })
-              }
+          //     if (!rooms) {
+          //       return res.status(400).json({ error: 'Room not found' })
+          //     }
           const existingReservation = await reservation.findFirst({
             where: {
               AND: [
                 { roomId: roomId },
-                { hotelId: parseInt(hotelId) },
+                // { hotelId: parseInt(hotelId) },
                 // {
                 //   OR: [
                 //     { startDate: { lte: new Date(endDate) }, endDate: { gte: new Date(startDate) } },
@@ -57,8 +57,7 @@ module.exports={
                 
                 startDate: new Date(startDate),
                 endDate: new Date(endDate),
-                people: people,
-              
+               
                 room: {
                   connect: {
                     id: roomId
@@ -68,31 +67,35 @@ module.exports={
                   connect: {
                     id: userId
                   }
-                },
-                hotel:{
-                  connect:{
-                    id:parseInt(hotelId)
-                  }
-                }
-                
-              }
+                },           
+              },
+           
             })
       
            
-            await room.update({
-              where: {
-                  id: roomId
-                },
-                data: {
+            // await room.update({
+            //   where: {
+            //       id: roomId
+            //     },
+            //     data: {
                  
-                  reservation: {
-                    connect: {
-                      id: newReservation.id
-                    }
-                  }
-                }
-            })
-      
+            //       reservation: {
+            //         connect: {
+            //           id: newReservation.id
+            //         }
+            //       }
+            //     }
+            // })
+         
+        const update=   dayAvailability.create({
+                data: {
+                  night: endDate,
+                  availability: false,
+                  roomId:roomId
+                },
+              });
+           
+          
             res.status(200).send(newReservation)
 
           }
