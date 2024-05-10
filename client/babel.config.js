@@ -1,6 +1,8 @@
 module.exports = {
-  
-  presets: ['module:metro-react-native-babel-preset', '@babel/preset-flow'],
+  presets: [
+    'module:metro-react-native-babel-preset',
+    '@babel/preset-flow',
+  ],
   plugins: [
     ['@babel/plugin-transform-class-properties', { loose: true }],
     ['@babel/plugin-transform-private-methods', { loose: true }],
@@ -12,13 +14,8 @@ module.exports = {
       "whitelist": null,
       "safe": false,
       "allowUndefined": true
-    }]
+    }],
+    'react-native-reanimated/plugin',
+
   ],
 };
-
-
-  
-
-  
-   
-  
