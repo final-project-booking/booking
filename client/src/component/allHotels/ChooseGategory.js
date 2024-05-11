@@ -45,7 +45,6 @@ console.log('numRoom',numRoom);
     };
     const add = () => {
       if (numRoom>0){
-
         setNumRoom(numRoom + 1);
       }
     };
@@ -121,9 +120,9 @@ console.log('numRoom',numRoom);
         <Icon name='bedroom-parent' size={30} style={{color:'#DCE2FC'}}/>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '10%' }}>
-         <IconButton icon="minus-circle-outline" size={30} onPress={add} />
+         <IconButton icon="minus-circle-outline" size={30} onPress={remove} />
          <Text style={{fontSize:17}}>{numRoom}</Text>
-        <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={remove} />
+        <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={add} />
        </View>
     </View>
 

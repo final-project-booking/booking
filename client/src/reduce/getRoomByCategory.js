@@ -10,12 +10,11 @@ export const fetchRoomByCategory = createAsyncThunk(
   'rooms/fetchByCategory',
   async ({
     view,
-    capacity,
     hotelId
   }, thunkAPI) => {
     
     try {
-      const response = await axios.get(`http://${AP_ADRESS}:3000/api/owner/${hotelId}/${view}/${capacity}` );
+      const response = await axios.get(`http://${AP_ADRESS}:3000/api/owner/${hotelId}/${view}` );
       console.log('back',response.data);
       return response.data;
     } catch (error) {
