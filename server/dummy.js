@@ -93,7 +93,7 @@ let counterDate=count()
           let owne = owners[Math.floor(Math.random() * ownercount)];
           return await hotel.create({
             data:{
-
+                
                 name: faker.location.streetAddress(),
                 description: faker.commerce.productDescription(),
                 rating: faker.number.int({ min: 1, max: 5 }),

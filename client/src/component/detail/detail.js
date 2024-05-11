@@ -12,8 +12,8 @@ export default function Detail({route,navigation}) {
     const [dimension, setDimension] = useState(Dimensions.get('window'));
     const [selectedIndex, setSelectedIndex] = useState(0);
     const scrollRef = useRef();
-    const room=useSelector(state=>state.getRoomByCategory.room)
-    console.log('room',room);
+    const compar=useSelector(state=>state.comparPrice.compar)
+    console.log('compar',compar);
     const onChange = ({ window }) => {
       setDimension(window);
     };
@@ -23,6 +23,8 @@ export default function Detail({route,navigation}) {
         subscription.remove();
       };
     }, []);
+    const x=2
+    const y=2
     useEffect(() => {
         const interval = setInterval(() => {
           setSelectedIndex(prevSelectedIndex =>
@@ -93,7 +95,7 @@ export default function Detail({route,navigation}) {
 
        <View>
           <Text style={styles.hotelName}>The Carlton Hotel</Text>
-          <Text style={styles.detailsText}>HotelName:{room.hotel.name}</Text>
+          <Text style={styles.detailsText}>HotelName:</Text>
           <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
           <Text style={styles.detailsText}>Phone: +1 212-532-4100</Text>
            
@@ -105,26 +107,34 @@ export default function Detail({route,navigation}) {
         <Icon size={20} name='star-border'style={{color:'yellow'}} />
         <Icon size={20} name='star-border'style={{color:'yellow'}} />
         </View>
-        {room.hotel.rating} (200 reviews)
+         (200 reviews)
           </Text>
+          </View>
           <View style={{padding:10}}>
 <Text style={{height:1,width:'100%', backgroundColor:'#DCE2FC',marginTop:18}}>h</Text>
 </View>
-         
-          <TouchableOpacity style={{shadowOffset: {width: 0,height: 1,},shadowOpacity: 0.25, shadowRadius: 3.84,elevation: 5}}  >
-    <View style={{marginTop: 40, flexDirection: 'row', alignItems: 'center'}}>
-    <View style={{marginRight: 20 }}>
-        <Image source={{uri:'https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill'}} style={{width: 150, height: 150,marginLeft:16,borderRadius:10}} />
+<View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center',justifyContent:'space-between' }}>
+  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}>
+    <View style={{ marginTop: 20, marginRight: 20 }}>
+      <Image source={{ uri: 'https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill' }} style={{ width: 150, height: 150, borderRadius: 10 }} />
+      <View style={{ marginTop: 10 }}>
+        <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{x*y}</Text>
+        <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black' }}>People:</Text>
+        <Text style={{ color: 'black' }}>Price:$</Text>
+      </View>
     </View>
-    <View style={{marginTop:-20}}>
-        <Text style={{fontSize:20,color:'black',marginBottom:12,color:'black'}}>{room.view}</Text>
-        
-        <Text style={{marginLeft:1,marginBottom:15,color:'black'}}>People:{room.capacity}</Text>
-        <Text style={{color:'black'}}>Price:${room.price}</Text>
-    </View>
-</View>
+  </TouchableOpacity>
 
- </TouchableOpacity>
+  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}>
+    <View style={{ marginTop: 20 }}>
+      <Image source={{ uri: 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp' }} style={{ width: 150, height: 150, borderRadius: 10 }} />
+      <View style={{ marginTop: 10 }}>
+        <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{x*y}</Text>
+        <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black' }}>People:</Text>
+        <Text style={{ color: 'black' }}>Price:$</Text>
+      </View>
+    </View>
+  </TouchableOpacity>
 </View>
        
 

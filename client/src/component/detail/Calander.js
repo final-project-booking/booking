@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View ,Text,StyleSheet} from 'react-native';
 import { eachDayOfInterval, format } from 'date-fns';
 import { Calendar } from 'react-native-calendars';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { ComparPrice } from '../../reduce/comparPrice';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button } from 'react-native-paper';
@@ -10,6 +11,25 @@ import { Button } from 'react-native-paper';
 export default function Reservation({route,navigation}) {
   const [selectedDates, setSelectedDates] = useState({});
   const [hotelId,setHotelId]=useState(route.params.hotelId)
+  const [selectedValue, setSelectedValue] = useState(route.params.view);
+  const [selectedPlan, setSelectedPlan] = useState(route.params.plan);
+  // const [people, setPeople] = useState(0);
+  const [numRoom, setNumRoom] = useState(route.params.numRoom);
+  const [price, setPrice] = useState(prices.price);
+
+  const dispatch = useDispatch();
+const prices=useSelector(state=>state.getRoomByCategory.room)
+console.log('price',prices.price);
+  const body={
+    view:selectedValue,
+    hotelId:hotelId,
+    plan:selectedPlan,
+    numRoom:numRoom,
+    price:price
+}
+const handleGet=(obj)=>{
+    dispatch(ComparPrice(obj))
+}
 
   console.log('hotelId',hotelId);
   const handleDateChange = (date) => {
@@ -88,7 +108,7 @@ chek()
 </Button>
   <Button  mode="contained" style={{width:'30%',backgroundColor:'#0000FF'}}
     onPress={() =>
-        navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId})
+       {handleGet(body), navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId})}
       }
   >
    Continue

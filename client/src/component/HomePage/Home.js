@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, {useEffect } from 'react'
 import {
   Dimensions,
   FlatList,
@@ -14,16 +15,23 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../const/Colors';
-import hotels from '../const/Hotels';
-
+// import hotels from '../const/Hotels';
+import { useSelector ,useDispatch} from 'react-redux';
+import { AllHotell } from '../../reduce/AllHotels';
 const { width } = Dimensions.get('screen');
 const cardWidth = width / 1.8;
 
 const HomeScreen = ({ navigation }) => {
+  const dispatch=useDispatch()
   const categories = ['All', 'Popular', 'Top Rated', 'Featured', 'Luxury'];
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
   const [activeCardIndex, setActiveCardIndex] = React.useState(0);
   const scrollX = React.useRef(new Animated.Value(0)).current;
+  useEffect(()=>{
+    dispatch(AllHotell())
+    },[])
+    const hotels=useSelector(state=>state.allHotels.hotels)
+    console.log('hotel');
 
 
 React.useEffect(() => {
@@ -90,14 +98,6 @@ const opacity = scrollX.interpolate({
       index * cardWidth,
       (index + 1) * cardWidth,
     ];
-    // const opacity = scrollX.interpolate({
-    //   inputRange,
-    //   outputRange: [0.7, 1, 0.7],
-    // });
-    // const scale = scrollX.interpolate({
-    //   inputRange,
-    //   outputRange: [0.8, 1, 0.8],
-    // });
     return (
       <TouchableOpacity
         disabled={activeCardIndex != index}
