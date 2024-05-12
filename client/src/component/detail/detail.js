@@ -99,16 +99,16 @@ export default function Detail({route,navigation}) {
           <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
           <Text style={styles.detailsText}>Phone: +1 212-532-4100</Text>
            
-          <Text style={styles.rating}>
+          
          <View style={{flexDirection:'row'}}>
-        <Icon size={20} name='star-border'style={{color:'yellow',marginBottom:19}} color='yellow'/>
-        <Icon size={20} name='star-border'style={{color:'yellow'}} />
-        <Icon size={20} name='star-border'style={{color:'yellow'}} />
-        <Icon size={20} name='star-border'style={{color:'yellow'}} />
-        <Icon size={20} name='star-border'style={{color:'yellow'}} />
+        <Icon size={20} name='star-border'style={{marginBottom:19}} color={'#f5a623'}/>
+        <Icon size={20} name='star-border' color={'#f5a623'}/>
+        <Icon size={20} name='star-border' color={'#f5a623'}/>
+        <Icon size={20} name='star-border' color={'#f5a623'}/>
+        <Icon size={20} name='star-border' color={'#f5a623'}/>
         </View>
-         (200 reviews)
-          </Text>
+         
+          
           </View>
           <View style={{padding:10}}>
 <Text style={{height:1,width:'100%', backgroundColor:'#DCE2FC',marginTop:18}}>h</Text>
