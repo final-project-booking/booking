@@ -4,17 +4,12 @@ import  Icon from 'react-native-vector-icons/FontAwesome';
 import { Title, Caption, Divider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
-import {reviewAsync} from "../../reduce/review"
-import {useDispatch, useSelector} from "react-redux"
-import { decode } from "base-64";
-global.atob = decode;
-import {jwtDecode} from "jwt-decode";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {fetchReviewAsync} from "../../reduce/fetchReview"
 
 
-import { StyleSheet,KeyboardAvoidingView , Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity, Button } from 'react-native';
+
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity, Button } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
+import Reviews from './Reviews';
 
 const OverviewScreen = () => {
     const bottomSheetRef = useRef(null);
@@ -153,139 +148,7 @@ const DetailsScreen = () => (
   </ScrollView>
 );
 const ReviewsScreen = () => {
-    const [review, setReview] = useState({
-        stars: 1,
-        content: '',
-    });
-    const [maxRating] = useState([1, 2, 3, 4, 5]);
-
-    const dispatch = useDispatch();
-    useEffect(() => {
-        
-        dispatch(fetchReviewAsync({ id: 1 }));
-    }, [dispatch]);
-
-    const reviews = useSelector(state => state.fetchReview.reviews) || [];
-
-    const postReview = async () => {
-        try {
-            const userId = await tokenGeted();
-            dispatch(reviewAsync({ userId, hotelId: 1, obj: review }));
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const tokenGeted = async () => {
-        try {
-            const token = await AsyncStorage.getItem('token');
-            const decoded = jwtDecode(token);
-            console.log("role",decoded.role);
-
-            return decoded.id;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
-    };
-    const roleGeted = async () => {
-        try {
-            const token = await AsyncStorage.getItem('token');
-            const decoded = jwtDecode(token);
-            return decoded.role;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
-    };
-    const handleInputChange = (name, value) => {
-        setReview({ ...review, [name]: value });
-    };
-
-    const bottomSheetRef = useRef(null);
-  
-    const snapPoints = useMemo(() => ['5%', '40%'], []);
-    const BottomSheetContent1 = () => (
-        <View  style={{alignItems:"center"}}>
-            <Text style={{color:"black",marginBottom:5,fontWeight:"bold",fontSize:20}}>Add comment</Text>
-            <TextInput
-                textAlignVertical="top"
-                multiline={true}
-                value={review.content}
-                onChangeText={(text) => handleInputChange("content", text)}
-                style={styles.input}
-            />
-        
-
-            <View style={styles.ratingContainer}>
-            <View style={{flexDirection:"row"}} >
-                {maxRating.map((e, i) => (
-                    <TouchableOpacity
-                        key={i}
-                        onPress={() => setReview({ ...review, stars: e })}
-                    >
-                        <Image
-                            style={styles.ratingStar}
-                            source={
-                                e <= review.stars
-                                    ? require("../../Photo/star_filled.png")
-                                    : require("../../Photo/star_corner.png")
-                            }
-                        />
-                    </TouchableOpacity>
-                ))}
-                 </View>
-            </View>
-           
-            <TouchableOpacity style={styles.buttonContainer} onPress={postReview}>
-                <Text style={styles.next}>Add</Text>
-            </TouchableOpacity>
-        </View>
-      );
-
-    
-    if(roleGeted()==="user"){
-        return BottomSheetContent1()
-    }
-    return (
-        <>
-          <ScrollView style={{height:260}}> 
-            <View style={{paddingBottom:50}}>
-              <Text style={{textAlign:"center",fontSize:20,color:"black",fontWeight:"bold"}}>All comments</Text>
-              {reviews.map((e, i) => {
-                
-                
-                return<View style={{marginTop:5,borderWidth:3,borderColor:"back",borderRadius:15}}  key={i}>
-                  <Text style={{color:"black",textAlign:"center"}}>{e.user.firstName} {e.user.lastName}</Text>
-                  <Text style={{color:"black",textAlign:"center"}}>{e.content}</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:"center" }}>
-                                {[1, 2, 3, 4, 5].map((star, index) => (
-                                    <Image
-                                        key={index}
-                                        style={{ width: 20, height: 20 }}
-                                        source={
-                                            star <= e.stars
-                                                ? require("../../Photo/star_filled.png")
-                                                : require("../../Photo/star_corner.png")
-                                        }
-                                    />
-                                ))}
-                            </View>
-                </View>
-})}
-            </View>
-          </ScrollView>
-            <BottomSheet
-              ref={bottomSheetRef}
-              index={0}
-              snapPoints={snapPoints}
-              style={styles.bottomSheet}
-            >
-              {BottomSheetContent1()}
-            </BottomSheet>
-        </>
-      );
-    
+    return <Reviews/>
 };
 
     

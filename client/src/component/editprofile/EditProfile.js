@@ -200,8 +200,8 @@ const EditProfile = () => {
           <View style={styles.inputsContainer}>
             <Text style={{color:'black',fontSize:18,marginLeft:5,marginBottom:10,fontWeight:"bold"}}>Email</Text>
             <TextInput
+            readOnly
             value={user.email}
-            onChangeText={(text)=>handleInputChange("email",text)}
             style={styles.editProfile_inputs}  />
           </View>
           <View style={styles.inputsContainer}>
