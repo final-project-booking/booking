@@ -22,6 +22,7 @@ const HotelSlice = createSlice({
         .addCase(AllHotell.fulfilled,(state,action)=>{
             state.loading=false
             state.hotels=action.payload
+            console.log("state.hotels",state.hotels);
         
         })
         .addCase(AllHotell.rejected,(state,action)=>{

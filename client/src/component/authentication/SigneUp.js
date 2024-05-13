@@ -146,7 +146,7 @@ const SignUp = ({navigation}) => {
     }
     permission()
     dispatch(signUpAsync(signUp));
-    // navigation.navigate("Login")
+    navigation.navigate("Login")
   };
   
 // const user=useSelector((s) =>s.userSignUp.user)
