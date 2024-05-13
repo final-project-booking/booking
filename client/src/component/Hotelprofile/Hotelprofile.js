@@ -4,23 +4,99 @@ import { Title, Caption, Divider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity,TextInput, Button } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
+import {createRoomsForHotel}from '../../reduce/Rooms';
+import { useDispatch } from 'react-redux';
 
 const OverviewScreen = () => {
+  
     const bottomSheetRef = useRef(null);
-  
-    // Define snap points for the bottom sheet
     const snapPoints = useMemo(() => ['25%', '50%', '80%'], []);
+    const dispatch = useDispatch();
+    const [roomData, setRoomData] = useState({
+      hotelId:1, 
+      numRooms:7,
+      roomTemplate: {
+          price:180,
+          view:'seaView',
+          capacity:2,
+          reduction:false,
+          rate:5,
+          option: {
+              Meal_Plan: 'all_Inclusive'
+          },
+          media: [] 
+      }
+  });
+  const imageHandler = async (imageAsset) => {
+    const form = new FormData();
+    form.append("file", {
+      uri: imageAsset.uri,
+      type: imageAsset.type,
+      name: imageAsset.fileName || 'photo.jpg'
+    });
+    form.append("upload_preset", preset);
+    form.append("cloud_name", cloud_name);
+
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+      method: 'POST',
+      body: form
+    });
+    const data = await res.json();
+    return data.secure_url;
+  };
+
+  const pickImage = () => {
+    const options = {
+      selectionLimit: 0,
+      mediaType: 'photo'
+    };
+
+    launchImageLibrary(options, async (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error:', response.errorMessage);
+      } else {
+        try {
+          const uploadPromises = response.assets.map(imageAsset => imageHandler(imageAsset));
+          const imageUris = await Promise.all(uploadPromises);
+          setRoomData(prevData => ({
+            ...prevData,
+            media: [...prevData.media, ...imageUris]
+          }));
+        } catch (error) {
+          console.log('Error uploading images:', error);
+        }
+      }
+    });
+  };
   
-    // Bottom sheet content
+  const handleSubmit = () => {
+    dispatch(createRoomsForHotel(roomData));
+};
+
     const BottomSheetContent = () => (
       <View style={styles.bottomSheetContent}>
         <Text style={styles.bottomSheetTitle}>Add More Rooms</Text>
-        <TextInput style={styles.input} placeholder="ImgUrl" />
         <TextInput style={styles.input} placeholder="Capacity" keyboardType="numeric"/>
         <TextInput style={styles.input} placeholder="Price" keyboardType="numeric"/>
         <TextInput style={styles.input} placeholder="View" />
         <TextInput style={styles.input} placeholder="Reduction" keyboardType="numeric" />
         <TextInput style={styles.input} placeholder="Rate" keyboardType="numeric" />
+        <TextInput style={styles.input} placeholder="option" />
+        <View style={{flexDirection:'column', gap: 10 }}>
+                <View />
+                <View />
+                <View />
+                <View />
+               </View>
+              <Text onPress={pickImage} style={{color:"black"}}>Select your {ImageIcon}</Text>
+              <View style={{flexDirection:'column', gap: 10 }}>
+                <View />
+                <View />
+                <View />
+                <View />
+               </View>
         <Button title="Submit" onPress={() => alert('Submitted!')} />
       </View>
     );

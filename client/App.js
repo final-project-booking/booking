@@ -22,7 +22,7 @@ import RoomByHotel from './src/component/allHotels/RoomByHotel';
 import Detail from './src/component/Detail/Detail';
 import ChooseChildren from './src/component/Detail/ChooseChildren';
 import ChooseGategory from './src/component/allHotels/ChooseGategory';
-
+import OwnerProfile from './src/component/OwnerProfile/OwnerProfile'
 import Calendar from './src/component/Detail/Reservation';
 import AdvancedFilter from './src/component/AdvancedFilter/AdvancedFilter';
 const Stack = createNativeStackNavigator();
@@ -48,7 +48,7 @@ function App() {
 //        <Inboarding/>  */}
     
     <GestureHandlerRootView style={{flex: 1}}>
-      <Hotelprofile />
+      <Hotelprofile/>
     </GestureHandlerRootView>
   )}
   
