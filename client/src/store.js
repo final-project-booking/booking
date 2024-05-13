@@ -5,7 +5,7 @@ import { configureStore } from '@reduxjs/toolkit';
   import signInSlice from './SliceAction/authentication/signInAction';
   import getOneSlice from "./SliceAction/getOne"
   import reservation from './SliceAction/reservation'
-  import allHotels from './SliceAction/AllHotels'
+  // import allHotels from './SliceAction/AllHotels'
   import reviewSlice from "./SliceAction/review"
   import getRoomByCategory from './SliceAction/getRoomByCategory';
   import HotelsSlice from './SliceAction/HotelsSlice';
@@ -17,9 +17,9 @@ const store = configureStore({
     getOne:getOneSlice,
     getOne:getOneSlice,
     reservation:reservation,
-    allHotels:allHotels,
+    review:reviewSlice,
     getRoomByCategory:getRoomByCategory,
-    HotelsSlice:HotelsSlice, 
+    allHotels:HotelsSlice, 
 }
 });
 
