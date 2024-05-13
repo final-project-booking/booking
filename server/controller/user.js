@@ -41,7 +41,7 @@ module.exports = {
             return res.status(400).json('Your password is incorrect');
         }
     
-        const token = jwt.sign({ id: foundUser.id }, process.env.SECRET_KEY);
+        const token = jwt.sign({ id: foundUser.id ,role:foundUser.role }, process.env.SECRET_KEY);
         // console.log(token);
         delete foundUser.password;
         res.status(200).send({ token, user: foundUser });

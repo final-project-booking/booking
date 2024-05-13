@@ -1,4 +1,5 @@
 const {reservation,room,hotel,user,options,owner, option, roomChat}=require('./database/index')
+const {reservation,room,hotel,user,options,owner, option, roomChat}=require('./database/index')
 const bcrypt=require("bcrypt")
 const { faker ,Randomizer} = require('@faker-js/faker');
 
@@ -16,12 +17,17 @@ function getRandomElementFromArray(arr) {
     
     }
   }
+  
   const SEED = async (sequelize) => {
     const saltRounds = await bcrypt.genSalt()
 let counterOwner=count()
 let hotelCounter=count()
 let counterRoom=count()
 let counterDate=count()
+// let optionCount=count()
+// let hotelcount=count()
+// let roomCount=count()
+
 // let optionCount=count()
 // let hotelcount=count()
 // let roomCount=count()
@@ -160,4 +166,6 @@ let counterDate=count()
         })
       )
     }
-    SEED()
+
+
+SEED()

@@ -6,6 +6,7 @@ import { configureStore } from '@reduxjs/toolkit';
   import getOneSlice from "./SliceAction/getOne"
   import reservation from './SliceAction/reservation'
   import allHotels from './SliceAction/AllHotels'
+  import reviewSlice from "./SliceAction/review"
   import getRoomByCategory from './SliceAction/getRoomByCategory';
   import HotelsSlice from './SliceAction/HotelsSlice';
 const store = configureStore({
