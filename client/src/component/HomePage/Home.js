@@ -1,5 +1,4 @@
-
-import React, {useEffect } from 'react'
+import React, { useState,useEffect } from 'react'
 import {
   Dimensions,
   FlatList,
@@ -13,31 +12,35 @@ import {
   Image,
   Animated,
 } from 'react-native';
+import { useSelector ,useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../const/Colors';
-// import hotels from '../const/Hotels';
-import { useSelector ,useDispatch} from 'react-redux';
-import { AllHotell } from '../../reduce/AllHotels';
+import { AllHotell } from '../../reduce/Hotels';
+
 const { width } = Dimensions.get('screen');
 const cardWidth = width / 1.8;
 
 const HomeScreen = ({ navigation }) => {
+
   const dispatch=useDispatch()
+
+  useEffect(()=>{
+    dispatch(AllHotell())
+    },[])
+;
+const hotel=useSelector(state=>state.allHotels.hotels)
+
+
   const categories = ['All', 'Popular', 'Top Rated', 'Featured', 'Luxury'];
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
   const [activeCardIndex, setActiveCardIndex] = React.useState(0);
   const scrollX = React.useRef(new Animated.Value(0)).current;
-  useEffect(()=>{
-    dispatch(AllHotell())
-    },[])
-    const hotels=useSelector(state=>state.allHotels.hotels)
-    console.log('hotel');
 
 
 React.useEffect(() => {
   Animated.timing(scrollX, {
     toValue: 100, 
-    duration: 1000, 
+  
     useNativeDriver: true, 
   }).start();
 }, []);
@@ -110,11 +113,11 @@ const opacity = scrollX.interpolate({
           <View style={styles.priceTag}>
             <Text
               style={{ color: COLORS.white, fontSize: 20, fontWeight: 'bold' }}>
-              ${hotel.price}
+              ${hotel.rooms}
             </Text>
           </View>
           
-          <Image source={hotel.image} style={styles.cardImage} />
+          <Image source={{uri:hotel.imgUrl}} style={styles.cardImage} />
           <View style={styles.cardDetails}>
             <View
               style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -123,7 +126,7 @@ const opacity = scrollX.interpolate({
                   {hotel.name}
                 </Text>
                 <Text style={{ color: COLORS.grey, fontSize: 12 }}>
-                  {hotel.location}
+                  {hotel.description}
                 </Text>
               </View>
               <Icon name="bookmark-border" size={26} color={COLORS.primary} />
@@ -165,11 +168,11 @@ const opacity = scrollX.interpolate({
             5.0
           </Text>
         </View>
-        <Image style={styles.topHotelCardImage} source={hotel.image} />
+        <Image style={styles.topHotelCardImage} source={{uri:hotel.imgUrl}} />
         <View style={{ paddingVertical: 5, paddingHorizontal: 10 }}>
           <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{hotel.name}</Text>
           <Text style={{ fontSize: 7, fontWeight: 'bold', color: COLORS.grey }}>
-            {hotel.location}
+            {hotel.description}
           </Text>
         </View>
       </View>
@@ -210,7 +213,7 @@ const opacity = scrollX.interpolate({
           <Animated.FlatList
             onScroll={handleScroll}
             horizontal
-            data={hotels}
+            data={hotel}
             contentContainerStyle={{
               paddingVertical: 30,
               paddingLeft: 20,
@@ -233,7 +236,7 @@ const opacity = scrollX.interpolate({
           <Text style={{ color: COLORS.grey }}>Show all</Text>
         </View>
         <FlatList
-          data={hotels}
+          data={hotel}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{

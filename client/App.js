@@ -28,11 +28,13 @@ const Tab = createBottomTabNavigator();
 function App() {
  
   return (
-    // <UserProfile/>
+    <UserProfile/>
   //  <AdvancedFilter/> 
-    <GestureHandlerRootView style={{flex: 1}}>
-      <Hotelprofile />
-    </GestureHandlerRootView>
+    // <GestureHandlerRootView style={{flex: 1}}>
+      //  <Nav/>  
+     //  <Hotelprofile/> 
+    // </GestureHandlerRootView> 
+    // <ProfileScreen/>
   )}
   
 export default App;
