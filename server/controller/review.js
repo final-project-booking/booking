@@ -28,6 +28,9 @@ module.exports = {
     getReviews:async(req,res)=>{
         try {
             const reviews=await review.findMany({
+                // orderBy: {
+                //     createdAt: 'desc' 
+                //   },
                 where:{
                     hotelId:parseInt(req.params.id)
                 },
@@ -35,7 +38,8 @@ module.exports = {
                     user:true
                 }
             })
-            res.status(200).send(reviews)
+            const reversed=reviews.reverse()
+            res.status(200).send(reversed)
         } catch (error) {
             throw error
         }
