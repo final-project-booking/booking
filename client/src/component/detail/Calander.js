@@ -15,20 +15,21 @@ export default function Reservation({route,navigation}) {
   const [selectedPlan, setSelectedPlan] = useState(route.params.plan);
   // const [people, setPeople] = useState(0);
   const [numRoom, setNumRoom] = useState(route.params.numRoom);
-  const [price, setPrice] = useState(prices.price);
+  const [price, setPrice] = useState();
 
   const dispatch = useDispatch();
 const prices=useSelector(state=>state.getRoomByCategory.room)
-console.log('price',prices.price);
-  const body={
-    view:selectedValue,
-    hotelId:hotelId,
-    plan:selectedPlan,
-    numRoom:numRoom,
-    price:price
+console.log('price',prices?.price);
+
+const body={
+  view:selectedValue,
+  hotelId:hotelId,
+  plan:selectedPlan,
+  numRoom:numRoom,
+  price:prices?.price
 }
-const handleGet=(obj)=>{
-    dispatch(ComparPrice(obj))
+const handleGet=()=>{
+    dispatch(ComparPrice(body))
 }
 
   console.log('hotelId',hotelId);
@@ -108,7 +109,7 @@ chek()
 </Button>
   <Button  mode="contained" style={{width:'30%',backgroundColor:'#0000FF'}}
     onPress={() =>
-       {handleGet(body), navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId})}
+       {handleGet(), navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId,numRoom:numRoom})}
       }
   >
    Continue

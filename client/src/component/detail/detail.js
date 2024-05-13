@@ -1,9 +1,10 @@
 import React,{useState,useEffect,useRef} from 'react'
 import { View, Text, StyleSheet, Linking ,ScrollView,Image,Dimensions,TouchableOpacity} from 'react-native';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator,Modal,Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -11,12 +12,38 @@ export default function Detail({route,navigation}) {
     
     const [dimension, setDimension] = useState(Dimensions.get('window'));
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [modalVisible, setModalVisible] = useState(false);
     const scrollRef = useRef();
-    const compar=useSelector(state=>state.comparPrice.compar)
+    const compar=useSelector(state=>state.comparPrice.compar)||[]
     console.log('compar',compar);
     const onChange = ({ window }) => {
       setDimension(window);
     };
+    // console.log('root',route.params.numRoom);
+
+
+    const checkToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        if(token !== null) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch(e) {
+        console.log(e);
+        return false;
+      }}
+   
+
+// console.log(tokenGeted());
+const check = async () => {
+  if(await checkToken()){
+    navigation.navigate('AllHotels')
+  }else{
+    setModalVisible(!modalVisible)
+  }
+}
     useEffect(() => {
      const subscription= Dimensions.addEventListener('change', onChange)
       return () => {
@@ -101,11 +128,11 @@ export default function Detail({route,navigation}) {
            
           
          <View style={{flexDirection:'row'}}>
-        <Icon size={20} name='star-border'style={{marginBottom:19}} color={'#f5a623'}/>
-        <Icon size={20} name='star-border' color={'#f5a623'}/>
-        <Icon size={20} name='star-border' color={'#f5a623'}/>
-        <Icon size={20} name='star-border' color={'#f5a623'}/>
-        <Icon size={20} name='star-border' color={'#f5a623'}/>
+        <Icon size={20} name='star'style={{marginBottom:19}} color={'#f5a623'}/>
+        <Icon size={20} name='star' color={'#f5a623'}/>
+        <Icon size={20} name='star' color={'#f5a623'}/>
+        <Icon size={20} name='star' color={'#f5a623'}/>
+        <Icon size={20} name='star' color={'#f5a623'}/>
         </View>
          
           
@@ -114,27 +141,35 @@ export default function Detail({route,navigation}) {
 <Text style={{height:1,width:'100%', backgroundColor:'#DCE2FC',marginTop:18}}>h</Text>
 </View>
 <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center',justifyContent:'space-between' }}>
-  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}>
+{compar?.mainRooms ? compar.mainRooms.map((e)=>{
+
+ return <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }} onPress={check}>
     <View style={{ marginTop: 20, marginRight: 20 }}>
       <Image source={{ uri: 'https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill' }} style={{ width: 150, height: 150, borderRadius: 10 }} />
       <View style={{ marginTop: 10 }}>
-        <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{x*y}</Text>
-        <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black' }}>People:</Text>
-        <Text style={{ color: 'black' }}>Price:$</Text>
+        <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{e?.view}</Text>
+        <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black' }}>People:{e?.capacity}</Text>
+        <Text style={{ color: 'black' }}>Price:${e?.price}</Text>
+        {/* <Text style={{ color: 'black' }}>Rooms:{route.params.numRoom}</Text> */}
       </View>
     </View>
   </TouchableOpacity>
+}):null}
+{compar?.mainRooms ? compar.relatedRooms.map((e)=>{
 
-  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}>
+return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}>
     <View style={{ marginTop: 20 }}>
       <Image source={{ uri: 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp' }} style={{ width: 150, height: 150, borderRadius: 10 }} />
       <View style={{ marginTop: 10 }}>
-        <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{x*y}</Text>
-        <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black' }}>People:</Text>
-        <Text style={{ color: 'black' }}>Price:$</Text>
+        <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{e?.view}</Text>
+        <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black' }}>People:{e?.capacity}</Text>
+        <Text style={{ color: 'black' }}>Price:${e?.price}</Text>
+        {/* <Text style={{ color: 'black' }}>Rooms:{route.params.numRoom}</Text> */}
+
       </View>
     </View>
   </TouchableOpacity>
+}):null}
 </View>
        
 
@@ -168,7 +203,40 @@ export default function Detail({route,navigation}) {
           </View>
         </View>
       </View>
+      <View style={styles.centeredView}>
+      <Modal
+      style={{height:40,width:40}}
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          // Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+          <Pressable
+              style={{marginTop:-10,marginRight:280}}
+              onPress={() => setModalVisible(!modalVisible)}>
+        <Icon name='keyboard-backspace' size={30} onPress={() => setModalVisible(!modalVisible)}/>
+        </Pressable>
+          <Text style={styles.modalText}>If you  have an Account? </Text>
+            <TouchableOpacity    style={{backgroundColor:'#DCE2FC',width:80,height:40,borderRadius:40,marginTop:15}}>
+            <Text style={{color:'black',textAlign:'center',marginTop:9}}  onPress={()=>navigation.navigate('Login')}>Login</Text>
+
+            </TouchableOpacity>
+            <Text style={styles.modalText}>If you don't have an Account? </Text>
+            <TouchableOpacity    style={{backgroundColor:'#DCE2FC',width:80,height:40,borderRadius:40,marginTop:15}}>
+              <Text style={{color:'black',textAlign:'center',marginTop:9}} onPress={()=>navigation.navigate('SignUp')}>Sign Up</Text>
+            </TouchableOpacity>
+          
+          </View>
+        </View>
+      </Modal>
+     
+    </View>
       </ScrollView>
+      
     );
 }
 const styles = StyleSheet.create({
@@ -257,5 +325,52 @@ const styles = StyleSheet.create({
       // backgroundColor:'#DCE2FC',
       
       color:'#0000FF'
+    },
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
+      
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 35,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    button: {
+      fontSize:50,
+      borderRadius: 20,
+      padding: 10,
+      elevation: 0,
+      width:140,
+      height:70,
+    },
+    buttonOpen: {
+      backgroundColor: 'white',
+    },
+    buttonClose: {
+      backgroundColor: 'white',
+    },
+    textStyle: {
+      color: 'black',
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: 'center',
+      fontSize:20,
+      marginTop:15
     },
   });

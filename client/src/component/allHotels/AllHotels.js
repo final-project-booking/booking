@@ -36,11 +36,11 @@ console.log('hotel');
     <View style={{marginTop:-20}}>
         <Text style={{fontSize:20,color:'black',marginBottom:12,color:'black'}}>{i.name}</Text>
         <View style={{flexDirection:'row'}}>  
-        <Icon size={20} name='star-border'style={{marginBottom:15}} color={'#f5a623'}/>
-        <Icon size={20} name='star-border' color={'#f5a623'}/>
-        <Icon size={20} name='star-border' color={'#f5a623'}/>
-        <Icon size={20} name='star-border' color={'#f5a623'}/>
-        <Icon size={20} name='star-border' color={'#f5a623'}/>
+        <Icon size={20} name='star'style={{marginBottom:15}} color={'#f5a623'}/>
+        <Icon size={20} name='star' color={'#f5a623'}/>
+        <Icon size={20} name='star' color={'#f5a623'}/>
+        <Icon size={20} name='star' color={'#f5a623'}/>
+        <Icon size={20} name='star' color={'#f5a623'}/>
         </View>
         <Text style={{marginLeft:1,marginBottom:15,color:'black'}}>Rooms:{i.rooms}</Text>
         <Text style={{color:'black'}}><Icon size={20} name='location-pin'/>{i.location}</Text>

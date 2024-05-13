@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 const initialState={
-    compar:{},
+    compar:[],
     loading:false,
     error:""
 }

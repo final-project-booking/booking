@@ -12,6 +12,7 @@ const userRoute=require('./router/user')
 const review=require("./router/review")
 const search=require('./router/search')
 // require("./dummy")()
+const negotiate=require('./router/negotiation')
 const bodyParser = require('body-parser');
 
 
@@ -31,7 +32,7 @@ app.use('/api/chat',chat)
 
 app.use("/api/review",review)
 app.use('/api/search',search)
-
+app.use('/app/negotiation',negotiate)
 
 
 app.use("/api/user",userRoute)

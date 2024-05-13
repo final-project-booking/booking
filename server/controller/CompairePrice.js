@@ -16,8 +16,8 @@ module.exports={
           
         
             // const {roomId}=req.params
-            const { plan,price,hotelId,view,numRoom} = req.body;
-       console.log(req.body);
+            const { plan,price,hotelId,view,numRoom} = req.params;
+       console.log(req.params);
        
       //  const allHotel=await hotel.findMany()
       // let isWithinRadius = false;
@@ -45,7 +45,7 @@ module.exports={
           const map = await room.findMany({
           // hotel id 
          where:{
-         hotelId:hotelId
+         hotelId:Number(hotelId)
          },
 
           include:{
@@ -66,7 +66,7 @@ module.exports={
             },
             
            
-            take:Number(numRoom)
+            take:Number(numRoom-1)
           });
 
         
@@ -82,7 +82,7 @@ module.exports={
       where:{
        OR:[
          {price:{ 
-            lte:price,
+            lte:Number(price),
             
            }},
            {dayAvailability:{
@@ -107,7 +107,7 @@ module.exports={
            },
            
          },
-         take:3
+         take:2
         })
 
         res.send({mainRooms:map,relatedRooms:allRooms});
