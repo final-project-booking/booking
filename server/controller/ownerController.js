@@ -64,7 +64,7 @@ module.exports={
                 result = await prisma.$transaction(async (prisma) => {
                     const owner = await prisma.owner.create({
                         data: {
-                            id: id,
+                            id:id,
                             hotel: {
                                 create: {
                                     imgUrl: hotelData.imgUrl,
@@ -80,7 +80,7 @@ module.exports={
                             }
                         }
                     });
-                    const allHotels=helper(media,result.hotel.id)
+                    const allHotels=helper(hotelData.media,result.hotel.id)
                     const createMedia=await prisma.media.createMany({
                        data:allHotels
                     })
@@ -154,7 +154,6 @@ createRoomsForHotel: async function(req, res) {
                 data: {
                     hotelId: hotelId,
                     price: roomTemplate.price,
-                    imgUrl: roomTemplate.imgUrl,
                     view: roomTemplate.view,
                     capacity: roomTemplate.capacity,
                     reduction: roomTemplate.reduction,

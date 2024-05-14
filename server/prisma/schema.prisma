@@ -44,7 +44,7 @@ model Hotel {
   rooms       Int
   licence     String
   owner       Owner?    @relation(fields: [ownerId], references:[id])
-  ownerId     Int?
+  ownerId     Int
   room        Room[]
   media       Media[]
   review      Review[]
@@ -87,7 +87,6 @@ model Room {
   dayAvailability DayAvailability[]
   price           Int
   capacity        Int
-  imgUrl          String
   option          Option?
   view            View
   reduction       Boolean  @default(false)

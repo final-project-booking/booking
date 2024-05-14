@@ -2,10 +2,13 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Title, Caption, Divider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity,TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity,TextInput, Button,Switch } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {createRoomsForHotel}from '../../reduce/Rooms';
 import { useDispatch } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {cloud_name,preset} from "../../apAdress"
 
 const OverviewScreen = () => {
   
@@ -27,6 +30,18 @@ const OverviewScreen = () => {
           media: [] 
       }
   });
+  const handleOptionChange = (newMealPlan) => {
+    setRoomData({
+        ...roomData,
+        roomTemplate: {
+            ...roomData.roomTemplate,
+            option: {
+                ...roomData.roomTemplate.option,
+                Meal_Plan: newMealPlan
+            }
+        }
+    });
+};
   const imageHandler = async (imageAsset) => {
     const form = new FormData();
     form.append("file", {
@@ -47,7 +62,7 @@ const OverviewScreen = () => {
 
   const pickImage = () => {
     const options = {
-      selectionLimit: 0,
+      selectionLimit: 0,  
       mediaType: 'photo'
     };
 
@@ -55,49 +70,102 @@ const OverviewScreen = () => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.errorCode) {
-        console.log('ImagePicker Error:', response.errorMessage);
+        console.log('ImagePicker Error: ', response.errorMessage);
       } else {
         try {
           const uploadPromises = response.assets.map(imageAsset => imageHandler(imageAsset));
+          console.log(uploadPromises,'uploadPromises');
           const imageUris = await Promise.all(uploadPromises);
           setRoomData(prevData => ({
-            ...prevData,
-            media: [...prevData.media, ...imageUris]
+              ...prevData,
+              roomTemplate: {
+                  ...prevData.roomTemplate,
+                  media: [...prevData.roomTemplate.media, ...imageUris]
+              }
           }));
         } catch (error) {
           console.log('Error uploading images:', error);
         }
       }
     });
-  };
+};
+
+
+const handleReductionChange = (newValue) => {
+  setRoomData(prevData => ({
+      ...prevData,
+      roomTemplate: {
+          ...prevData.roomTemplate,
+          reduction: newValue
+      }
+  }));
+};
   
   const handleSubmit = () => {
     dispatch(createRoomsForHotel(roomData));
+    // console.log(roomData,'roomData');
 };
+
+const ImageIcon = <Icon size={25} name='add-a-photo' />;
 
     const BottomSheetContent = () => (
       <View style={styles.bottomSheetContent}>
+         <View style={{flexDirection:'column', gap: 10 }}>
+                <View />
+               </View>
         <Text style={styles.bottomSheetTitle}>Add More Rooms</Text>
-        <TextInput style={styles.input} placeholder="Capacity" keyboardType="numeric"/>
-        <TextInput style={styles.input} placeholder="Price" keyboardType="numeric"/>
-        <TextInput style={styles.input} placeholder="View" />
-        <TextInput style={styles.input} placeholder="Reduction" keyboardType="numeric" />
-        <TextInput style={styles.input} placeholder="Rate" keyboardType="numeric" />
-        <TextInput style={styles.input} placeholder="option" />
-        <View style={{flexDirection:'column', gap: 10 }}>
+        <TextInput 
+                style={styles.input} 
+                placeholder="Number of Rooms" 
+                keyboardType="numeric"
+                onChangeText={(text) => setRoomData({ ...roomData, numRooms: parseInt(text, 10) })}
+            />
+        <TextInput 
+                style={styles.input} 
+                placeholder="Capacity" 
+                keyboardType="numeric" 
+                onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, capacity: parseInt(text, 10) } })}
+             />
+        <TextInput 
+                style={styles.input} 
+                placeholder="Price" 
+                keyboardType="numeric"  
+                onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, price: parseInt(text, 10) } })}
+             />
+      <TextInput style={styles.input} placeholder="View" onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, view: text } })} />
+      
+      <TextInput style={styles.input} placeholder="Rate" keyboardType="numeric"  onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, rate: parseInt(text, 10) } })} />
+      
+      <TextInput style={styles.input} placeholder="Meal Plan"  onChangeText={handleOptionChange} />
+      <View style={styles.switchContainer}>
+      <Text style={styles.switchLabel}>Reduction:</Text>
+       <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={roomData.roomTemplate.reduction ? "#000000" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={handleReductionChange}
+        value={roomData.roomTemplate.reduction}
+        />
+        </View>
+      <View style={{flexDirection:'column', gap: 10 }}>
                 <View />
                 <View />
                 <View />
                 <View />
                </View>
               <Text onPress={pickImage} style={{color:"black"}}>Select your {ImageIcon}</Text>
+              {roomData.roomTemplate.media.length > 0 && (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageContainer}>
+                {roomData.roomTemplate.media.map((uri, index) => (
+                    <Image key={index} source={{ uri }} style={styles.imagePreview} />
+                ))}
+            </ScrollView>
+        )}
               <View style={{flexDirection:'column', gap: 10 }}>
                 <View />
                 <View />
-                <View />
-                <View />
                </View>
-        <Button title="Submit" onPress={() => alert('Submitted!')} />
+        <Button title="Submit" onPress={handleSubmit} />
       </View>
     );
   
@@ -174,7 +242,7 @@ const OverviewScreen = () => {
           snapPoints={snapPoints}
           style={styles.bottomSheet}
         >
-          <BottomSheetContent />
+          {BottomSheetContent()}
         </BottomSheet>
       </View>
     );
@@ -490,16 +558,35 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   bottomSheetContent: {
-    flex: 1,
+    flex:1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
+    padding:18,
   },
   bottomSheetTitle: {
-    fontSize: 18,
+    fontSize: 10,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom:14,
   },
+  switchContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginBottom: 10, 
+    marginTop: 10, 
+},
+switchLabel: {
+    marginRight: 10, 
+},
+imageContainer: {
+  flexDirection: 'row',
+  marginTop: 10,
+  marginBottom: 10,
+},
+imagePreview: {
+  width: 100,
+  height: 100,
+  marginRight: 10,
+},
   input: {
     width: '100%',
     padding: 10,
