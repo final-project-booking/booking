@@ -155,12 +155,12 @@ const ImageIcon = <Icon size={25} name='add-a-photo' />;
                </View>
               <Text onPress={pickImage} style={{color:"black"}}>Select your {ImageIcon}</Text>
               {roomData.roomTemplate.media.length > 0 && (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageContainer}>
-                {roomData.roomTemplate.media.map((uri, index) => (
-                    <Image key={index} source={{ uri }} style={styles.imagePreview} />
-                ))}
-            </ScrollView>
-        )}
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageContainer}>
+                    {roomData.roomTemplate.media.map((uri, index) => (
+                        <Image key={index} source={{ uri }} style={styles.imagePreview} />
+                    ))}
+                </ScrollView>
+            )}
               <View style={{flexDirection:'column', gap: 10 }}>
                 <View />
                 <View />
