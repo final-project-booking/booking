@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react'
 import {
   Dimensions,
   FlatList,
@@ -12,14 +12,32 @@ import {
   Image,
   Animated,
 } from 'react-native';
+import { useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../const/Colors';
-import hotels from '../const/Hotels';
+
+import { AllHotell } from '../../reduce/Hotels';
 
 const { width } = Dimensions.get('screen');
 const cardWidth = width / 1.8;
 
 const HomeScreen = ({ navigation }) => {
+
+
+  const dispatch=useDispatch()
+  const hotel = useSelector(state => state.allHotels.hotels);
+  const loading = useSelector(state => state.allHotels.loading);
+  const error = useSelector(state => state.allHotels.error);
+
+  useEffect(()=>{
+    dispatch(AllHotell())
+  
+
+    },[dispatch])
+;
+
+console.log(hotel,"hotelss")
+
   const categories = ['All', 'Popular', 'Top Rated', 'Featured', 'Luxury'];
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
   const [activeCardIndex, setActiveCardIndex] = React.useState(0);
@@ -29,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
 React.useEffect(() => {
   Animated.timing(scrollX, {
     toValue: 100, 
-    duration: 1000, 
+   duration: 10,
     useNativeDriver: true, 
   }).start();
 }, []);
@@ -48,6 +66,7 @@ const opacity = scrollX.interpolate({
   outputRange: [1, 0], 
   extrapolate: 'clamp',
 });
+
   const CategoryList = ({ navigation }) => {
     return (
       <View style={styles.categoryListContainer}>
@@ -84,46 +103,65 @@ const opacity = scrollX.interpolate({
     );
   };
 
-  const Card = ({ hotel, index }) => {
-    const inputRange = [
-      (index - 1) * cardWidth,
-      index * cardWidth,
-      (index + 1) * cardWidth,
-    ];
-    // const opacity = scrollX.interpolate({
-    //   inputRange,
-    //   outputRange: [0.7, 1, 0.7],
-    // });
-    // const scale = scrollX.interpolate({
-    //   inputRange,
-    //   outputRange: [0.8, 1, 0.8],
-    // });
-    return (
-      <TouchableOpacity
-        disabled={activeCardIndex != index}
-        activeOpacity={1}
-        onPress={() => navigation.navigate('Detail', hotel)}>
-      
- <Animated.View style={{ ...styles.card, transform: [{ scale }] }}>
-    <Animated.View style={{ ...styles.cardOverlay, opacity }} />
 
-          <View style={styles.priceTag}>
-            <Text
-              style={{ color: COLORS.white, fontSize: 20, fontWeight: 'bold' }}>
-              ${hotel.price}
-            </Text>
-          </View>
-          
-          <Image source={hotel.image} style={styles.cardImage} />
-          <View style={styles.cardDetails}>
-            <View
+
+  const TopHotelCard = ({ hotel }) => {
+    return (
+      <View style={styles.topHotelCard}>
+        <View
+          style={{
+            position: 'absolute',
+            top: 5,
+            right: 5,
+            zIndex: 1,
+            flexDirection: 'row',
+          }}>
+          <Icon name="star" size={15} color={COLORS.orange} />
+          <Text style={{ color: COLORS.white, fontWeight: 'bold', fontSize: 15 }}>
+            5.0
+          </Text>
+        </View>
+        <Image style={styles.topHotelCardImage} source={{uri:hotel.imgUrl}} />
+        <View style={{ paddingVertical: 5, paddingHorizontal: 10 }}>
+          <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{hotel.name}</Text>
+          <Text style={{ fontSize: 7, fontWeight: 'bold', color: COLORS.grey }}>
+            {hotel.description}
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
+  const Card = ({ hotel }) => {
+    return (
+          <TouchableOpacity
+        // disabled={activeCardIndex != index}
+        // activeOpacity={1}
+        onPress={() => navigation.navigate('Hotelprofile', hotel)}>
+      <View style={styles.card}>
+        <View
+          style={{
+            position: 'absolute',
+            top: 5,
+            right: 5,
+            zIndex: 1,
+            flexDirection: 'row',
+          }}>
+          <Icon name="star" size={15} color={COLORS.orange} />
+          <Text style={{ color: COLORS.white, fontWeight: 'bold', fontSize: 15 }}>
+            5.0
+          </Text>
+        </View>
+        <Image style={styles.cardImage} source={{uri:hotel.imgUrl}} />
+        <View style={styles.cardDetails}>
+           <View
               style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <View>
                 <Text style={{ fontWeight: 'bold', fontSize: 17 }}>
                   {hotel.name}
                 </Text>
                 <Text style={{ color: COLORS.grey, fontSize: 12 }}>
-                  {hotel.location}
+                  {hotel.description}
                 </Text>
               </View>
               <Icon name="bookmark-border" size={26} color={COLORS.primary} />
@@ -144,35 +182,8 @@ const opacity = scrollX.interpolate({
               <Text style={{ fontSize: 10, color: COLORS.grey }}>365reviews</Text>
             </View>
           </View>
-        </Animated.View>
-      </TouchableOpacity>
-    );
-  };
-
-  const TopHotelCard = ({ hotel }) => {
-    return (
-      <View style={styles.topHotelCard}>
-        <View
-          style={{
-            position: 'absolute',
-            top: 5,
-            right: 5,
-            zIndex: 1,
-            flexDirection: 'row',
-          }}>
-          <Icon name="star" size={15} color={COLORS.orange} />
-          <Text style={{ color: COLORS.white, fontWeight: 'bold', fontSize: 15 }}>
-            5.0
-          </Text>
-        </View>
-        <Image style={styles.topHotelCardImage} source={hotel.image} />
-        <View style={{ paddingVertical: 5, paddingHorizontal: 10 }}>
-          <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{hotel.name}</Text>
-          <Text style={{ fontSize: 7, fontWeight: 'bold', color: COLORS.grey }}>
-            {hotel.location}
-          </Text>
-        </View>
       </View>
+      </TouchableOpacity>
     );
   };
 
@@ -207,19 +218,18 @@ const opacity = scrollX.interpolate({
         </View>
         <CategoryList />
         <View>
-          <Animated.FlatList
-            onScroll={handleScroll}
-            horizontal
-            data={hotels}
-            contentContainerStyle={{
-              paddingVertical: 30,
-              paddingLeft: 20,
-              paddingRight: cardWidth / 2 - 40,
-            }}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) => <Card hotel={item} index={index} />}
-            snapToInterval={cardWidth}
-          />
+          
+        <FlatList
+          data={hotel}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingLeft: 20,
+            marginTop: 20,
+            paddingBottom: 30,
+          }}
+          renderItem={({ item }) => <Card hotel={item}  />}
+        />
         </View>
         <View
           style={{
@@ -233,7 +243,7 @@ const opacity = scrollX.interpolate({
           <Text style={{ color: COLORS.grey }}>Show all</Text>
         </View>
         <FlatList
-          data={hotels}
+          data={hotel}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{

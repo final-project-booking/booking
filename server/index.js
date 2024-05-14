@@ -11,6 +11,7 @@ const CompairePrice=require('./router/compairePrice')
 const userRoute=require('./router/user')
 const review=require("./router/review")
 const search=require('./router/search')
+const hotel = require('./router/hotel');
 
 
 
@@ -31,6 +32,7 @@ app.use('/api/chat',chat)
 app.use("/api/review",review)
 app.use('/api/search',search)
 
+app.use('/api', hotel);
 
 
 app.use("/api/user",userRoute)

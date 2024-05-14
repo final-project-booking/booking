@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {cloud_name,preset} from "../../apAdress"
-
+import Reviews from './Reviews'
 const OverviewScreen = () => {
   
     const bottomSheetRef = useRef(null);
@@ -287,7 +287,7 @@ const DetailsScreen = () => (
 
 const ReviewsScreen = () => (
   <View style={styles.screenContainer}>
-    <Text>Reviews Content</Text>
+    <Reviews/>
   </View>
 );
 
