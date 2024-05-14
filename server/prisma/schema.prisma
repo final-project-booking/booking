@@ -140,6 +140,12 @@ model Review {
   user    User   @relation(fields: [userId], references: [id])
   userId  Int
 }
+model Payment {
+  id         Int    @id @default(autoincrement())
+  amount     Int
+  currency   String
+  status     String
+}
 
 model Media {
   id              Int      @unique       @id @default(autoincrement())
@@ -154,3 +160,4 @@ model MediaRoom {
   roomId    Int 
   link      String      
 }
+
