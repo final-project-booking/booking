@@ -1,4 +1,5 @@
 const {reservation,room,hotel,user,options,owner, option, roomChat}=require('./database/index')
+const {reservation,room,hotel,user,options,owner, option, roomChat}=require('./database/index')
 const bcrypt=require("bcrypt")
 const { faker ,Randomizer} = require('@faker-js/faker');
 
@@ -16,6 +17,7 @@ function getRandomElementFromArray(arr) {
     
     }
   }
+  
   const SEED = async (sequelize) => {
     let local=faker.location.nearbyGPSCoordinate({ origin: [35.84160807475632, 10.629283816082914], radius: 6000, isMetric: true })
     console.log("hello",local)
@@ -24,6 +26,10 @@ let counterOwner=count()
 let hotelCounter=count()
 let counterRoom=count()
 let counterDate=count()
+// let optionCount=count()
+// let hotelcount=count()
+// let roomCount=count()
+
 // let optionCount=count()
 // let hotelcount=count()
 // let roomCount=count()
@@ -99,6 +105,7 @@ let counterDate=count()
                 rating: faker.number.int({ min: 1, max: 5 }),
                 rooms:faker.number.int({ min: 1, max: 100}),
                 licence:faker.commerce.productName(),
+                imgUrl:faker.image.url(),
                 ownerId: owne.id, 
                 latitude:local[0], 
                 longitude:local[1],
@@ -162,4 +169,6 @@ let counterDate=count()
         })
       )
     }
-    SEED()
+
+
+SEED()

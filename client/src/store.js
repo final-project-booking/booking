@@ -6,8 +6,10 @@ import { configureStore } from '@reduxjs/toolkit';
   import getOneSlice from "./SliceAction/getOne"
   import reservation from './SliceAction/reservation'
   import allHotels from './SliceAction/AllHotels'
+  import reviewSlice from "./SliceAction/review"
   import getRoomByCategory from './SliceAction/getRoomByCategory';
-  import comparPrice from './SliceAction/comparPrice';
+  // import HotelsSlice from './SliceAction/HotelsSlice';
+  import compairePrice from './SliceAction/comparPrice';
 const store = configureStore({
   reducer: {
     userSignUp:signUpSlice,
@@ -18,7 +20,10 @@ const store = configureStore({
     reservation:reservation,
     allHotels:allHotels,
     getRoomByCategory:getRoomByCategory,
-    comparPrice:comparPrice
+    comparPrice:compairePrice,
+    review:reviewSlice,
+    getRoomByCategory:getRoomByCategory,
+    // AllHotel:HotelsSlice, 
 }
 });
 

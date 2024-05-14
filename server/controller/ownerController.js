@@ -1,4 +1,3 @@
-const { create } = require("domain");
 const prisma = require("../database");
 
 module.exports={
@@ -213,8 +212,28 @@ console.log(req.params);
     } catch (error) {
         throw error
     }
-  }     
+  },     
   
+getAllHotels:async (req,res)=>{
+    try {
+        const hot=await prisma.hotel.findMany()
+        res.status(200).send(hot)
+    } catch (error) {
+        throw error
+    }
+},
+getOnebyId:async(req,res)=>{
+    try {
+        const id=req.params.id
+        const hotel=await prisma.hotel.findUnique({where:{id:parseInt(id)}
+    
+    })
+        res.status(200).send(hotel)
+    } catch (error) {
+        
+    }
+}
+
 
 
 }

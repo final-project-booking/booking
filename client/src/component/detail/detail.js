@@ -157,7 +157,7 @@ const check = async () => {
 }):null}
 {compar?.mainRooms ? compar.relatedRooms.map((e)=>{
 
-return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}>
+return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}  onPress={check}>
     <View style={{ marginTop: 20 }}>
       <Image source={{ uri: 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp' }} style={{ width: 150, height: 150, borderRadius: 10 }} />
       <View style={{ marginTop: 10 }}>
@@ -196,11 +196,11 @@ return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadow
             </View>
           </View>
           {/* Continue Button */}
-          <View style={styles.buttonContainer} >
+          {/* <View style={styles.buttonContainer} >
           <Button  mode="contained" style={{backgroundColor:'#0000FF',top:-20}}  >
           Reservation
          </Button>
-          </View>
+          </View> */}
         </View>
       </View>
       <View style={styles.centeredView}>

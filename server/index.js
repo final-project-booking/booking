@@ -14,6 +14,9 @@ const search=require('./router/search')
 // require("./dummy")()
 const negotiate=require('./router/negotiation')
 const bodyParser = require('body-parser');
+const hotel = require('./router/hotel');
+
+
 
 
 // app.use(express.static(__dirname + "/../client/dist"))
@@ -33,6 +36,8 @@ app.use('/api/chat',chat)
 app.use("/api/review",review)
 app.use('/api/search',search)
 app.use('/app/negotiation',negotiate)
+
+app.use('/api', hotel);
 
 
 app.use("/api/user",userRoute)

@@ -1,9 +1,15 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react';
+import React, { useRef, useState, useEffect ,useMemo} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import  Icon from 'react-native-vector-icons/FontAwesome';
 import { Title, Caption, Divider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity,TextInput, Button } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
+
+
+
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity, Button } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
+import Reviews from './Reviews';
 
 const OverviewScreen = () => {
     const bottomSheetRef = useRef(null);
@@ -27,7 +33,8 @@ const OverviewScreen = () => {
   
     return (
       <View style={styles.overviewWrapper}>
-        <ScrollView contentContainerStyle={styles.overviewContainer}>
+        <ScrollView contentContainerStyle={styles.overviewContainer} >
+            
           <Text style={styles.overviewTitle}>About Grand Hotel</Text>
           <Text style={styles.overviewText}>
             Welcome to the Grand Hotel, a luxurious retreat located in the heart of the city. With elegant suites, exceptional dining, and stunning views, we offer an unforgettable experience for both leisure and business travelers.
@@ -71,7 +78,7 @@ const OverviewScreen = () => {
             />
           </ScrollView>
           <Divider style={styles.overviewDivider} />
-         
+        
         </ScrollView>
         <View style={{flexDirection:'column', gap: 10 }}>
          <View />
@@ -140,12 +147,15 @@ const DetailsScreen = () => (
     <Divider style={styles.detailsDivider} />
   </ScrollView>
 );
+const ReviewsScreen = () => {
+    return <Reviews/>
+};
 
-const ReviewsScreen = () => (
-  <View style={styles.screenContainer}>
-    <Text>Reviews Content</Text>
-  </View>
-);
+    
+    
+
+
+
 
 const HotelProfile = () => {
   const carouselImages = [
@@ -172,15 +182,15 @@ const HotelProfile = () => {
     setSelectedIndex(carouselIndex);
   };
 
-  useEffect(() => {
-    const onChange = ({ window }) => {
-      setDimension(window);
-    };
-    Dimensions.addEventListener('change', onChange);
-    return () => {
-      Dimensions.removeEventListener('change', onChange);
-    };
-  }, []);
+    useEffect(() => {
+        const onChange = ({ window }) => {
+            setDimension(window);
+        };
+        const x=Dimensions.addEventListener('change', onChange);
+        return () => {
+            x.remove()
+        };
+    }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -228,7 +238,7 @@ const HotelProfile = () => {
 
   return (
     <SafeAreaProvider>
-      <ScrollView style={styles.container}>
+      <View style={styles.container} >
         <ScrollView
           horizontal
           ref={scrollRef}
@@ -288,92 +298,116 @@ const HotelProfile = () => {
             </TouchableOpacity>
           ))}
         </View>
+        
         <Divider style={styles.divider} />
+     
         {renderSelectedTab()}
-      </ScrollView>
+       
+      </View>
     </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#f8f9fa',
-  },
-  dotContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 10,
-    alignSelf: 'center',
-  },
-  activeDot: {
-    color: 'white',
-  },
-  inactiveDot: {
-    color: '#888',
-  },
-  infoLine: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    marginHorizontal: 8,
-    marginVertical: 4,
-  },
-  titleText: {
-    fontSize: 20,
-    color: '#333',
-  },
-  captionText: {
-    marginLeft: 10,
-    fontSize: 16,
-    color: '#666',
-  },
-  divider: {
-    marginHorizontal: 8,
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  starIcon: {
-    marginRight: 3,
-  },
-  screenContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tabBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-  },
-  tabItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  tabLabel: {
-    fontSize: 16,
-    color: '#666',
-  },
-  selectedTabLabel: {
-    color: '#007BFF',
-    fontWeight: 'bold',
-  },
-  tabIndicator: {
-    width: '100%',
-    height: 3,
-    backgroundColor: '#007BFF',
-    marginTop: 2,
-  },
-  //////////////////
-  overviewWrapper: {
-    flex: 1,
-  },
-  overviewContainer: {
-    padding: 16,
+    container: {
+        backgroundColor: '#f8f9fa',
+    },
+    buttonContainer: {
+        marginTop: 20,
+        height: 45,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+        width: 80,
+        borderRadius: 30,
+        borderStyle: "solid",
+        backgroundColor: '#112678',
+        textAlign:"center"
+      },
+      next: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 20
+      },
+    review:{
+        backgroundColor:"#E0FFFF",
+        alignItems:"center",
+        width:350,
+        height:230,
+        borderRadius:20
+    },
+    dotContainer: {
+        flexDirection: 'row',
+        position: 'absolute',
+        bottom: 10,
+        alignSelf: 'center',
+    },
+    activeDot: {
+        color: 'white',
+    },
+    inactiveDot: {
+        color: '#888',
+    },
+    infoLine: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        marginHorizontal: 8,
+        marginVertical: 4,
+    },
+    titleText: {
+        fontSize: 20,
+        color: '#333',
+    },
+    captionText: {
+        marginLeft: 10,
+        fontSize: 16,
+        color: '#666',
+    },
+    divider: {
+        marginHorizontal: 8,
+    },
+    ratingContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    starIcon: {
+        marginRight: 3,
+    },
+    screenContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    tabBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+    },
+    tabItem: {
+        alignItems: 'center',
+        flex: 1,
+    },
+    tabLabel: {
+        fontSize: 16,
+        color: '#666',
+    },
+    selectedTabLabel: {
+        color: '#007BFF',
+        fontWeight: 'bold',
+    },
+    tabIndicator: {
+        width: '100%',
+        height: 3,
+        backgroundColor: '#007BFF',
+        marginTop: 2,
+    },
+    overviewContainer: {
+      flex: 1,
+      padding: 16,
   },
   overviewTitle: {
     fontSize: 18,
@@ -425,12 +459,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    width: '100%',
+    width: '90%',
     padding: 10,
     marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius:20
   },
   ////////////////////
   detailsContainer: {

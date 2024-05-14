@@ -164,19 +164,19 @@ const SignUp = ({navigation}) => {
           <Text style={styles.login}>Sign up</Text>
           <View style={styles.loginContainer}>
           <View style={styles.login_inputsContainer}>
-          <Text style={styles.login_label}>First name</Text>
+          <Text style={styles.login_label}></Text>
             <TextInput
               
               style={styles.input}
-              placeholder='----------------------------------------------'
+              placeholder='First name'
               onChangeText={(text) => handleInputChange('firstName', text)}
               value={signUp.firstName}
             />
-            <Text style={styles.login_label}>last name</Text>
+            <Text style={styles.login_label}></Text>
             <TextInput
             
               style={styles.input}
-              placeholder='----------------------------------------------'
+              placeholder='Last name'
               onChangeText={(text) => handleInputChange('lastName', text)}
               value={signUp.lastName}
             />

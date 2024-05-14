@@ -64,8 +64,8 @@ const Onboarding = ({navigation}) => {
  
   const onboardingImages = [
     require('../../Photo/Screen1.jpeg'),
-    require('../../Photo/screen2.jpg'),
-    require('../../Photo/screen3.jpeg'),
+    // require('../../Photo/screen2.jpg'),
+    // require('../../Photo/screen3.jpeg'),
   ];
   return (
     <View style={{ flex: 1 }}>
