@@ -7,6 +7,7 @@ import { getOneAsync } from '../../reduce/getOne';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import Te from 'react-native-vector-icons/Ionicons'
+import IconFa from 'react-native-vector-icons/MaterialIcons'
 const UserProfile = ({ navigation }) => {
   const dispatch = useDispatch();
   const [profile, setProfile] = useState(null);
@@ -84,8 +85,8 @@ const HandleButton=()=>{
         </TouchableOpacity>
         
         <TouchableOpacity style={styles.sidebarItem} onPress={HandleButton}>
-          <Icon name="like2" size={25} color="#161618" />
-          <Text style={styles.sidebarText}>Post your Own Hotel</Text>
+          <IconFa name="add-home-work" size={30} color="#161618" />
+          <Text style={styles.sidebarText}>List Your Property</Text>
         </TouchableOpacity>
         
         <TouchableOpacity style={styles.sidebarItem} onPress={handleLogout}> 

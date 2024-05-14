@@ -161,16 +161,3 @@ model MediaRoom {
   link      String      
 }
 
-model Media {
-  id              Int      @unique       @id @default(autoincrement())
-  hotel           Hotel             @relation(fields: [hotelId], references: [id])
-  hotelId         Int
-  link            String      
-}
-
-model MediaRoom {
-  id       Int      @unique       @id @default(autoincrement())
-  room      Room     @relation(fields: [roomId], references: [id])
-  roomId    Int 
-  link      String      
-}
