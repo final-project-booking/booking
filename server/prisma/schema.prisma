@@ -139,3 +139,9 @@ model Review {
   user    User   @relation(fields: [userId], references: [id])
   userId  Int
 }
+model Payment {
+  id         Int    @id @default(autoincrement())
+  amount     Int
+  currency   String
+  status     String
+}

@@ -1,82 +1,98 @@
-
-
-  
-
-  import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
 import { getOneAsync } from '../../reduce/getOne';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
+import Icon from 'react-native-vector-icons/AntDesign';
+import Icons from 'react-native-vector-icons/FontAwesome';
+import Te from 'react-native-vector-icons/Ionicons'
 const UserProfile = ({ navigation }) => {
   const dispatch = useDispatch();
-  // const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const handleLogout = async () => {
+    try {
+      // Clear user authentication state (e.g., remove token, clear user data)
+      await AsyncStorage.removeItem('userToken'); // Example: remove authentication token stored in AsyncStorage
 
-  // useEffect(() => {
-  //   const fetchUserProfile = async () => {
-  //     try {
-  //       const token = await AsyncStorage.getItem('token');
-  //       const decoded = jwtDecode(token);
-  //       const userId = decoded.id;
-  //       const userData = await dispatch(getOneAsync(userId));
-  //       setProfile(userData.payload);
-  //     } catch (error) {
-  //       console.log('Error fetching user data:', error);
-  //     }
-  //   };
-  
-  //   fetchUserProfile();
-  // }, [dispatch]);
-const profile = {
-  firstName: 'John' ,
-  lastName:   'Doe',
-    email: 'johndoe@example.com',
-    password: 'password',
-    imageUrl: 'https://th.bing.com/th/id/OIP.2i5UaEHaQM3PYAYXQyM1AAAAAA?w=177&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7', // Provided image URL
-    location: {
-      latitude: 37.78825,
-      longitude: -122.4324,
-      phoneNumber: 5457543
+      // Navigate to login screen or initial screen
+      navigation.navigate('Login'); // Example: navigate to the Login screen
+    } catch (error) {
+      console.error('Error logging out:', error);
+      Alert.alert('Error', 'Failed to log out. Please try again.');
     }
   };
+
+const HandleButton=()=>{
+  navigation.navigate('OwnerProfile');
+}
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const decoded = jwtDecode(token);
+        const userId = decoded.id;
+        const userData = await dispatch(getOneAsync(userId));
+        setProfile(userData.payload);
+      } catch (error) {
+        console.log('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [dispatch]);
+
   const handleEditProfile = () => {
     navigation.navigate('EditProfile');
   };
 
-  const renderProfileInfo = () => {
-    return (
-      <View style={styles.infoContainer}>
-        <ProfileInfo label="Full name:" value={`${profile.firstName} ${profile.lastName}`} iconName="user" />
-        <ProfileInfo label="Email:" value={profile.email} iconName="envelope" />
-        <ProfileInfo label="Phone number:" value={profile.phoneNumber} iconName="phone" />
-      </View>
-    );
-  };
-
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.card}>
-        <Image source={{ uri: profile?.imageUrl }} style={styles.image} />
-        <Text style={styles.heading}>Your Profile</Text>
-        {profile && renderProfileInfo()}
-        <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
-          <Text style={styles.editButtonText}>Edit Profile</Text>
+    <View style={styles.container}>
+       
+        <View style={styles.coverImage} >
+        <Te name="notifications-outline" size={25} color="#f5f5f5" style={styles.Te}/>
+        </View>
+      
+      <View style={styles.header} >
+        <Image source={{ uri: profile?.imgUrl }} style={styles.image} />
+        <Text style={styles.fullName}>{profile?.firstName} {profile?.lastName}</Text>
+      </View>
+      <ScrollView style={styles.sidebar}>
+      <View style={styles.infoBox}>
+          <Icon name="phone" size={25} color="#161618" />
+          <Text style={styles.infoText}>{profile?.phoneNumber}</Text>
+        </View>
+        <View style={styles.infoBox}>
+          <Icons name="envelope-o" size={25} color="#161618" />
+          <Text style={styles.infoText}>{profile?.email}</Text>
+        </View>
+        <TouchableOpacity style={styles.sidebarItem} onPress={handleEditProfile}>
+          <Icon name="edit" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Manage your Account</Text>
         </TouchableOpacity>
-      </View>
-    </ScrollView>
-  );
-};
-
-const ProfileInfo = ({ label, value, iconName }) => {
-  return (
-    <View style={styles.infoBox}>
-      <Icon name={iconName} size={30} color="#000" />
-      <View style={styles.infoTextContainer}>
-        <Text style={styles.label}>{label}</Text>
-        <Text style={styles.infoText}>{value}</Text>
-      </View>
+        <TouchableOpacity style={styles.sidebarItem}>
+          <Icons name="heart-o" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Favourites</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.sidebarItem}>
+          <Icon name="creditcard" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Transations</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.sidebarItem}>
+          <Icon name="like2" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Reviews</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.sidebarItem} onPress={HandleButton}>
+          <Icon name="like2" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Post your Own Hotel</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.sidebarItem} onPress={handleLogout}> 
+          <Icon name="logout" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Logout</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
@@ -84,60 +100,82 @@ const ProfileInfo = ({ label, value, iconName }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f5f5f5',
+    // backgroundColor:"112678"
+
   },
-  card: {
+  header: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    paddingVertical: 20,
+    position: 'relative',
+    // marginTop:10,
+    backgroundColor:"#112678"
+
   },
   image: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    marginBottom: 20,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  infoContainer: {
+  coverImage: {
+    position: 'absolute',
     width: '100%',
+    height: 180,
+    zIndex: -1,
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+    backgroundColor:"#112678"
+  },
+  fullName: {
+    fontWeight: 'bold',
+    fontSize: 30,
+    color: '#F2F2FA',
+    zIndex: 1,
+    backgroundColor:"112678",
+marginTop: 20,
+    
+  },
+
+  sidebar: {
+    backgroundColor: '#f5f5f5',
+    width: '100%',
+    paddingLeft:20,
+    // marginRight: 1050,
+    
+  },
+  sidebarItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+    marginTop:30
+  },
+  sidebarText: {
+    marginLeft: 30,
+    color: '#161618',
+    fontSize: 20,
+    
   },
   infoBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
-    backgroundColor: '#DCF2EC',
-    padding: 10,
-    borderRadius: 10,
-    width: '80%',
-  },
-  label: {
-    fontWeight: 'bold',
-    marginRight: 5,
-    fontSize: 18,
-  },
-  infoTextContainer: {
-    flex: 1,
-    marginLeft: 10,
+    marginVertical: 10,
+    marginTop:25
+
   },
   infoText: {
-    fontSize: 18,
+    marginLeft: 10,
+    color: '#161618',
+    fontSize: 20,
+    marginLeft: 30,
+
   },
-  editButton: {
-    backgroundColor: '#007bff',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-  },
-  editButtonText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
+  Te:{
+    marginLeft: 10,
+    fontSize: 20,
+
+  }
 });
 
 export default UserProfile;

@@ -5,10 +5,11 @@ import { configureStore } from '@reduxjs/toolkit';
   import signInSlice from './SliceAction/authentication/signInAction';
   import getOneSlice from "./SliceAction/getOne"
   import reservation from './SliceAction/reservation'
-  // import allHotels from './SliceAction/AllHotels'
+  import allHotels from './SliceAction/AllHotels'
   import reviewSlice from "./SliceAction/review"
   import getRoomByCategory from './SliceAction/getRoomByCategory';
   import HotelsSlice from './SliceAction/HotelsSlice';
+import AllHotels from './SliceAction/AllHotels';
 const store = configureStore({
   reducer: {
     userSignUp:signUpSlice,
@@ -19,6 +20,7 @@ const store = configureStore({
     reservation:reservation,
     review:reviewSlice,
     getRoomByCategory:getRoomByCategory,
+    AllHotels:AllHotels,
     allHotels:HotelsSlice, 
 }
 });

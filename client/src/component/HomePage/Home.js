@@ -61,6 +61,9 @@ const scale = scrollX.interpolate({
   outputRange: [1, 1],
   extrapolate: 'clamp',
 });
+const HandleShowAll = ()=>{
+  navigation.navigate('AllHotels')
+}
 const opacity = scrollX.interpolate({
   inputRange: [0, 100],
   outputRange: [1, 0], 
@@ -81,8 +84,8 @@ const opacity = scrollX.interpolate({
                   ...styles.categoryListText,
                   color:
                     selectedCategoryIndex == index
-                      ? COLORS.primary
-                      : COLORS.grey,
+                      ? "#11278"
+                      :   '#161618',
                 }}>
                 {item}
               </Text>
@@ -91,7 +94,7 @@ const opacity = scrollX.interpolate({
                   style={{
                     height: 3,
                     width: 30,
-                    backgroundColor: COLORS.primary,
+                    backgroundColor: "#112678",
                     marginTop: 2,
                   }}
                 />
@@ -123,8 +126,8 @@ const opacity = scrollX.interpolate({
         </View>
         <Image style={styles.topHotelCardImage} source={{uri:hotel.imgUrl}} />
         <View style={{ paddingVertical: 5, paddingHorizontal: 10 }}>
-          <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{hotel.name}</Text>
-          <Text style={{ fontSize: 7, fontWeight: 'bold', color: COLORS.grey }}>
+          <Text style={{ fontSize: 10, fontWeight: 'bold', color  :   '#161618' }}>{hotel.name}</Text>
+          <Text style={{ fontSize: 7, fontWeight: 'bold',  color: '#161618'}}>
             {hotel.description}
           </Text>
         </View>
@@ -157,14 +160,14 @@ const opacity = scrollX.interpolate({
            <View
               style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <View>
-                <Text style={{ fontWeight: 'bold', fontSize: 17 }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 17 ,color  :   '#161618'}}>
                   {hotel.name}
                 </Text>
-                <Text style={{ color: COLORS.grey, fontSize: 12 }}>
+                <Text style={{ color: '#161618', fontSize: 12 }}>
                   {hotel.description}
                 </Text>
               </View>
-              <Icon name="bookmark-border" size={26} color={COLORS.primary} />
+              <Icon name="bookmark-border" size={26} color='#161678'/>
             </View>
             <View
               style={{
@@ -179,7 +182,7 @@ const opacity = scrollX.interpolate({
                 <Icon name="star" size={15} color={COLORS.orange} />
                 <Icon name="star" size={15} color={COLORS.grey} />
               </View>
-              <Text style={{ fontSize: 10, color: COLORS.grey }}>365reviews</Text>
+              <Text style={{ fontSize: 10,  color: '#161618' }}>365reviews</Text>
             </View>
           </View>
       </View>
@@ -197,23 +200,23 @@ const opacity = scrollX.interpolate({
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.header}>
         <View style={{ paddingBottom: 15 }}>
-          <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Find your hotel</Text>
+          <Text style={{ fontSize: 30, fontWeight: 'bold' , color: '#161618'}}>Find your hotel</Text>
           <View style={{ flexDirection: 'row' }}>
-            <Text style={{ fontSize: 30, fontWeight: 'bold' }}>in </Text>
+            <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#161618' }}>in </Text>
             <Text
-              style={{ fontSize: 30, fontWeight: 'bold', color: COLORS.primary }}>
+              style={{ fontSize: 30, fontWeight: 'bold', color:"#112678" }}>
               Tunisia
             </Text>
           </View>
         </View>
-        <Icon name="person-outline" size={38} color={COLORS.grey} />
+        {/* <Icon name="person-outline" size={38}  color='#161618'/> */}
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.searchInputContainer}>
-          <Icon name="search" size={30} style={{ marginLeft: 20 }} />
+          <Icon name="search" size={30} style={{ marginLeft: 20 , color: '#161618' }} />  
           <TextInput
             placeholder="Search"
-            style={{ fontSize: 20, paddingLeft: 10 }}
+            style={{ fontSize: 20, paddingLeft: 10 ,  color: '#161618'}}
           />
         </View>
         <CategoryList />
@@ -237,10 +240,15 @@ const opacity = scrollX.interpolate({
             justifyContent: 'space-between',
             marginHorizontal: 20,
           }}>
-          <Text style={{ fontWeight: 'bold', color: COLORS.grey }}>
+          <Text style={{ fontWeight: 'bold',  color: '#161618'}}>
             Top hotels
           </Text>
-          <Text style={{ color: COLORS.grey }}>Show all</Text>
+          <TouchableOpacity style={{  color: '#161618' }}>
+            <Text
+            style={{color: '#161618'} } onPress={HandleShowAll}>
+               Show all
+            </Text>
+            </TouchableOpacity>
         </View>
         <FlatList
           data={hotel}
@@ -287,7 +295,7 @@ const styles = StyleSheet.create({
   },
   card: {
     height: 300,
-    width: 400,
+    width: 350,
     elevation: 15,
     marginRight: 10,
     borderRadius: 15,
