@@ -5,7 +5,8 @@ import{
     StyleSheet,
     TouchableOpacity,
     Text,
-    View
+    View,
+    Alert
 }from "react-native"
 import { useDispatch ,useSelector} from 'react-redux';
 import {signInAsync} from "../../reduce/authentication/signInReducer"
@@ -21,20 +22,27 @@ navigation.navigate("Home");
   })
 
   const error = useSelector(state => state.edite.error);
-
+  const success=useSelector(state=>state.userSignIn.success)
+  const user=useSelector(state=>state.userSignIn.userAuth)
+  console.log(user);
   const dispatch=useDispatch()
   console.log(error);
   const handleInputChange = (name, value) => {
-        setLogin({ ...login, [name]: value });
-      };
+    setLogin({ ...login, [name]: value });
+  };
+  
+  const handleSignIn=()=>{
+    dispatch(signInAsync(login))
+  }
+  const checkLogin=()=>{
+    if(success){
+      navigation.navigate("Detail")
+    }else{
 
-      const handleSignIn=()=>{
-        // useEffect(()=>{
-          dispatch(signInAsync(login))
-          navigation.navigate("Home");
-
-        // },[])
-      }
+      console.log(success);
+        Alert.alert('check your information')
+    }
+    }
 
       const isError = error || (error.email || error.password);
 
@@ -69,12 +77,11 @@ navigation.navigate("Home");
           <Text style={styles.login_forget}>Forget password ?</Text>
             <TouchableOpacity
             style={styles.buttonContainer}
-            onPress={handleSignIn}
+            onPress={()=>{handleSignIn(),checkLogin()}}
             >
             <Text style={styles.loginText} >Login  </Text>
             </TouchableOpacity>
           </View>
-            
         </SafeAreaView>
   )
 }

@@ -8,7 +8,7 @@ import EditProfile from '../src/component/editprofile/EditProfile';
 import Home from "../src/component/HomePage/Home"
 import OwnerProfile from "../src/component/OwnerProfile/OwnerProfile"
 import AppFace from "../src/component/AppFace/AppFace.js";
-
+import Succes from '../src/component/Detail/Succes'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFa from 'react-native-vector-icons/FontAwesome';
 import Hotels, { FA5Style } from 'react-native-vector-icons/FontAwesome5'
@@ -31,10 +31,14 @@ function Nav() {
       <Stack.Navigator>
         <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
         <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }}/>
+        <Stack.Screen name="Login"  component={Login}  options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="ChooseGategory" component={ChooseGategory} options={{ headerShown: false }}/>
         <Stack.Screen name="Calander" component={Calander} options={{ headerShown: false }}/>
         <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
+        <Stack.Screen name="SignUp"  component={SignUp}  options={{ headerShown: false }} /> 
+        <Stack.Screen name="Succes"  component={Succes}  options={{ headerShown: false }} />  
+
 
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
         <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />

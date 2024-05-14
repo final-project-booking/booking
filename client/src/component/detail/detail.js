@@ -25,6 +25,7 @@ export default function Detail({route,navigation}) {
     const checkToken = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
+        console.log(token);
         if(token !== null) {
           return true;
         } else {
@@ -39,7 +40,7 @@ export default function Detail({route,navigation}) {
 // console.log(tokenGeted());
 const check = async () => {
   if(await checkToken()){
-    navigation.navigate('AllHotels')
+    navigation.navigate('Succes')
   }else{
     setModalVisible(!modalVisible)
   }
@@ -143,29 +144,36 @@ const check = async () => {
 <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center',justifyContent:'space-between' }}>
 {compar?.mainRooms ? compar.mainRooms.map((e)=>{
 
- return <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }} onPress={check}>
+ return <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }} >
     <View style={{ marginTop: 20, marginRight: 20 }}>
-      <Image source={{ uri: 'https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill' }} style={{ width: 150, height: 150, borderRadius: 10 }} />
+      <Image source={{ uri: 'https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill' }} style={{ width: 165, height: 150, borderRadius: 10 }} />
       <View style={{ marginTop: 10 }}>
         <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{e?.view}</Text>
         <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black' }}>People:{e?.capacity}</Text>
         <Text style={{ color: 'black' }}>Price:${e?.price}</Text>
-        {/* <Text style={{ color: 'black' }}>Rooms:{route.params.numRoom}</Text> */}
+        <Text style={{ color: 'black' }}>Rooms:{route.params.numRoom}</Text>
+        <View style={{justifyContent:'space-between',flexDirection:'row',marginTop:10}}>
+        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,textAlign:'center'}}><Text style={{color:'black',textAlign:'center',marginTop:5}}>Negotiation</Text></TouchableOpacity>
+        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,}}  onPress={check}><Text style={{color:'black',textAlign:'center',marginTop:5}}>Reservation</Text></TouchableOpacity>
+        </View>
       </View>
     </View>
   </TouchableOpacity>
 }):null}
 {compar?.mainRooms ? compar.relatedRooms.map((e)=>{
 
-return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}  onPress={check}>
+return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }} >
     <View style={{ marginTop: 20 }}>
-      <Image source={{ uri: 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp' }} style={{ width: 150, height: 150, borderRadius: 10 }} />
+      <Image source={{ uri: 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp' }} style={{ width: 165, height: 150, borderRadius: 10 }} />
       <View style={{ marginTop: 10 }}>
         <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{e?.view}</Text>
         <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black' }}>People:{e?.capacity}</Text>
         <Text style={{ color: 'black' }}>Price:${e?.price}</Text>
-        {/* <Text style={{ color: 'black' }}>Rooms:{route.params.numRoom}</Text> */}
-
+        <Text style={{ color: 'black' }}>Rooms:{route.params.numRoom}</Text>
+        <View style={{justifyContent:'space-between',flexDirection:'row',marginTop:10}}>
+        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,textAlign:'center'}} ><Text style={{color:'black',textAlign:'center',marginTop:5}}>Negotiation</Text></TouchableOpacity>
+        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,}} onPress={check}><Text style={{color:'black',textAlign:'center',marginTop:5}} >Reservation</Text></TouchableOpacity>
+        </View>
       </View>
     </View>
   </TouchableOpacity>
