@@ -8,6 +8,8 @@ import { configureStore } from '@reduxjs/toolkit';
   import allHotels from './SliceAction/AllHotels'
   import reviewSlice from "./SliceAction/review"
   import getRoomByCategory from './SliceAction/getRoomByCategory';
+  import OwnerProfile from './SliceAction/OwnerProfile';
+  import Rooms from './SliceAction/Rooms'
   import HotelsSlice from './SliceAction/HotelsSlice';
 import AllHotels from './SliceAction/AllHotels';
 const store = configureStore({
@@ -18,6 +20,9 @@ const store = configureStore({
     getOne:getOneSlice,
     getOne:getOneSlice,
     reservation:reservation,
+    getRoomByCategory:getRoomByCategory,
+    OwnerProfile:OwnerProfile,
+    Rooms:Rooms,
     review:reviewSlice,
     getRoomByCategory:getRoomByCategory,
     AllHotels:AllHotels,
