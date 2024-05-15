@@ -27,6 +27,7 @@ import Detail from './src/component/detail/Detail';
 import Reservation from './src/component/detail/Reservation';
 import { race } from 'core-js/library/es6/promise';
 import SignUp from './src/component/authentication/SigneUp';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
