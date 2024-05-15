@@ -38,16 +38,11 @@ function Nav() {
         <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
         <Stack.Screen name="SignUp"  component={SignUp}  options={{ headerShown: false }} /> 
         <Stack.Screen name="Succes"  component={Succes}  options={{ headerShown: false }} />  
-
-
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
-        <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />
-        
-      
+        <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />    
         <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
-       
         <Stack.Screen name="ChooseChildren" component={ChooseChildren} options={{headerShown:false}}/>
       </Stack.Navigator>
     </NavigationContainer>

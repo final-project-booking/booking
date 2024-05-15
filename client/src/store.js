@@ -8,7 +8,7 @@ import { configureStore } from '@reduxjs/toolkit';
   import allHotels from './SliceAction/AllHotels'
   import reviewSlice from "./SliceAction/review"
   import getRoomByCategory from './SliceAction/getRoomByCategory';
-  // import HotelsSlice from './SliceAction/HotelsSlice';
+  import negotiation from './SliceAction/negotiation';
   import compairePrice from './SliceAction/comparPrice';
 const store = configureStore({
   reducer: {
@@ -24,6 +24,7 @@ const store = configureStore({
     review:reviewSlice,
     getRoomByCategory:getRoomByCategory,
     // AllHotel:HotelsSlice, 
+    negotiation:negotiation,
 }
 });
 

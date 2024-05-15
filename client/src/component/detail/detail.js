@@ -1,10 +1,12 @@
 import React,{useState,useEffect,useRef} from 'react'
-import { View, Text, StyleSheet, Linking ,ScrollView,Image,Dimensions,TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, Linking ,ScrollView,Image,Dimensions,TouchableOpacity,TextInput} from 'react-native';
 import { ActivityIndicator,Modal,Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Button } from 'react-native-paper';
+import { Button,IconButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 
 
@@ -13,6 +15,10 @@ export default function Detail({route,navigation}) {
     const [dimension, setDimension] = useState(Dimensions.get('window'));
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
+    const [newPrice, setNewPrice] = useState(false);
+    const [newPrice2, setNewPrice2] = useState(false);
+    const [price2, setPrice2] = useState();
+
     const scrollRef = useRef();
     const compar=useSelector(state=>state.comparPrice.compar)||[]
     console.log('compar',compar);
@@ -20,7 +26,28 @@ export default function Detail({route,navigation}) {
       setDimension(window);
     };
     // console.log('root',route.params.numRoom);
+    const negos=async ()=>{
+      if(await checkToken()){
+        navigation.navigate('Succes')
+      }else{
 
+        setPrice2(compar?.mainRooms[0].price)
+        setNewPrice2(!newPrice2)
+      }
+    }
+    const plus = () => {
+      if (price2>=0){
+
+        setPrice2(price2 + 50);
+      }
+    };
+  
+    const minus = () => {
+      if (price2>0) {
+        setPrice2(price2 - 50);
+      }
+    };
+   
 
     const checkToken = async () => {
       try {
@@ -45,6 +72,15 @@ const check = async () => {
     setModalVisible(!modalVisible)
   }
 }
+const nego=async ()=>{
+  if(await checkToken()){
+    navigation.navigate('Succes')
+  }else{
+    setNewPrice(!newPrice)
+  }
+}
+
+console.log(compar?.mainRooms[0].price);
     useEffect(() => {
      const subscription= Dimensions.addEventListener('change', onChange)
       return () => {
@@ -118,14 +154,16 @@ const check = async () => {
             ))}
           </View>
         </View>
-        
         <View style={styles.detailsContainer}>       
-
-       <View>
+        {compar?.mainRooms ? compar.mainRooms.map((e)=>{
+      return  <View>
           <Text style={styles.hotelName}>The Carlton Hotel</Text>
-          <Text style={styles.detailsText}>HotelName:</Text>
+          <Text style={styles.detailsText}>Rooms:{route?.params.numRoom}</Text>
+
           <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
-          <Text style={styles.detailsText}>Phone: +1 212-532-4100</Text>
+          <Text style={styles.detailsText}>People:{e?.capacity}</Text>
+
+
            
           
          <View style={{flexDirection:'row'}}>
@@ -136,55 +174,49 @@ const check = async () => {
         <Icon size={20} name='star' color={'#f5a623'}/>
         </View>
          
+          <View style={{borderWidth:1,borderColor:'black',width:'30%',marginLeft:'60%',textAlign:'center',borderRadius:20}}>
+          <Text style={{ fontSize: 20,marginBottom: 5,textAlign:'center',color:'black'}}>Price</Text>
+          <Text style={{ fontSize: 16,marginBottom: 5,textAlign:'center'}}>DT {e?.price}</Text>
+          </View>
+          <Modal
+      style={{height:40,width:40}}
+        animationType="slide"
+        transparent={true}
+        visible={newPrice2}
+        onRequestClose={() => {
+          // Alert.alert('Modal has been closed.');
+          setNewPrice2(!newPrice2);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+          <Pressable
+              style={{marginTop:-10,marginRight:280}}
+              onPress={() => setNewPrice2(!newPrice2)}>
+        <Icon name='keyboard-backspace' size={30} onPress={() => setNewPrice2(!newPrice2)}/>
+        </Pressable>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '10%' }}>
+         <IconButton icon="minus-circle-outline" size={30} onPress={minus} />
+         <Text style={{fontSize:17}}>{price2}</Text>
+        <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={plus} />
+       </View>
+       <View>
+        <TextInput onChangeText={(e)=>set} 
+        style={{borderRadius:15,width:250,fontSize:15,paddingLeft: 10,borderWidth:1,borderColor:'black',marginTop:17}}
+          placeholder='Create somthing'
+        />
+        <Button style={{marginTop:15,backgroundColor:'#DCE2FC',color:'black',fontSize:150}}>Send</Button>
+       </View>
           
           </View>
+        </View>
+      </Modal>
+          </View>
+          
+        }):null}
           <View style={{padding:10}}>
-<Text style={{height:1,width:'100%', backgroundColor:'#DCE2FC',marginTop:18}}>h</Text>
-</View>
-<View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center',justifyContent:'space-between' }}>
-{compar?.mainRooms ? compar.mainRooms.map((e)=>{
-
- return <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }} >
-    <View style={{ marginTop: 20, marginRight: 20 }}>
-      <Image source={{ uri: 'https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg?q=w_2226,h_1449,x_0,y_0,c_fill' }} style={{ width: 165, height: 150, borderRadius: 10 }} />
-      <View style={{ marginTop: 10 }}>
-        <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{e?.view}</Text>
-        <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black' }}>People:{e?.capacity}</Text>
-        <Text style={{ color: 'black' }}>Price:${e?.price}</Text>
-        <Text style={{ color: 'black' }}>Rooms:{route.params.numRoom}</Text>
-        <View style={{justifyContent:'space-between',flexDirection:'row',marginTop:10}}>
-        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,textAlign:'center'}}><Text style={{color:'black',textAlign:'center',marginTop:5}}>Negotiation</Text></TouchableOpacity>
-        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,}}  onPress={check}><Text style={{color:'black',textAlign:'center',marginTop:5}}>Reservation</Text></TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  </TouchableOpacity>
-}):null}
-{compar?.mainRooms ? compar.relatedRooms.map((e)=>{
-
-return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }} >
-    <View style={{ marginTop: 20 }}>
-      <Image source={{ uri: 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp' }} style={{ width: 165, height: 150, borderRadius: 10 }} />
-      <View style={{ marginTop: 10 }}>
-        <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{e?.view}</Text>
-        <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black' }}>People:{e?.capacity}</Text>
-        <Text style={{ color: 'black' }}>Price:${e?.price}</Text>
-        <Text style={{ color: 'black' }}>Rooms:{route.params.numRoom}</Text>
-        <View style={{justifyContent:'space-between',flexDirection:'row',marginTop:10}}>
-        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,textAlign:'center'}} ><Text style={{color:'black',textAlign:'center',marginTop:5}}>Negotiation</Text></TouchableOpacity>
-        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,}} onPress={check}><Text style={{color:'black',textAlign:'center',marginTop:5}} >Reservation</Text></TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  </TouchableOpacity>
-}):null}
-</View>
-       
 
 
-
-
-          <View style={{justifyContent:'space-between',marginTop:30}}>
+<View style={{justifyContent:'space-between',marginTop:30}}>
           <View style={{backgroundColor:'#E6E6FA',height:1,width:'100%'}}>
           </View>
           <View >
@@ -203,15 +235,79 @@ return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadow
             <Text style={styles.amenitiesText}><Icon name='signal-wifi-4-bar' size={20} /> Free Wifi</Text>
             </View>
           </View>
-          {/* Continue Button */}
-          {/* <View style={styles.buttonContainer} >
-          <Button  mode="contained" style={{backgroundColor:'#0000FF',top:-20}}  >
-          Reservation
-         </Button>
-          </View> */}
+          <Text style={{height:1,width:'100%', backgroundColor:'#DCE2FC',marginTop:18}}>h</Text>
+</View>
+<View style={{alignItems:'center'}}>
+<Text style={{fontSize:20,color:'#00FF40'}}>Another Room</Text>
+</View>
+<View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center',justifyContent:'space-between' }}>
+{compar?.mainRooms ? compar.relatedRooms.map((e)=>{
+
+return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }} >
+    <View style={{ marginTop: 20 }}>
+      <Image source={{ uri: 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp' }} style={{ width: 165, height: 150, borderRadius: 10 }} />
+      <View style={{ marginTop: 10 }}>
+        <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{e?.view}</Text>
+        <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black',fontSize: 17 }}>People:{e?.capacity}</Text>
+        <Text style={{ color: 'black',fontSize: 17}}>Price:DT {e?.price}</Text>
+        <Text style={{ color: 'black',marginTop:10 ,fontSize: 17}}>Rooms:{route.params.numRoom}</Text>
+        <View style={{justifyContent:'space-between',flexDirection:'row',marginTop:10}}>
+        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,textAlign:'center'}} onPress={nego}><Text style={{color:'black',textAlign:'center',marginTop:5}}>Negotiation</Text></TouchableOpacity>
+        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,}} onPress={check}><Text style={{color:'black',textAlign:'center',marginTop:5}} >Reservation</Text></TouchableOpacity>
+        </View>
+      </View>
+    </View>
+
+
+    <Modal
+      style={{height:40,width:40}}
+        animationType="slide"
+        transparent={true}
+        visible={newPrice}
+        onRequestClose={() => {
+       
+          setNewPrice(!newPrice);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+          <Pressable
+              style={{marginTop:-10,marginRight:280}}
+              onPress={() => setNewPrice(!newPrice)}>
+        <Icon name='keyboard-backspace' size={30} onPress={() => setNewPrice(!newPrice)}/>
+        </Pressable>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '10%' }}>
+         <IconButton icon="minus-circle-outline" size={30} onPress={minus} />
+         <Text style={{fontSize:17}}>{e?.price}</Text>
+        <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={plus} />
+       </View>
+       <View>
+        <TextInput onChangeText={(e)=>set} 
+        style={{borderRadius:15,width:250,fontSize:15,paddingLeft: 10,borderWidth:1,borderColor:'black',marginTop:17}}
+          placeholder='Create somthing'
+        />
+        <Button style={{marginTop:15,backgroundColor:'#DCE2FC',color:'black',fontSize:150}}>Send</Button>
+       </View>
+          
+          </View>
+        </View>
+      </Modal>
+
+   
+  </TouchableOpacity>
+}):null}
+</View>
+       
+       
+      <View style={{justifyContent:'space-between',flexDirection:'row',marginTop:40}}>
+  <TouchableOpacity style={{backgroundColor:'#007FFF',borderRadius:15,width:'40%',alignItems:'center'}} onPress={negos}>
+  <Text style={{fontSize:25,color:'white',alignItems:'center'}} >Negotiation</Text></TouchableOpacity>
+  <TouchableOpacity style={{backgroundColor:'#007FFF',borderRadius:15,width:'40%',alignItems:'center'}}>
+  <Text style={{fontSize:25,color:'white',alignItems:'center'}} onPress={check}>Reservation</Text></TouchableOpacity>
+</View>
         </View>
       </View>
       <View style={styles.centeredView}>
+   
       <Modal
       style={{height:40,width:40}}
         animationType="slide"
@@ -234,14 +330,15 @@ return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadow
 
             </TouchableOpacity>
             <Text style={styles.modalText}>If you don't have an Account? </Text>
-            <TouchableOpacity    style={{backgroundColor:'#DCE2FC',width:80,height:40,borderRadius:40,marginTop:15}}>
+            <TouchableOpacity style={{backgroundColor:'#DCE2FC',width:80,height:40,borderRadius:40,marginTop:15}}>
               <Text style={{color:'black',textAlign:'center',marginTop:9}} onPress={()=>navigation.navigate('SignUp')}>Sign Up</Text>
             </TouchableOpacity>
           
           </View>
         </View>
       </Modal>
-     
+
+      
     </View>
       </ScrollView>
       
