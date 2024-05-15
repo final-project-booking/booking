@@ -11,7 +11,8 @@ const CompairePrice=require('./router/compairePrice')
 const userRoute=require('./router/user')
 const review=require("./router/review")
 const search=require('./router/search')
-// require('./dummy')()
+const hotel = require('./router/hotel');
+const pay = require ('./controller/Payment')
 
 
 
@@ -31,8 +32,9 @@ app.use('/api/chat',chat)
 app.use("/api/review",review)
 app.use('/api/search',search)
 
+app.use('/api', hotel);
 
-
+app.use('/api/pay',pay)
 app.use("/api/user",userRoute)
 
 let port = 3000

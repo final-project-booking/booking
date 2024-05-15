@@ -19,12 +19,13 @@ const Reviews = () => {
     const [maxRating] = useState([1, 2, 3, 4, 5]);
 
     const dispatch = useDispatch();
+    const reviews = useSelector(state => state.review.reviw) || [];
     useEffect(() => {
         
         dispatch(fetchReviewAsync({ id: 1 }));
     }, [dispatch]);
 
-    const reviews = useSelector(state => state.fetchReview.reviews) || [];
+  
 
     const postReview = async () => {
         try {

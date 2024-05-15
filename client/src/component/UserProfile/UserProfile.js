@@ -1,197 +1,182 @@
-import React, { useState,useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
-import EditProfile from '../editprofile/EditProfile';
-import { decode } from "base-64";
-
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-global.atob = decode;
-import {jwtDecode} from "jwt-decode";
-import {getOneAsync} from "../../reduce/getOne"
-import { useDispatch } from 'react-redux'; 
-
-
-import Icon from 'react-native-vector-icons/FontAwesome';
-
+import { jwtDecode } from 'jwt-decode';
+import { getOneAsync } from '../../reduce/getOne';
+import Icon from 'react-native-vector-icons/AntDesign';
+import Icons from 'react-native-vector-icons/FontAwesome';
+import Te from 'react-native-vector-icons/Ionicons'
+import IconFa from 'react-native-vector-icons/MaterialIcons'
 const UserProfile = ({ navigation }) => {
-  console.log("profile",profile);
-  const [profile,setProfile]=useState(
-    { email: "",
-     firstName: "",
-     imgUrl: "",
-     lastName: "",
-     phoneNumber: ""
-    }
-  )
-  // const profile = {
-  //   name: 'John Doe',
-  //   email: 'johndoe@example.com',
-  //   password: 'password',
-  //   imageUrl: 'https://th.bing.com/th/id/OIP.2i5UaEHaQM3PYAYXQyM1AAAAAA?w=177&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7', // Provided image URL
-  //   location: {
-  //     latitude: 37.78825,
-  //     longitude: -122.4324,
-  //   }
-  // };
-
-  const tokenGeted = async () => {
+  const dispatch = useDispatch();
+  const [profile, setProfile] = useState(null);
+  const handleLogout = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
-      const decoded = jwtDecode(token);
-      return decoded.id;
+      // Clear user authentication state (e.g., remove token, clear user data)
+      await AsyncStorage.removeItem('userToken'); // Example: remove authentication token stored in AsyncStorage
+
+      // Navigate to login screen or initial screen
+      navigation.navigate('Login'); // Example: navigate to the Login screen
     } catch (error) {
-      console.log(error);
+      console.error('Error logging out:', error);
+      Alert.alert('Error', 'Failed to log out. Please try again.');
     }
-    
-  }
-  const dispatch=useDispatch()
+  };
+
+const HandleButton=()=>{
+  navigation.navigate('OwnerProfile');
+}
   useEffect(() => {
-    const fetchUserId = async () => {
-      const userId = await tokenGeted();
-      console.log("userId",userId);
-      dispatch(getOneAsync(userId))
-        .then(data => {
-          setProfile(data.payload)
-          console.log("data",data);
-          
-        })
-        .catch(error => console.log("Error fetching user data:", error)); // Error handling
+    const fetchUserProfile = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const decoded = jwtDecode(token);
+        const userId = decoded.id;
+        const userData = await dispatch(getOneAsync(userId));
+        setProfile(userData.payload);
+      } catch (error) {
+        console.log('Error fetching user data:', error);
+      }
     };
-  
-    fetchUserId();
-  }, []);
+
+    fetchUserProfile();
+  }, [dispatch]);
 
   const handleEditProfile = () => {
     navigation.navigate('EditProfile');
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.card}>
-        <View style={styles.imageContainer}>
-          <Image source={{ uri: profile.imgUrl }} style={styles.image} />
-          <View style={styles.imageOverlay} />
+    <View style={styles.container}>
+       
+        <View style={styles.coverImage} >
+        <Te name="notifications-outline" size={25} color="#f5f5f5" style={styles.Te}/>
         </View>
-        <Text style={styles.heading}>Your Profile</Text>
-        <View style={styles.infoContainer}>
-          <View style={styles.infoBox}>
-            <Icon name="user" size={30} color="#000" />
-            <View style={styles.infoTextContainer}>
-              <Text style={styles.label}>Full name:</Text>
-              <Text style={styles.infoText}>{profile.firstName} {profile.lastName}</Text>
-            </View>
-            {/* <View style={styles.infoTextContainer}>
-              <Text style={styles.label}>Last name:</Text>
-              <Text style={styles.infoText}>{profile.lastName}</Text>
-            </View> */}
-          </View>
-          <View style={styles.infoBox}>
-            <View style={{marginTop:-20}}>
-
-            <Icon name="envelope"  size={30} color="#000" />
-            </View>
-
-            <View style={styles.infoTextContainer}>
-              <Text style={styles.label}>Email:</Text>
-              <Text style={styles.infoText}>{profile.email}</Text>
-            </View>
-          </View>
-          <View style={styles.infoBox}>
-
-            <View style={styles.infoTextContainer2}>
-              <Text style={styles.label}>Phone number:</Text>
-              <Text style={styles.infoText}>{profile.phoneNumber}</Text>
-            </View>
-          </View>
-
-          {/* <View style={styles.infoBox}>
-            <Icon name="map-marker" size={30} color="#000" />
-            <View style={styles.infoTextContainer}>
-              { <Text style={styles.label}>Location:</Text> }
-              <Text style={styles.infoText}>{`Latitude: ${profile.location.latitude}, Longitude: ${profile.location.longitude}`}</Text> 
-            </View>
-          </View> */}
-        </View>
-        <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
-          <Text style={styles.editButtonText}>Edit Profile</Text>
-        </TouchableOpacity>
+      
+      <View style={styles.header} >
+        <Image source={{ uri: profile?.imgUrl }} style={styles.image} />
+        <Text style={styles.fullName}>{profile?.firstName} {profile?.lastName}</Text>
       </View>
-    </ScrollView>
+      <ScrollView style={styles.sidebar}>
+      <View style={styles.infoBox}>
+          <Icon name="phone" size={25} color="#161618" />
+          <Text style={styles.infoText}>{profile?.phoneNumber}</Text>
+        </View>
+        <View style={styles.infoBox}>
+          <Icons name="envelope-o" size={25} color="#161618" />
+          <Text style={styles.infoText}>{profile?.email}</Text>
+        </View>
+        <TouchableOpacity style={styles.sidebarItem} onPress={handleEditProfile}>
+          <Icon name="edit" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Manage your Account</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.sidebarItem}>
+          <Icons name="heart-o" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Favourites</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.sidebarItem}>
+          <Icon name="creditcard" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Transations</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.sidebarItem}>
+          <Icon name="like2" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Reviews</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.sidebarItem} onPress={HandleButton}>
+          <IconFa name="add-home-work" size={30} color="#161618" />
+          <Text style={styles.sidebarText}>List Your Property</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.sidebarItem} onPress={handleLogout}> 
+          <Icon name="logout" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Logout</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f5f5f5',
+    // backgroundColor:"112678"
+
   },
-  card: {
-    flex: 1,
+  header: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
-  },
-  imageContainer: {
+    paddingVertical: 20,
     position: 'relative',
-    marginBottom: 20,
+    // marginTop:10,
+    backgroundColor:"#112678"
+
   },
   image: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
-  imageOverlay: {
+  coverImage: {
     position: 'absolute',
-    // backgroundColor: '#DCF2EC', // Background color that extends halfway down the image
-    // width: '100%',
-    // height: '50%',
-    // bottom: 0,
-    // borderRadius: 100,
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  infoContainer: {
     width: '100%',
+    height: 180,
+    zIndex: -1,
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+    backgroundColor:"#112678"
+  },
+  fullName: {
+    fontWeight: 'bold',
+    fontSize: 30,
+    color: '#F2F2FA',
+    zIndex: 1,
+    backgroundColor:"112678",
+marginTop: 20,
+    
+  },
+
+  sidebar: {
+    backgroundColor: '#f5f5f5',
+    width: '100%',
+    paddingLeft:20,
+    // marginRight: 1050,
+    
+  },
+  sidebarItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+    marginTop:30
+  },
+  sidebarText: {
+    marginLeft: 30,
+    color: '#161618',
+    fontSize: 20,
+    
   },
   infoBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
-    backgroundColor: '#DCF2EC',
-    padding: 10,
-    borderRadius: 10,
-    width: '80%',
-  },
-  label: {
-    fontWeight: 'bold',
-    marginRight: 5,
-    fontSize: 18,
-  },
-  infoTextContainer: {
-    flex: 1,
-    marginLeft: 10,
-  },
-  infoTextContainer2: {
-    flex: 1,
-    marginLeft: 10,
+    marginVertical: 10,
+    marginTop:25
+
   },
   infoText: {
-    fontSize: 18,
+    marginLeft: 10,
+    color: '#161618',
+    fontSize: 20,
+    marginLeft: 30,
+
   },
-  editButton: {
-    backgroundColor: '#007bff',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-  },
-  editButtonText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
+  Te:{
+    marginLeft: 10,
+    fontSize: 20,
+
+  }
 });
 
 export default UserProfile;

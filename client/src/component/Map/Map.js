@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, View, TextInput, Button, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Button,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 
@@ -8,43 +17,53 @@ const GOOGLE_MAPS_API_KEY = 'AIzaSyDYm4cfAj3Lrk6HqMJZHGeB1JevFbEC55o';
 
 Geocoder.init(GOOGLE_MAPS_API_KEY);
 
-export default function Map() {
+export default function Map({ onLocationSelect }) {
   const [region, setRegion] = useState(null);
-
   const [searchQuery, setSearchQuery] = useState('');
   const [hotels, setHotels] = useState([]);
   const [renderAll, setRenderAll] = useState(false);
-  
+
   useEffect(() => {
     Geolocation.getCurrentPosition(
-      position => {
+      (position) => {
         const { latitude, longitude } = position.coords;
-        setRegion({
+        const newRegion = {
           latitude,
           longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
-        });
+        };
+        setRegion(newRegion);
+        if (onLocationSelect) {
+          onLocationSelect({ latitude, longitude });
+        }
       },
-      error => console.log(error.message),
+      (error) => console.log(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-  }, []);
-  
+  }, [onLocationSelect]);
 
   const handleSearch = async () => {
     try {
       const response = await Geocoder.from(searchQuery);
       const { lat, lng } = response.results[0].geometry.location;
-      setRegion({
+
+      // Update the region
+      const newRegion = {
         latitude: lat,
         longitude: lng,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
-      });
-      searchHotels(lat, lng);
+      };
+      setRegion(newRegion);
+      if (onLocationSelect) {
+        onLocationSelect({ latitude: lat, longitude: lng });
+      }
+
+      // Now search for hotels around the city
+      await searchHotels(lat, lng);
     } catch (error) {
-      console.error(error);
+      console.error('Error searching city coordinates:', error);
     }
   };
 
@@ -54,25 +73,19 @@ export default function Map() {
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=hotel&key=${GOOGLE_MAPS_API_KEY}`
       );
       const data = await response.json();
-      const hotelsData =data.results.map(result => ({
+      const hotelsData = data.results.map((result) => ({
         name: result.name,
         latitude: result.geometry.location.lat,
         longitude: result.geometry.location.lng,
-        photoReference: result.photos ? result.photos[0].photo_reference :null,
+        photoReference: result.photos ? result.photos[0].photo_reference : null,
       }));
       setHotels(hotelsData);
     } catch (error) {
-      console.error(error);
+      console.error('Error searching hotels:', error);
     }
   };
 
-  const renderHotels = () => {
-    if (renderAll) {
-      return hotels;
-    } else {
-      return hotels.slice(0, 5);
-    }
-  };
+  const renderHotels = () => (renderAll ? hotels : hotels.slice(0, 5));
 
   return (
     <View style={styles.container}>
@@ -80,13 +93,13 @@ export default function Map() {
         <TextInput
           style={styles.input}
           value={searchQuery}
-          onChangeText={text => setSearchQuery(text)}
-          placeholder="Search location..."
+          onChangeText={(text) => setSearchQuery(text)}
+          placeholder="Search city..."
         />
         <Button title="Search" onPress={handleSearch} />
       </View>
       {region ? (
-        <MapView style={styles.map} initialRegion={region}>
+        <MapView style={styles.map} initialRegion={region} region={region}>
           <Marker coordinate={{ latitude: region.latitude, longitude: region.longitude }} />
           {renderHotels().map((marker, index) => (
             <Marker key={index} coordinate={marker} pinColor="blue" />
@@ -165,7 +178,7 @@ const styles = StyleSheet.create({
   },
   hotelName: {
     fontSize: 18,
-    fontWeight:'bold',
+    fontWeight: 'bold',
   },
   hotelImage: {
     width: 85,
@@ -179,5 +192,5 @@ const styles = StyleSheet.create({
   },
   enlargedHotelName: {
     textAlign: 'center',
-  }
+  },
 });

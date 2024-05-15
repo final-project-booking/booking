@@ -19,8 +19,9 @@ import AllHotels from './src/component/allHotels/AllHotels';
 import RoomByHotel from './src/component/allHotels/RoomByHotel';
 import ChooseChildren from './src/component/detail/ChooseChildren';
 import ChooseGategory from './src/component/allHotels/ChooseGategory';
+import OwnerProfile from './src/component/OwnerProfile/OwnerProfile'
+// import Calendar from './src/component/Detail/Reservation';
 import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
-import OwnerProfile from './src/component/OwnerProfile/OwnerProfile';
 import AdvancedFilter from './src/component/AdvancedFilter/AdvancedFilter';
 import Detail from './src/component/detail/Detail';
 import Reservation from './src/component/detail/Reservation';
@@ -33,10 +34,22 @@ function App() {
  
   return (
     // <UserProfile/>
-    //  <AdvancedFilter/> 
-    <GestureHandlerRootView style={{flex: 1}}>
-      
-      <Nav/>
+    // <EditProfile/> 
+// {/* <Map/>    */}
+//        {/* <Payment/>  */}
+//       {/* <AppFace/> 
+//        <Inboarding/>  */}
+    
+    // <GestureHandlerRootView style={{flex: 1}}>
+    //   <Hotelprofile/>
+    // //  <AdvancedFilter/> 
+    // // <GestureHandlerRootView style={{flex: 1}}>
+    //   // {/* <Login/> */}
+    //   //<Hotelprofile />
+    //       // <Hotelprofile/> 
+
+    <GestureHandlerRootView> 
+     <Nav/>
     </GestureHandlerRootView>
   )}
   

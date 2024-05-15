@@ -1,5 +1,6 @@
 import React,{ useEffect, useState } from 'react'
 import{
+  Keyboard,
     SafeAreaView,
     TextInput,
     StyleSheet,
@@ -31,6 +32,7 @@ navigation.navigate("Home");
       const handleSignIn=()=>{
         // useEffect(()=>{
           dispatch(signInAsync(login))
+          navigation.navigate("Home");
 
         // },[])
       }
@@ -70,7 +72,7 @@ navigation.navigate("Home");
             style={styles.buttonContainer}
             onPress={handleSignIn}
             >
-            <Text style={styles.loginText}>Login {handleLogin}</Text>
+            <Text style={styles.loginText} >Login  </Text>
             </TouchableOpacity>
           </View>
             
