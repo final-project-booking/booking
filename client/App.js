@@ -8,7 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Payment from "./src/component/Payment/Payment"
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AppFace from './src/component/AppFace/AppFace';
+// import AppFace from './src/component/AppFace/AppFace';
 import Inboarding from './src/component/Inboarding/Inboarding';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Home from './src/component/HomePage/Home';

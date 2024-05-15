@@ -7,7 +7,7 @@ import {cloud_name,preset} from "../../apAdress"
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch } from 'react-redux';
 import { promoteToOwner } from '../../reduce/Ownerprofile';
-import pic from '../../Photo/hotel.jpeg'
+import pic from '../../Photo/hottell.webp'
 const OwnerProfile = () => {
   const [profile, setProfile] = useState({
     firstName: 'John',
@@ -98,9 +98,7 @@ const OwnerProfile = () => {
         <ImageBackground source={pic} style={styles.backgroundImage} resizeMode="cover">
           <Text style={styles.descriptionText}>
         Please ensure that all details are filled correctly. To promote to owner status,
-        your hotel must comply with all local regulations and standards. Ensure that your
-        hotel meets the required quality and safety standards to provide an exceptional
-        guest experience.
+        your hotel must comply with all local regulations and standards.
       </Text>
           <TouchableOpacity onPress={() => setView('inputs')} style={styles.promoteButton}>
             <Text style={styles.promoteText}>Promote To Owner →</Text>
@@ -312,7 +310,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   descriptionText: {
-    color: 'white',  // Ensures text is visible on potentially dark backgrounds
+    color: 'white', 
     textAlign: 'center',
     marginBottom: 20,
     fontSize: 16,
