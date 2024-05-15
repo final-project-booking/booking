@@ -5,7 +5,7 @@ import { AllHotell } from '../reduce/AllHotels';
 
 
 const initialState={
-    hotels:[],
+    hotel:[],
     loading:false,
     error:""
 }
@@ -22,7 +22,7 @@ const reservationSlice = createSlice({
         })
         .addCase(AllHotell.fulfilled,(state,action)=>{
             state.loading=false
-            state.hotels=action.payload
+            state.hotel=action.payload
         })
         .addCase(AllHotell.rejected,(state,action)=>{
             state.loading=false

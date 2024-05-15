@@ -19,6 +19,8 @@ function getRandomElementFromArray(arr) {
   }
   
   const SEED = async (sequelize) => {
+    let local=faker.location.nearbyGPSCoordinate({ origin: [35.84160807475632, 10.629283816082914], radius: 6000, isMetric: true })
+    console.log("hello",local)
     const saltRounds = await bcrypt.genSalt()
 let counterOwner=count()
 let hotelCounter=count()
@@ -92,7 +94,8 @@ let counterDate=count()
       );
     const hotels= await Promise.all(
         Array.from({ length: hotelCount }).map(async () => {
-            
+            let local=faker.location.nearbyGPSCoordinate({ origin: [35.84160807475632, 10.629283816082914], radius: 6000, isMetric: true })
+            console.log("hello",local)
           let owne = owners[Math.floor(Math.random() * ownercount)];
           return await hotel.create({
             data:{
@@ -104,8 +107,8 @@ let counterDate=count()
                 licence:faker.commerce.productName(),
                 imgUrl:faker.image.url(),
                 ownerId: owne.id, 
-                latitude:faker.location.latitude({ max: 10, min: -10, precision: 5 }), 
-                longitude:faker.location.longitude({ max: 10, min: -10 }),
+                latitude:local[0], 
+                longitude:local[1],
             }
            
           });
@@ -156,9 +159,9 @@ let counterDate=count()
             data:{
               roomId:roomfor.id,
                 userId:allUsers.id,
-                
-                startDate:faker.date.soon({ days: counterDate() }),
-                endDate:faker.date.soon({days:counterDate()})
+                startDate:faker.date.soon(),
+                endDate:faker.date.soon(),
+               
             }
           
            

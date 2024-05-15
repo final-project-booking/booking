@@ -25,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
 
 
   const dispatch=useDispatch()
-  const hotel = useSelector(state => state.allHotels.hotels);
+  const hotel = useSelector(state => state.hotelSlice.hotels);
   const loading = useSelector(state => state.allHotels.loading);
   const error = useSelector(state => state.allHotels.error);
 
