@@ -56,8 +56,9 @@ function Nav() {
 
 function TabNavigator() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator  color="#112678">
       <Tab.Screen
+   
   name="Home"
   component={Home}
   options={{

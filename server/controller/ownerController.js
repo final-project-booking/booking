@@ -77,9 +77,13 @@ module.exports={
                                    
                                 }
                             }
+                        },
+                        include: {
+                            hotel: true, 
                         }
                     });
-                    const allHotels=helper(hotelData.media,result.hotel.id)
+                    const hotelId = owner.hotel[0].id; 
+                    const allHotels=helper(hotelData.media,hotelId);
                     const createMedia=await prisma.media.createMany({
                        data:allHotels
                     })
@@ -98,7 +102,6 @@ module.exports={
             res.status(500).send('Error promoting user to owner');
         }
     },
-
     
     
 
