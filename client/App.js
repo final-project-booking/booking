@@ -8,7 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Payment from "./src/component/Payment/Payment"
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AppFace from './src/component/AppFace/AppFace';
+// import AppFace from './src/component/AppFace/AppFace';
 import Inboarding from './src/component/Inboarding/Inboarding';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Home from './src/component/HomePage/Home';
@@ -25,6 +25,7 @@ import AdvancedFilter from './src/component/AdvancedFilter/AdvancedFilter';
 import Detail from './src/component/Detail/Detail';
 import { race } from 'core-js/library/es6/promise';
 import SignUp from './src/component/authentication/SigneUp';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -34,12 +35,15 @@ function App() {
     // <UserProfile/>
     //  <AdvancedFilter/> 
     // <GestureHandlerRootView style={{flex: 1}}>
-      // {/* <Login/> */}
-      //<Hotelprofile />
-      
-      <GestureHandlerRootView> 
-      <Nav/> 
-  
+    //   <Hotelprofile/>
+    // //  <AdvancedFilter/> 
+    // // <GestureHandlerRootView style={{flex: 1}}>
+    //   // {/* <Login/> */}
+    //   //<Hotelprofile />
+    //       // <Hotelprofile/> 
+
+    <GestureHandlerRootView> 
+     <OwnerProfile/>
     </GestureHandlerRootView>
   )}
   
