@@ -15,7 +15,7 @@ const search=require('./router/search')
 const negotiate=require('./router/negotiation')
 const bodyParser = require('body-parser');
 const hotel = require('./router/hotel');
-
+const pay = require ('./controller/Payment')
 
 
 
@@ -39,7 +39,7 @@ app.use('/app/negotiation',negotiate)
 
 app.use('/api', hotel);
 
-
+app.use('/api/pay',pay)
 app.use("/api/user",userRoute)
 
 let port = 3000

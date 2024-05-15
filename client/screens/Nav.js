@@ -29,6 +29,18 @@ function Nav() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        {/* <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
+        <Stack.Screen name="ChooseGategory" component={ChooseGategory} options={{ headerShown: false }}/>
+        <Stack.Screen name="Reservation" component={Reservation} options={{ headerShown: false }}/> */}
+        <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
+
+        <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
+        <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />
+        
         <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
         <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }}/>
         <Stack.Screen name="Login"  component={Login}  options={{ headerShown: false }} />

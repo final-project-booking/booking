@@ -19,7 +19,8 @@ import AllHotels from './src/component/allHotels/AllHotels';
 import RoomByHotel from './src/component/allHotels/RoomByHotel';
 import ChooseChildren from './src/component/Detail/ChooseChildren';
 import ChooseGategory from './src/component/allHotels/ChooseGategory';
-import Calendar from './src/component/Detail/Calander';
+import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
+import OwnerProfile from './src/component/OwnerProfile/OwnerProfile';
 import AdvancedFilter from './src/component/AdvancedFilter/AdvancedFilter';
 import Detail from './src/component/Detail/Detail';
 import { race } from 'core-js/library/es6/promise';
@@ -31,9 +32,14 @@ function App() {
  
   return (
     // <UserProfile/>
-  //  <AdvancedFilter/> 
-    <GestureHandlerRootView style={{flex: 1}}>
-      <Nav />
+    //  <AdvancedFilter/> 
+    // <GestureHandlerRootView style={{flex: 1}}>
+      // {/* <Login/> */}
+      //<Hotelprofile />
+          // <Hotelprofile/> 
+
+    <GestureHandlerRootView> 
+    <Nav/>
     </GestureHandlerRootView>
   )}
   

@@ -1,8 +1,24 @@
 const prisma = require("../database");
-
+const helper=(arr,id)=>{
+return arr.map((e)=>{
+    return {
+        hotelId:id,
+        link:e
+    }
+})
+}
+const helperRoom=(arr,id)=>{
+    return arr.map((e)=>{
+        return {
+            roomId:id,
+            link:e
+        }
+    })
+    }
 module.exports={
     promoteToOwner: async function(req, res) {
         const id = req.user.userId;
+
         const { hotelData } = req.body;
     
         try {
@@ -14,7 +30,6 @@ module.exports={
                 return res.status(404).send('User not found');
             }
     
-            // Check if the user is already an owner
             const existingOwner = await prisma.owner.findFirst({
                 where: { id: id }
             });
@@ -22,7 +37,7 @@ module.exports={
             let result;
     
             if (existingOwner) {
-                // Add a hotel to the existing owner
+               
                 result = await prisma.hotel.create({
                     data: {
                         ownerId: existingOwner.id,
@@ -31,17 +46,24 @@ module.exports={
                         longitude: hotelData.longitude,
                         latitude: hotelData.latitude,
                         description: hotelData.description,
-                        rating: hotelData.rating,
-                        rooms: hotelData.rooms,
-                        licence: hotelData.licence
+                        rating: Number(hotelData.rating),
+                        rooms:  Number(hotelData.rooms),
+                        licence:hotelData.licence,
+                     
+                    
                     }
                 });
+             const allHotels=helper(hotelData.media,result.id)
+             console.log(allHotels,'allHotels');
+             const createMedia=await prisma.media.createMany({
+                data:allHotels
+             })
             } else {
-                // Promote the user to an owner and add a hotel
+               
                 result = await prisma.$transaction(async (prisma) => {
                     const owner = await prisma.owner.create({
                         data: {
-                            id: id,
+                            id:id,
                             hotel: {
                                 create: {
                                     imgUrl: hotelData.imgUrl,
@@ -51,12 +73,16 @@ module.exports={
                                     description: hotelData.description,
                                     rating: hotelData.rating,
                                     rooms: hotelData.rooms,
-                                    licence: hotelData.licence
+                                    licence: hotelData.licence,
+                                   
                                 }
                             }
                         }
                     });
-    
+                    const allHotels=helper(hotelData.media,result.hotel.id)
+                    const createMedia=await prisma.media.createMany({
+                       data:allHotels
+                    })
                     await prisma.user.update({
                         where: { id: id },
                         data: { role: 'owner' }
@@ -86,7 +112,8 @@ getAllOwners : async function(req, res) {
                 user: true, 
                 hotel: {
                     include: {
-                        room: true 
+                        room: true ,
+                        media :true
                     }
                 }
             }
@@ -106,9 +133,10 @@ getAllOwners : async function(req, res) {
 
 
 createRoomsForHotel: async function(req, res) {
-    const { hotelId, rooms } = req.body; 
+    const { hotelId, roomTemplate, numRooms } = req.body; 
+
     try {
-        // Check if the hotel exists
+       
         const hotel = await prisma.hotel.findUnique({
             where: { id: hotelId }
         });
@@ -118,25 +146,27 @@ createRoomsForHotel: async function(req, res) {
         }
 
         let createdRoomsCount = 0;
-
-        // Create rooms and options individually
-        for (const room of rooms) {
-            await prisma.room.create({
+      
+       
+        for (let i = 0; i < numRooms; i++) {
+           let result=await prisma.room.create({
                 data: {
                     hotelId: hotelId,
-                    price: room.price,
-                    imgUrl: room.imgUrl,
-                    view: room.view,
-                    capacity: room.capacity,
-                    reduction: room.reduction,
-                    rate: room.rate,
+                    price: roomTemplate.price,
+                    view: roomTemplate.view,
+                    capacity: roomTemplate.capacity,
+                    reduction: roomTemplate.reduction,
+                    rate: roomTemplate.rate,
                     option: {
-                        create: {
-                            Meal_Plan: room.option.Meal_Plan
-                        }
+                        create: roomTemplate.option
                     }
                 }
             });
+            const allrooms=helperRoom(roomTemplate.media,result.id)
+             console.log(allrooms,'allrooms');
+             const createMedia=await prisma.MediaRoom.createMany({
+                data:allrooms
+             })
             createdRoomsCount++;
         }
 

@@ -47,8 +47,9 @@ model Hotel {
   owner       Owner?   @relation(fields: [ownerId], references: [id])
   ownerId     Int?
   room        Room[]
-  review      Review[]
   media       Media[]
+  review      Review[]
+  medias       Medias[]
 }
 
 enum MealPlan {
@@ -88,13 +89,13 @@ model Room {
   dayAvailability DayAvailability[]
   price           Int
   capacity        Int
-  imgUrl          String
   option          Option[]
   view            View
   media           Media[]
   reduction       Boolean  @default(false)
   rate            Int
   negociate       Negotiation[]
+  mediaroom       MediaRoom[]
 }
 
 enum media {
@@ -169,3 +170,24 @@ model  Negotiation{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+model Payment {
+  id         Int    @id @default(autoincrement())
+  amount     Int
+  currency   String
+  status     String
+}
+
+model Medias {
+  id              Int      @unique       @id @default(autoincrement())
+  hotel           Hotel             @relation(fields: [hotelId], references: [id])
+  hotelId         Int
+  link            String      
+}
+
+model MediaRoom {
+  id       Int      @unique       @id @default(autoincrement())
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    Int 
+  link      String      
+}
+
