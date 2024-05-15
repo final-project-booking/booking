@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity,Button } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity,Button,ImageBackground ,Dimensions} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Map from '../Map/Map';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -7,7 +7,7 @@ import {cloud_name,preset} from "../../apAdress"
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch } from 'react-redux';
 import { promoteToOwner } from '../../reduce/Ownerprofile';
-
+import pic from '../../Photo/hotel.jpeg'
 const OwnerProfile = () => {
   const [profile, setProfile] = useState({
     firstName: 'John',
@@ -89,33 +89,29 @@ const OwnerProfile = () => {
 
   const [view, setView] = useState('profile');
   const ImageIcon = <Icon size={25} name='add-a-photo' />;
+ 
 
   return (
-    <ScrollView style={styles.scrollContainer}>
-      <View style={styles.container}>
-        {view === 'profile' && (
-          <>
-            <Text style={styles.heading}>Hotel Owner</Text>
-            <View style={styles.profileInfo}>
-              <Image source={{ uri: profile.imageUrl }} style={styles.image} />
-              <Text style={styles.label}>First Name:</Text>
-              <Text style={styles.infoText}>{profile.firstName}</Text>
-              <Text style={styles.label}>Last Name:</Text>
-              <Text style={styles.infoText}>{profile.lastName}</Text>
-              <Text style={styles.label}>Email:</Text>
-              <Text style={styles.infoText}>{profile.email}</Text>
-              <Text style={styles.label}>Phone Number:</Text>
-              <Text style={styles.infoText}>{profile.phoneNumber}</Text>
-              <Text style={styles.label}>Location:</Text>
-              <Text style={styles.infoText}>{`Latitude: ${profile.location.latitude}, Longitude: ${profile.location.longitude}`}</Text>
-            </View>
-            <TouchableOpacity onPress={() => setView('inputs')}>
-              <Text style={styles.linkText}>Promote To Owner →</Text>
-            </TouchableOpacity>
-          </>
-        )}
+    
+<View style={styles.container}>
+      {view === 'profile' && (
+        <ImageBackground source={pic} style={styles.backgroundImage} resizeMode="cover">
+          <Text style={styles.descriptionText}>
+        Please ensure that all details are filled correctly. To promote to owner status,
+        your hotel must comply with all local regulations and standards. Ensure that your
+        hotel meets the required quality and safety standards to provide an exceptional
+        guest experience.
+      </Text>
+          <TouchableOpacity onPress={() => setView('inputs')} style={styles.promoteButton}>
+            <Text style={styles.promoteText}>Promote To Owner →</Text>
+          </TouchableOpacity>
+        </ImageBackground>
+      )}
+
+
 
         {view === 'inputs' && (
+          <View style={styles.paddedContent}>
           <>
             <TouchableOpacity onPress={() => setView('profile')}>
               <Text style={styles.linkText}>← Back</Text>
@@ -176,9 +172,11 @@ const OwnerProfile = () => {
               <Text style={styles.linkText}>Next →</Text>
             </TouchableOpacity>
           </>
+          </View>
         )}
 
         {view === 'map' && (
+          <View style={styles.paddedContent}>
           <>
             <TouchableOpacity onPress={() => setView('inputs')}>
               <Text style={styles.linkText}>← Back</Text>
@@ -190,21 +188,34 @@ const OwnerProfile = () => {
               <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
           </>
+          </View>
         )}
       </View>
-    </ScrollView>
+    
   );
 };
-
+const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
-  scrollContainer: {
-    backgroundColor: '#ffffff',
-  },
+  
+  // scrollContainer: {
+  //   backgroundColor: '#ffffff',
+  //   // flex: 1,
+  // },
+  // container: {
+  //   flex: 1,
+  //   padding: 20,
+  //   backgroundColor: '#ffffff',
+  // },
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#ffffff',
   },
+  //
+  paddedContent: {
+    flex: 1,
+    padding: 20,  // Apply padding here for other views
+  },
+  //
   heading: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -281,6 +292,33 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: '500',
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  promoteButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: 'rgba(0, 123, 255, 0.8)',
+    borderRadius: 5,
+    alignSelf: 'center',
+  },
+  promoteText: {
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
+  },
+  descriptionText: {
+    color: 'white',  // Ensures text is visible on potentially dark backgrounds
+    textAlign: 'center',
+    marginBottom: 20,
+    fontSize: 16,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Semi-transparent background for better readability
+    padding: 10,
+    borderRadius: 5,
   },
 });
 

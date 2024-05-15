@@ -49,7 +49,7 @@ function App() {
     //       // <Hotelprofile/> 
 
     <GestureHandlerRootView> 
-     <Nav/>
+     <OwnerProfile/>
     </GestureHandlerRootView>
   )}
   
