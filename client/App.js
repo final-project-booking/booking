@@ -17,7 +17,7 @@ import Nav from './screens/Nav';
 import Map from "./src/component/Map/Map"
 import AllHotels from './src/component/allHotels/AllHotels';
 import RoomByHotel from './src/component/allHotels/RoomByHotel';
-import ChooseChildren from './src/component/Detail/ChooseChildren';
+// import ChooseChildren from './src/component/Detail/ChooseChildren';
 import ChooseGategory from './src/component/allHotels/ChooseGategory';
 import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
 import OwnerProfile from './src/component/OwnerProfile/OwnerProfile';
@@ -36,10 +36,10 @@ function App() {
     // <GestureHandlerRootView style={{flex: 1}}>
       // {/* <Login/> */}
       //<Hotelprofile />
-          // <Hotelprofile/> 
-
-    <GestureHandlerRootView> 
-    <Nav/>
+      
+      <GestureHandlerRootView> 
+      <Nav/> 
+  
     </GestureHandlerRootView>
   )}
   
