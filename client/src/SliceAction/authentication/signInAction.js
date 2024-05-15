@@ -1,14 +1,14 @@
 import {signInAsync} from '../../reduce/authentication/signInReducer'
 import { createSlice } from '@reduxjs/toolkit'
 
-console.log("log",signInAsync);
 
 
 
 const initialState={
     userAuth:{},
     loading:false,
-    error:""
+    error:"",
+    success:false
 }
 
 
@@ -23,7 +23,8 @@ const signIn = createSlice({
         })
         .addCase(signInAsync.fulfilled,(state,action)=>{
             state.loading=false
-            state.user=action.payload
+            state.userAuth=action.payload
+            state.success=true
         })
         .addCase(signInAsync.rejected,(state)=>{
             state.loading=false

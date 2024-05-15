@@ -1,5 +1,4 @@
 const {reservation,room,hotel,user,options,owner, option, roomChat}=require('./database/index')
-const {reservation,room,hotel,user,options,owner, option, roomChat}=require('./database/index')
 const bcrypt=require("bcrypt")
 const { faker ,Randomizer} = require('@faker-js/faker');
 
@@ -102,6 +101,7 @@ let counterDate=count()
                 rating: faker.number.int({ min: 1, max: 5 }),
                 rooms:faker.number.int({ min: 1, max: 100}),
                 licence:faker.commerce.productName(),
+                imgUrl:faker.image.url(),
                 ownerId: owne.id, 
                 latitude:faker.location.latitude({ max: 10, min: -10, precision: 5 }), 
                 longitude:faker.location.longitude({ max: 10, min: -10 }),
