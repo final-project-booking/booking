@@ -12,8 +12,9 @@ const dispatch=useDispatch()
 useEffect(()=>{
 dispatch(AllHotell())
 },[])
-const hotel=useSelector(state=>state.allHotels.hotels)
-console.log('hotel');
+const hotel=useSelector(state=>state.allHotels.hotel)
+
+console.log('hotel',hotel);
 
   return (
     <ScrollView>
@@ -26,6 +27,7 @@ console.log('hotel');
   />
   <Button style={styles.Button}>Search</Button>
 </View>
+
     {hotel.map((e)=>{
      return   e.hotel.map((i)=>(
        <TouchableOpacity style={{shadowOffset: {width: 0,height: 1,},shadowOpacity: 0.25, shadowRadius: 3.84,elevation:5,marginTop:-15}} onPress={()=>navigation.navigate('ChooseGategory',{hotelId:i.id})} >
@@ -43,7 +45,7 @@ console.log('hotel');
         <Icon size={20} name='star' color={'#f5a623'}/>
         </View>
         <Text style={{marginLeft:1,marginBottom:15,color:'black'}}>Rooms:{i.rooms}</Text>
-        <Text style={{color:'black'}}><Icon size={20} name='location-pin'/>{i.location}</Text>
+        <Text style={{color:'black'}}><Icon size={20} name='location-pin'/>{e.phoneNumber}</Text>
     </View>
 </View>
  <View style={{padding:10}}>

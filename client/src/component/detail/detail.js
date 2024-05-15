@@ -18,7 +18,7 @@ export default function Detail({route,navigation}) {
     const [newPrice, setNewPrice] = useState(false);
     const [newPrice2, setNewPrice2] = useState(false);
     const [price2, setPrice2] = useState();
-
+console.log(route.params.people);
     const scrollRef = useRef();
     const compar=useSelector(state=>state.comparPrice.compar)||[]
     console.log('compar',compar);
@@ -28,11 +28,11 @@ export default function Detail({route,navigation}) {
     // console.log('root',route.params.numRoom);
     const negos=async ()=>{
       if(await checkToken()){
-        navigation.navigate('Succes')
-      }else{
-
         setPrice2(compar?.mainRooms[0].price)
         setNewPrice2(!newPrice2)
+      }else{
+        setModalVisible(!modalVisible)
+
       }
     }
     const plus = () => {
@@ -80,7 +80,7 @@ const nego=async ()=>{
   }
 }
 
-console.log(compar?.mainRooms[0].price);
+
     useEffect(() => {
      const subscription= Dimensions.addEventListener('change', onChange)
       return () => {
@@ -156,12 +156,15 @@ console.log(compar?.mainRooms[0].price);
         </View>
         <View style={styles.detailsContainer}>       
         {compar?.mainRooms ? compar.mainRooms.map((e)=>{
-      return  <View>
+       
+
+         
+            return <View>
           <Text style={styles.hotelName}>The Carlton Hotel</Text>
           <Text style={styles.detailsText}>Rooms:{route?.params.numRoom}</Text>
 
           <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
-          <Text style={styles.detailsText}>People:{e?.capacity}</Text>
+          <Text style={styles.detailsText}>People:{route.params.people}</Text>
 
 
            
@@ -211,7 +214,7 @@ console.log(compar?.mainRooms[0].price);
         </View>
       </Modal>
           </View>
-          
+     
         }):null}
           <View style={{padding:10}}>
 

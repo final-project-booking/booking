@@ -24,31 +24,29 @@ import ChooseGategory from '../src/component/allHotels/ChooseGategory.js';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-function Nav() {
+function Nav({Navigation}) {
   
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
+        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
         <Stack.Screen name="ChooseGategory" component={ChooseGategory} options={{ headerShown: false }}/>
-        <Stack.Screen name="Reservation" component={Reservation} options={{ headerShown: false }}/> */}
-        <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
-
-        <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
+       
+      
+       
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
 
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-        <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />
+      
+       
         
-        <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
+       
         <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }}/>
         <Stack.Screen name="Login"  component={Login}  options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-        <Stack.Screen name="ChooseGategory" component={ChooseGategory} options={{ headerShown: false }}/>
+    
         <Stack.Screen name="Calander" component={Calander} options={{ headerShown: false }}/>
         <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
-        <Stack.Screen name="SignUp"  component={SignUp}  options={{ headerShown: false }} /> 
+   
         <Stack.Screen name="Succes"  component={Succes}  options={{ headerShown: false }} />  
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
         <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />    
@@ -62,7 +60,7 @@ function Nav() {
   );
 }
 
-function TabNavigator() {
+function TabNavigator({Navigation}) {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -80,7 +78,7 @@ function TabNavigator() {
 />
 <Tab.Screen
   name="Hotel"
-  component={UserProfile}
+  component={AllHotels}
   options={{
     headerShown: false,
     tabBarIcon: ({ color, size }) => (
@@ -90,6 +88,7 @@ function TabNavigator() {
       fontSize: 14
     }
   }}
+ 
 />
 <Tab.Screen
   name="Favorite"

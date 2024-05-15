@@ -53,8 +53,9 @@ module.exports={
                 where:{
 
                   availability:true
-                }
-            },
+                },
+              },
+              // hotel:true,
             option:{
               select:{
                 Meal_Plan:true
@@ -66,7 +67,7 @@ module.exports={
             },
             
            
-            take:Number(numRoom-1)
+            take:1
           });
 
         

@@ -16,7 +16,7 @@ export default function Reservation({route,navigation}) {
   // const [people, setPeople] = useState(0);
   const [numRoom, setNumRoom] = useState(route.params.numRoom);
   const [price, setPrice] = useState();
-
+const people=route.params.people
   const dispatch = useDispatch();
 const prices=useSelector(state=>state.getRoomByCategory.room)
 console.log('price',prices?.price);
@@ -109,7 +109,7 @@ chek()
 </Button>
   <Button  mode="contained" style={{width:'30%',backgroundColor:'#0000FF'}}
     onPress={() =>
-       {handleGet(), navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId,numRoom:numRoom})}
+       {handleGet(), navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId,numRoom:numRoom,people:people})}
       }
   >
    Continue
