@@ -11,15 +11,19 @@ const CompairePrice=require('./router/compairePrice')
 const userRoute=require('./router/user')
 const review=require("./router/review")
 const search=require('./router/search')
+// require("./dummy")()
+const negotiate=require('./router/negotiation')
+const bodyParser = require('body-parser');
 const hotel = require('./router/hotel');
 const pay = require ('./controller/Payment')
 
 
 
 // app.use(express.static(__dirname + "/../client/dist"))
+
 app.use(express.json())
 app.use(cors())
-
+app.use(bodyParser.json());
 
 app.use(express.json());
 app.use('/api/search',search)
@@ -31,6 +35,7 @@ app.use('/api/chat',chat)
 
 app.use("/api/review",review)
 app.use('/api/search',search)
+app.use('/app/negotiation',negotiate)
 
 app.use('/api', hotel);
 

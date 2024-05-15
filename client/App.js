@@ -17,14 +17,12 @@ import Nav from './screens/Nav';
 import Map from "./src/component/Map/Map"
 import AllHotels from './src/component/allHotels/AllHotels';
 import RoomByHotel from './src/component/allHotels/RoomByHotel';
-import ChooseChildren from './src/component/detail/ChooseChildren';
+// import ChooseChildren from './src/component/Detail/ChooseChildren';
 import ChooseGategory from './src/component/allHotels/ChooseGategory';
-import OwnerProfile from './src/component/OwnerProfile/OwnerProfile'
-// import Calendar from './src/component/Detail/Reservation';
 import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
+import OwnerProfile from './src/component/OwnerProfile/OwnerProfile';
 import AdvancedFilter from './src/component/AdvancedFilter/AdvancedFilter';
-import Detail from './src/component/detail/Detail';
-import Reservation from './src/component/detail/Reservation';
+import Detail from './src/component/Detail/Detail';
 import { race } from 'core-js/library/es6/promise';
 import SignUp from './src/component/authentication/SigneUp';
 
@@ -35,12 +33,7 @@ function App() {
  
   return (
     // <UserProfile/>
-    // <EditProfile/> 
-// {/* <Map/>    */}
-//        {/* <Payment/>  */}
-//       {/* <AppFace/> 
-//        <Inboarding/>  */}
-    
+    //  <AdvancedFilter/> 
     // <GestureHandlerRootView style={{flex: 1}}>
     //   <Hotelprofile/>
     // //  <AdvancedFilter/> 

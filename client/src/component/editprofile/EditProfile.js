@@ -12,7 +12,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
-const EditProfile = () => {
+const EditProfile = ({navigation}) => {
     const [view, setView] = useState("firstView");
     const [user,setUser]=useState({
       email:"",
@@ -231,7 +231,7 @@ const EditProfile = () => {
       )}
           </View>
           <View style={styles.inputsContainer}>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() =>{handleSave()}}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={() =>{handleSave(),navigation.navigate('UserProfile')}}>
               <Text style={styles.next}>Save</Text>
             </TouchableOpacity>
           </View>

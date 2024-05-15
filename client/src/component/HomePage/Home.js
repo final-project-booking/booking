@@ -25,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
 
 
   const dispatch=useDispatch()
-  const hotel = useSelector(state => state.allHotels.hotels);
+  const hotel = useSelector(state => state.hotelSlice.hotels);
   const loading = useSelector(state => state.allHotels.loading);
   const error = useSelector(state => state.allHotels.error);
 
@@ -135,12 +135,12 @@ const opacity = scrollX.interpolate({
     );
   };
 
-  const Card = ({ hotel }) => {
+  const Card = ({hotel}) => {
     return (
           <TouchableOpacity
         // disabled={activeCardIndex != index}
         // activeOpacity={1}
-        onPress={() => navigation.navigate('Hotelprofile', hotel)}>
+        onPress={() => navigation.navigate('HotelProfile',{hotel:hotel})}>
       <View style={styles.card}>
         <View
           style={{

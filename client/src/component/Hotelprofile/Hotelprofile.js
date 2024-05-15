@@ -1,38 +1,47 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity,Button,ImageBackground ,Dimensions} from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import Map from '../Map/Map';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Title, Caption, Divider } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Image, Dimensions, TouchableOpacity,TextInput, Button,Switch } from 'react-native';
+import BottomSheet from '@gorhom/bottom-sheet';
+import {createRoomsForHotel}from '../../reduce/Rooms';
+import { useDispatch } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {cloud_name,preset} from "../../apAdress"
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useDispatch } from 'react-redux';
-import { promoteToOwner } from '../../reduce/Ownerprofile';
-import pic from '../../Photo/hotel.jpeg'
-const OwnerProfile = () => {
-  const [profile, setProfile] = useState({
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'johndoe@example.com',
-    password: 'password',
-    phoneNumber: '99999999',
-    imageUrl: 'https://th.bing.com/th/id/OIP.2i5UaEHaQM3PYAYXQyM1AAAAAA?w=177&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
-    location: {
-      latitude: 37.78825,
-      longitude: -122.4324,
-    },
+import Reviews from './Reviews'
+const OverviewScreen = () => {
+  
+    const bottomSheetRef = useRef(null);
+    const snapPoints = useMemo(() => ['25%', '50%', '80%'], []);
+    const dispatch = useDispatch();
+    const [roomData, setRoomData] = useState({
+      hotelId:1, 
+      numRooms:7,
+      roomTemplate: {
+          price:180,
+          view:'seaView',
+          capacity:2,
+          reduction:false,
+          rate:5,
+          option: {
+              Meal_Plan: 'all_Inclusive'
+          },
+          media: [] 
+      }
   });
-
-  const [hotelData, setHotelData] = useState({
-    name: '',
-    licence: '',
-    description: '',
-    rooms: '',
-    rating: '',
-    media: [],
-  });
-
-  const dispatch = useDispatch();
-
+  const handleOptionChange = (newMealPlan) => {
+    setRoomData({
+        ...roomData,
+        roomTemplate: {
+            ...roomData.roomTemplate,
+            option: {
+                ...roomData.roomTemplate.option,
+                Meal_Plan: newMealPlan
+            }
+        }
+    });
+};
   const imageHandler = async (imageAsset) => {
     const form = new FormData();
     form.append("file", {
@@ -53,7 +62,7 @@ const OwnerProfile = () => {
 
   const pickImage = () => {
     const options = {
-      selectionLimit: 0,
+      selectionLimit: 0,  
       mediaType: 'photo'
     };
 
@@ -61,265 +70,557 @@ const OwnerProfile = () => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.errorCode) {
-        console.log('ImagePicker Error:', response.errorMessage);
+        console.log('ImagePicker Error: ', response.errorMessage);
       } else {
         try {
           const uploadPromises = response.assets.map(imageAsset => imageHandler(imageAsset));
+          console.log(uploadPromises,'uploadPromises');
           const imageUris = await Promise.all(uploadPromises);
-          setHotelData(prevData => ({
-            ...prevData,
-            media: [...prevData.media, ...imageUris]
+          setRoomData(prevData => ({
+              ...prevData,
+              roomTemplate: {
+                  ...prevData.roomTemplate,
+                  media: [...prevData.roomTemplate.media, ...imageUris]
+              }
           }));
         } catch (error) {
           console.log('Error uploading images:', error);
         }
       }
     });
-  };
+};
+
+
+const handleReductionChange = (newValue) => {
+  setRoomData(prevData => ({
+      ...prevData,
+      roomTemplate: {
+          ...prevData.roomTemplate,
+          reduction: newValue
+      }
+  }));
+};
   
-  const handleSave = () => {
-    dispatch(
-      promoteToOwner({
-        ...hotelData,
-        longitude: profile.location.longitude,
-        latitude: profile.location.latitude,
-      })
-    );
-  };
+  const handleSubmit = () => {
+    dispatch(createRoomsForHotel(roomData));
+    // console.log(roomData,'roomData');
+};
 
-  const [view, setView] = useState('profile');
-  const ImageIcon = <Icon size={25} name='add-a-photo' />;
- 
+const ImageIcon = <Icon size={25} name='add-a-photo' />;
 
-  return (
-    
-<View style={styles.container}>
-      {view === 'profile' && (
-        <ImageBackground source={pic} style={styles.backgroundImage} resizeMode="cover">
-          <Text style={styles.descriptionText}>
-        Please ensure that all details are filled correctly. To promote to owner status,
-        your hotel must comply with all local regulations and standards. Ensure that your
-        hotel meets the required quality and safety standards to provide an exceptional
-        guest experience.
-      </Text>
-          <TouchableOpacity onPress={() => setView('inputs')} style={styles.promoteButton}>
-            <Text style={styles.promoteText}>Promote To Owner →</Text>
-          </TouchableOpacity>
-        </ImageBackground>
-      )}
-
-
-
-        {view === 'inputs' && (
-          <View style={styles.paddedContent}>
-          <>
-            <TouchableOpacity onPress={() => setView('profile')}>
-              <Text style={styles.linkText}>← Back</Text>
-            </TouchableOpacity>
-            <View style={styles.formContainer}>
-              <Text style={styles.formHeading}>Create Your Hotel</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Hotel Name"
-                value={hotelData.name}
-                onChangeText={(name) => setHotelData({ ...hotelData, name })}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Hotel Licence"
-                value={hotelData.licence}
-                onChangeText={(licence) => setHotelData({ ...hotelData, licence })}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Description"
-                value={hotelData.description}
-                onChangeText={(description) => setHotelData({ ...hotelData, description })}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Rooms"
+    const BottomSheetContent = () => (
+      <View style={styles.bottomSheetContent}>
+         <View style={{flexDirection:'column', gap: 10 }}>
+                <View />
+               </View>
+        <Text style={styles.bottomSheetTitle}>Add More Rooms</Text>
+        <TextInput 
+                style={styles.input} 
+                placeholder="Number of Rooms" 
                 keyboardType="numeric"
-                value={hotelData.rooms}
-                onChangeText={(rooms) => setHotelData({ ...hotelData, rooms })}
-              />
-               <View style={{flexDirection:'column', gap: 10 }}>
+                onChangeText={(text) => setRoomData({ ...roomData, numRooms: parseInt(text, 10) })}
+            />
+        <TextInput 
+                style={styles.input} 
+                placeholder="Capacity" 
+                keyboardType="numeric" 
+                onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, capacity: parseInt(text, 10) } })}
+             />
+        <TextInput 
+                style={styles.input} 
+                placeholder="Price" 
+                keyboardType="numeric"  
+                onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, price: parseInt(text, 10) } })}
+             />
+      <TextInput style={styles.input} placeholder="View" onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, view: text } })} />
+      
+      <TextInput style={styles.input} placeholder="Rate" keyboardType="numeric"  onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, rate: parseInt(text, 10) } })} />
+      
+      <TextInput style={styles.input} placeholder="Meal Plan"  onChangeText={handleOptionChange} />
+      <View style={styles.switchContainer}>
+      <Text style={styles.switchLabel}>Reduction:</Text>
+       <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={roomData.roomTemplate.reduction ? "#000000" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={handleReductionChange}
+        value={roomData.roomTemplate.reduction}
+        />
+        </View>
+      <View style={{flexDirection:'column', gap: 10 }}>
                 <View />
                 <View />
                 <View />
                 <View />
                </View>
               <Text onPress={pickImage} style={{color:"black"}}>Select your {ImageIcon}</Text>
+              {roomData.roomTemplate.media.length > 0 && (
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageContainer}>
+                    {roomData.roomTemplate.media.map((uri, index) => (
+                        <Image key={index} source={{ uri }} style={styles.imagePreview} />
+                    ))}
+                </ScrollView>
+            )}
               <View style={{flexDirection:'column', gap: 10 }}>
                 <View />
                 <View />
-                <View />
-                <View />
                </View>
-              <Text style={styles.label}>Rating:</Text>
-              <Picker
-                selectedValue={hotelData.rating}
-                style={styles.picker}
-                onValueChange={(rating) => setHotelData({ ...hotelData, rating })}
-              >
-                <Picker.Item label="Please select a rating" value="" />
-                <Picker.Item label="3 Stars" value="3" />
-                <Picker.Item label="4 Stars" value="4" />
-                <Picker.Item label="5 Stars" value="5" />
-              </Picker>
-            </View>
-            <TouchableOpacity onPress={() => setView('map')}>
-              <Text style={styles.linkText}>Next →</Text>
-            </TouchableOpacity>
-          </>
-          </View>
-        )}
-
-        {view === 'map' && (
-          <View style={styles.paddedContent}>
-          <>
-            <TouchableOpacity onPress={() => setView('inputs')}>
-              <Text style={styles.linkText}>← Back</Text>
-            </TouchableOpacity>
-            <View style={styles.mapContainer}>
-              <Map />
-            </View>
-            <TouchableOpacity style={styles.submitButton} onPress={handleSave}>
-              <Text style={styles.buttonText}>Submit</Text>
-            </TouchableOpacity>
-          </>
-          </View>
-        )}
+        <Button title="Submit" onPress={handleSubmit} />
       </View>
-    
+    );
+  
+    return (
+      <View style={styles.overviewWrapper}>
+        <ScrollView contentContainerStyle={styles.overviewContainer}>
+          <Text style={styles.overviewTitle}>About Grand Hotel</Text>
+          <Text style={styles.overviewText}>
+            Welcome to the Grand Hotel, a luxurious retreat located in the heart of the city. With elegant suites, exceptional dining, and stunning views, we offer an unforgettable experience for both leisure and business travelers.
+          </Text>
+          <Divider style={styles.overviewDivider} />
+  
+          <Text style={styles.overviewTitle}>Key Amenities</Text>
+          <View style={styles.amenitiesContainer}>
+            <View style={styles.amenityItem}>
+              <MaterialCommunityIcons name="wifi" size={30} color="#112678" />
+              <Text style={styles.amenityLabel}>Free WiFi</Text>
+            </View>
+            <View style={styles.amenityItem}>
+              <MaterialCommunityIcons name="pool" size={30} color="#112678" />
+              <Text style={styles.amenityLabel}>Swimming Pool</Text>
+            </View>
+            <View style={styles.amenityItem}>
+              <MaterialCommunityIcons name="bed-king-outline" size={30} color="#112678" />
+              <Text style={styles.amenityLabel}>Luxury Suites</Text>
+            </View>
+            <View style={styles.amenityItem}>
+              <MaterialCommunityIcons name="car" size={30} color="#112678"/>
+              <Text style={styles.amenityLabel}>Free Parking</Text>
+            </View>
+          </View>
+          <Divider style={styles.overviewDivider} />
+  
+          <Text style={styles.overviewTitle}>Gallery</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <Image
+              source={{ uri: 'https://images.lifestyleasia.com/wp-content/uploads/sites/2/2021/03/08103440/best-suites-hk-grand-hyatt-3-1024x767.png' }}
+              style={styles.galleryImage}
+            />
+            <Image
+              source={{ uri: 'https://thumbs.dreamstime.com/b/luxury-hotel-4480742.jpg' }}
+              style={styles.galleryImage}
+            />
+            <Image
+              source={{ uri: 'https://c4.wallpaperflare.com/wallpaper/146/867/628/luxury-hotel-wallpaper-preview.jpg' }}
+              style={styles.galleryImage}
+            />
+          </ScrollView>
+          <Divider style={styles.overviewDivider} />
+         
+        </ScrollView>
+        <View style={{flexDirection:'column', gap: 10 }}>
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+         <View />
+        </View>
+        {/* Bottom Sheet Trigger */}
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={0}
+          snapPoints={snapPoints}
+          style={styles.bottomSheet}
+        >
+          {BottomSheetContent()}
+        </BottomSheet>
+      </View>
+    );
+  };
+
+const DetailsScreen = () => (
+  <ScrollView style={styles.detailsContainer}>
+    <Text style={styles.detailsTitle}>Hotel Details</Text>
+    <Text style={styles.detailsHeading}>Check-In/Check-Out</Text>
+    <Text style={styles.detailsText}>Check-In: 7:00 AM</Text>
+    <Text style={styles.detailsText}>Check-Out: 12:00 PM</Text>
+    <Divider style={styles.detailsDivider} />
+
+    <Text style={styles.detailsHeading}>Address</Text>
+    <Text style={styles.detailsText}>123 Main Street, City, Country</Text>
+    <Divider style={styles.detailsDivider} />
+
+    <Text style={styles.detailsHeading}>Contact Information</Text>
+    <Text style={styles.detailsText}>Phone: +123 456 7890</Text>
+    <Text style={styles.detailsText}>Email: info@grandhotel.com</Text>
+    <Divider style={styles.detailsDivider} />
+
+    <Text style={styles.detailsHeading}>Policies</Text>
+    <Text style={styles.detailsText}>- No smoking inside the rooms.</Text>
+    <Text style={styles.detailsText}>- Pets allowed with prior notice.</Text>
+    <Text style={styles.detailsText}>- Free cancellation up to 24 hours before arrival.</Text>
+    <Divider style={styles.detailsDivider} />
+
+    <Text style={styles.detailsHeading}>Room Information</Text>
+    <Text style={styles.detailsText}>- Standard Room: 1 King Bed, City View</Text>
+    <Text style={styles.detailsText}>- Deluxe Room: 2 Queen Beds, Ocean View</Text>
+    <Text style={styles.detailsText}>- Suite: 1 King Bed, Balcony, Ocean View</Text>
+    <Divider style={styles.detailsDivider} />
+
+    <Text style={styles.detailsHeading}>Dining Options</Text>
+    <Text style={styles.detailsText}>- The Grand Restaurant: Fine Dining</Text>
+    <Text style={styles.detailsText}>- Ocean Breeze Café: Casual Breakfast & Lunch</Text>
+    <Text style={styles.detailsText}>- Poolside Bar: Cocktails & Snacks</Text>
+    <Divider style={styles.detailsDivider} />
+  </ScrollView>
+);
+
+const ReviewsScreen = () => (
+  <View style={styles.screenContainer}>
+    <Reviews/>
+  </View>
+);
+
+const HotelProfile = () => {
+  const carouselImages = [
+    { url: 'https://media.cnn.com/api/v1/images/stellar/prod/140127103345-peninsula-shanghai-deluxe-mock-up.jpg' },
+    { url: 'https://www.bulgarihotels.com/.imaging/bhr-wide-small-jpg/dam/pre-home/collection_2.png/jcr%3Acontent' },
+    { url: 'https://images.lifestyleasia.com/wp-content/uploads/sites/2/2021/03/08103440/best-suites-hk-grand-hyatt-3-1024x767.png' },
+    { url: 'https://thumbs.dreamstime.com/b/luxury-hotel-4480742.jpg' },
+    { url: 'https://c4.wallpaperflare.com/wallpaper/146/867/628/luxury-hotel-wallpaper-preview.jpg' },
+  ];
+
+  const hotelLocation = "123 Main Street, City";
+  const hotelName = "Grand Hotel";
+  const hotelRating = 4.5;
+
+  const scrollRef = useRef();
+  const [dimension, setDimension] = useState(Dimensions.get('window'));
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedTab, setSelectedTab] = useState('overview');
+
+  const setIndexCarousel = event => {
+    let viewSize = event.nativeEvent.layoutMeasurement.width;
+    let contentOffset = event.nativeEvent.contentOffset.x;
+    let carouselIndex = Math.floor(contentOffset / viewSize);
+    setSelectedIndex(carouselIndex);
+  };
+
+  useEffect(() => {
+    const onChange = ({ window }) => {
+      setDimension(window);
+    };
+   const x= Dimensions.addEventListener('change', onChange);
+    return () => {
+     x.remove
+    };
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSelectedIndex(prevSelectedIndex =>
+        prevSelectedIndex === carouselImages.length - 1 ? 0 : prevSelectedIndex + 1
+      );
+      scrollRef.current.scrollTo({
+        animated: true,
+        y: 0,
+        x: dimension.width * selectedIndex,
+      });
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [dimension.width, selectedIndex]);
+
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      const iconName = i <= rating ? "star" : i - rating < 1 ? "star-half-full" : "star-outline";
+      stars.push(
+        <MaterialCommunityIcons
+          key={i}
+          name={iconName}
+          size={20}
+          color="#FFD700"
+          style={styles.starIcon}
+        />
+      );
+    }
+    return stars;
+  };
+
+  const renderSelectedTab = () => {
+    switch (selectedTab) {
+      case 'overview':
+        return <OverviewScreen />;
+      case 'details':
+        return <DetailsScreen />;
+      case 'reviews':
+        return <ReviewsScreen />;
+      default:
+        return <OverviewScreen />;
+    }
+  };
+
+  return (
+    <SafeAreaProvider>
+      <ScrollView style={styles.container}>
+        <ScrollView
+          horizontal
+          ref={scrollRef}
+          onMomentumScrollEnd={setIndexCarousel}
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+        >
+          {carouselImages.map((value, key) => (
+            <Image
+              key={key}
+              source={{ uri: `${value.url}` }}
+              style={{ width: dimension?.width, height: 250, resizeMode: 'cover' }}
+              PlaceholderContent={<ActivityIndicator />}
+            />
+          ))}
+        </ScrollView>
+        <View style={styles.dotContainer}>
+          {carouselImages.map((val, key) => (
+            <Text
+              key={key}
+              style={key === selectedIndex ? styles.activeDot : styles.inactiveDot}
+            >
+            </Text>
+          ))}
+        </View>
+        <Divider style={styles.divider} />
+        <View style={styles.infoLine}>
+          <MaterialCommunityIcons name="bed-outline" size={24} color="#333" />
+          <Title style={styles.titleText}>{hotelName}</Title>
+          <View style={styles.ratingContainer}>
+            {renderStars(hotelRating)}
+          </View>
+        </View>
+        <Divider style={styles.divider} />
+        <View style={styles.infoLine}>
+          <MaterialCommunityIcons name="map-marker-outline" size={24} color="#333" />
+          <Caption style={styles.captionText}>{hotelLocation}</Caption>
+        </View>
+        <Divider style={styles.divider} />
+        {/* Custom Navigation Bar */}
+        <View style={styles.tabBar}>
+          {['overview', 'details', 'reviews'].map((tab) => (
+            <TouchableOpacity
+              key={tab}
+              style={styles.tabItem}
+              onPress={() => setSelectedTab(tab)}
+            >
+              <Text
+                style={[
+                  styles.tabLabel,
+                  selectedTab === tab && styles.selectedTabLabel
+                ]}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </Text>
+              {selectedTab === tab && <View style={styles.tabIndicator} />}
+            </TouchableOpacity>
+          ))}
+        </View>
+        <Divider style={styles.divider} />
+        {renderSelectedTab()}
+      </ScrollView>
+    </SafeAreaProvider>
   );
 };
-const { width, height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
-  
-  // scrollContainer: {
-  //   backgroundColor: '#ffffff',
-  //   // flex: 1,
-  // },
-  // container: {
-  //   flex: 1,
-  //   padding: 20,
-  //   backgroundColor: '#ffffff',
-  // },
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f8f9fa',
   },
-  //
-  paddedContent: {
-    flex: 1,
-    padding: 20,  // Apply padding here for other views
-  },
-  //
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-    color: '#333',
-  },
-  profileInfo: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  image: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginBottom: 10,
-  },
-  label: {
-    fontWeight: '600',
-    marginBottom: 5,
-    color: '#444',
-  },
-  infoText: {
-    marginBottom: 10,
-    color: '#666',
-  },
-  linkText: {
-    fontSize: 18,
-    color: '#007BFF',
-    textDecorationLine: 'underline',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  formContainer: {
-    marginTop: 20,
-  },
-  formHeading: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#333',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-    width: '100%',
-    backgroundColor: '#fff',
-  },
-  picker: {
-    height: 50,
-    width: '100%',
-    marginBottom: 10,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-  },
-  mapContainer: {
-    height: 400,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  submitButton: {
-    backgroundColor: '#4CAF50',
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 20,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  backgroundImage: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-  },
-  promoteButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: 'rgba(0, 123, 255, 0.8)',
-    borderRadius: 5,
+  dotContainer: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 10,
     alignSelf: 'center',
   },
-  promoteText: {
-    fontSize: 18,
+  activeDot: {
     color: 'white',
-    textAlign: 'center',
   },
-  descriptionText: {
-    color: 'white', 
-    textAlign: 'center',
-    marginBottom: 20,
+  inactiveDot: {
+    color: '#888',
+  },
+  infoLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginHorizontal: 8,
+    marginVertical: 4,
+  },
+  titleText: {
+    fontSize: 20,
+    color: '#333',
+  },
+  captionText: {
+    marginLeft: 10,
     fontSize: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Semi-transparent background for better readability
+    color: '#666',
+  },
+  divider: {
+    marginHorizontal: 8,
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  starIcon: {
+    marginRight: 3,
+  },
+  screenContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tabBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+  },
+  tabItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  tabLabel: {
+    fontSize: 16,
+    color: '#666',
+  },
+  selectedTabLabel: {
+   color: "#112678",
+    fontWeight: 'bold',
+  },
+  tabIndicator: {
+    width: '100%',
+    height: 3,
+    backgroundColor: '#112678',
+    marginTop: 2,
+  },
+  //////////////////
+  overviewWrapper: {
+    flex: 1,
+  },
+  overviewContainer: {
+    padding: 16,
+  },
+  overviewTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#333',
+  },
+  overviewText: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 16,
+    lineHeight: 20,
+  },
+  overviewDivider: {
+    marginVertical: 16,
+  },
+  amenitiesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  amenityItem: {
+    alignItems: 'center',
+  },
+  amenityLabel: {
+    fontSize: 12,
+    color: '#555',
+    marginTop: 4,
+  },
+  galleryImage: {
+    width: 250,
+    height: 150,
+    borderRadius: 8,
+    marginRight: 10,
+    resizeMode: 'cover',
+  },
+  bottomSheet: {
+    paddingHorizontal: 10,
+  },
+  bottomSheetContent: {
+    flex:1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding:18,
+  },
+  bottomSheetTitle: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    marginBottom:14,
+  },
+  switchContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginBottom: 10, 
+    marginTop: 10, 
+},
+switchLabel: {
+    marginRight: 10, 
+},
+imageContainer: {
+  flexDirection: 'row',
+  marginTop: 10,
+  marginBottom: 10,
+},
+imagePreview: {
+  width: 100,
+  height: 100,
+  marginRight: 10,
+},
+  input: {
+    width: '100%',
     padding: 10,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
     borderRadius: 5,
+  },
+  ////////////////////
+  detailsContainer: {
+    flex: 1,
+    padding: 16,
+  },
+  detailsTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#333',
+  },
+  detailsHeading: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginBottom: 4,
+    color: '#555',
+  },
+  detailsText: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 8,
+  },
+  detailsDivider: {
+    marginVertical: 16,
   },
 });
 
-export default OwnerProfile;
+export default HotelProfile;
