@@ -20,7 +20,7 @@ const people=route.params.people
   const dispatch = useDispatch();
 const prices=useSelector(state=>state.getRoomByCategory.room)
 console.log('price',prices?.price);
-
+console.log(prices);
 const body={
   view:selectedValue,
   hotelId:hotelId,

@@ -135,12 +135,12 @@ const opacity = scrollX.interpolate({
     );
   };
 
-  const Card = ({ hotel }) => {
+  const Card = ({hotel}) => {
     return (
           <TouchableOpacity
         // disabled={activeCardIndex != index}
         // activeOpacity={1}
-        onPress={() => navigation.navigate('Hotelprofile', hotel)}>
+        onPress={() => navigation.navigate('HotelProfile',{hotel:hotel})}>
       <View style={styles.card}>
         <View
           style={{

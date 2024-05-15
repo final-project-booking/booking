@@ -67,16 +67,16 @@ console.log(route.params.people);
 // console.log(tokenGeted());
 const check = async () => {
   if(await checkToken()){
-    navigation.navigate('Succes')
-  }else{
     setModalVisible(!modalVisible)
+  }else{
+    navigation.navigate('Succes')
   }
 }
 const nego=async ()=>{
   if(await checkToken()){
-    navigation.navigate('Succes')
-  }else{
     setNewPrice(!newPrice)
+  }else{
+    navigation.navigate('Succes')
   }
 }
 
@@ -203,7 +203,7 @@ const nego=async ()=>{
         <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={plus} />
        </View>
        <View>
-        <TextInput onChangeText={(e)=>set} 
+        <TextInput
         style={{borderRadius:15,width:250,fontSize:15,paddingLeft: 10,borderWidth:1,borderColor:'black',marginTop:17}}
           placeholder='Create somthing'
         />
@@ -244,7 +244,7 @@ const nego=async ()=>{
 <Text style={{fontSize:20,color:'#00FF40'}}>Another Room</Text>
 </View>
 <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center',justifyContent:'space-between' }}>
-{compar?.mainRooms ? compar.relatedRooms.map((e)=>{
+{compar?.relatedRooms ? compar.relatedRooms.map((e)=>{
 
 return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }} >
     <View style={{ marginTop: 20 }}>

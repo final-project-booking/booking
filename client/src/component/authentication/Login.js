@@ -36,13 +36,9 @@ navigation.navigate("Home");
     dispatch(signInAsync(login))
   }
   const checkLogin=()=>{
-    if(success){
+  
       navigation.navigate("Detail")
-    }else{
-
-      console.log(success);
-        Alert.alert('check your information')
-    }
+   
     }
 
       const isError = error || (error.email || error.password);
