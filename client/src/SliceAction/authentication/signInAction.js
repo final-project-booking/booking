@@ -1,7 +1,6 @@
 import {signInAsync} from '../../reduce/authentication/signInReducer'
 import { createSlice } from '@reduxjs/toolkit'
 
-console.log("log",signInAsync);
 
 
 
