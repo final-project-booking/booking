@@ -7,7 +7,7 @@ import {cloud_name,preset} from "../../apAdress"
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch } from 'react-redux';
 import { promoteToOwner } from '../../reduce/Ownerprofile';
-import pic from '../../Photo/hottell.webp'
+import pic from '../../Photo/owner.jpg'
 const OwnerProfile = () => {
   const [profile, setProfile] = useState({
     firstName: 'John',
@@ -292,15 +292,16 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   backgroundImage: {
+    opacity:0.8,
     flex: 1,
     width: '100%',
     height: '100%',
     justifyContent: 'center',
   },
   promoteButton: {
-    marginTop: 20,
+    marginTop: 30,
     padding: 10,
-    backgroundColor: 'rgba(0, 123, 255, 0.8)',
+    backgroundColor: 'rgba(0, 123, 255, 1)',
     borderRadius: 5,
     alignSelf: 'center',
   },
@@ -314,7 +315,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     fontSize: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Semi-transparent background for better readability
+    backgroundColor: 'rgba(0, 0, 0, 1)',  // Semi-transparent background for better readability
     padding: 10,
     borderRadius: 5,
   },

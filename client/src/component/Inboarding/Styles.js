@@ -14,7 +14,7 @@ const Styles = StyleSheet.create({
   },
   subHeading: {color: '#140866', fontSize: 15},
   title: {
-    color: '#700D99',
+     color: '#700D99',
     fontSize: 20,
   },
 });
