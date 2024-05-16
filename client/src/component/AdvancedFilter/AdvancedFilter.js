@@ -1,10 +1,43 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, FlatList, Modal, Image } from 'react-native'; 
+import React, { useState,useEffect } from 'react'
+import {
+  Dimensions,
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Image,
+  Animated,
+  Modal
+} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import MapView, { Marker } from 'react-native-maps';
-import hotels from '../const/Hotels'; 
+import { useDispatch, useSelector} from 'react-redux';
+
+// import hotels from '../const/Hotels'; 
 const AdvancedFilter = () => {
+
+
+
+  const dispatch=useDispatch()
+  const hotel = useSelector(state => state.hotelSlice.hotels);
+  const loading = useSelector(state => state.allHotels.loading);
+  const error = useSelector(state => state.allHotels.error);
+
+  useEffect(()=>{
+    dispatch(AllHotell())
+  
+
+    },[dispatch])
+;
+
+
+
+
   const [rating, setRating] = useState(null);
   const [priceRange, setPriceRange] = useState([50, 5000]);
   const [location, setLocation] = useState(null);
@@ -12,7 +45,7 @@ const AdvancedFilter = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const applyFilter = () => {
-    let filtered = hotels;
+    let filtered = hotel;
   
     if (filtered !== null) {
       filtered = filtered.filter((hotel) => hotel.price >= priceRange[0] && hotel.price <= priceRange[1]);
@@ -26,7 +59,7 @@ const AdvancedFilter = () => {
     setRating(null);
     setPriceRange([50, 5000]);
     setLocation(null);
-    setFilteredHotels(hotels);
+    setFilteredHotels(hotel);
   };
 
   const handleRatingSelect = (selectedRating) => {

@@ -11,18 +11,15 @@ import IconFa from 'react-native-vector-icons/MaterialIcons'
 const UserProfile = ({ navigation }) => {
   const dispatch = useDispatch();
   const [profile, setProfile] = useState(null);
-  // const handleLogout = async () => {
-  //   try {
-  //     // Clear user authentication state (e.g., remove token, clear user data)
-  //     await AsyncStorage.removeItem('token'); // Example: remove authentication token stored in AsyncStorage
-
-  //     // Navigate to login screen or initial screen
-  //     navigation.navigate('Login'); // Example: navigate to the Login screen
-  //   } catch (error) {
-  //     console.error('Error logging out:', error);
-  //     Alert.alert('Error', 'Failed to log out. Please try again.');
-  //   }
-  // };
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('token'); 
+      navigation.navigate('AppFace'); 
+    } catch (error) {
+      console.error('Error logging out:', error);
+      Alert.alert('Error', 'Failed to log out. Please try again.');
+    }
+  };
 
 const HandleButton=()=>{
   navigation.navigate('OwnerProfile');
@@ -90,7 +87,7 @@ const HandleButton=()=>{
         </TouchableOpacity>
         
         <TouchableOpacity style={styles.sidebarItem} 
-      //  onPress={handleLogout}
+       onPress={handleLogout}
         > 
           <Icon name="logout" size={25} color="#161618" />
           <Text style={styles.sidebarText}>Logout</Text>
