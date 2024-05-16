@@ -25,10 +25,14 @@ export default function Router() {
       children: [
         { element: <IndexPage />, index: true },
         { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
+        { path: 'hotels', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
+    // {
+    //   path: 'userProfile',
+    //   element: <UserDetail /> 
+    // },
     {
       path: 'login',
       element: <LoginPage />,

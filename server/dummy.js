@@ -79,7 +79,7 @@ let counterDate=count()
             email: faker.internet.email(),
           password: await bcrypt.hash("12345", saltRounds), // Replace with a secure password hashing mechanismrol
             phoneNumber: faker.number.int({ min: 1, max: 100}), // Uncomment if you want phone numbers
-            isActive:faker.datatype.boolean(),
+            isActive:true,
             activationCode:faker.phone.number(),
             latitude:faker.location.latitude({ max: 10, min: -10, precision: 5 }), 
           longitude:faker.location.longitude({ max: 10, min: -10 }),

@@ -19,7 +19,7 @@ const navConfig = [
   },
   {
     title: 'Hotels',
-    path: '/products',
+    path: '/hotels',
     icon: <SiHotelsdotcom  size={20}/>,
   },
   {

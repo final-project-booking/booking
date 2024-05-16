@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -10,11 +10,11 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
 
+import { BanUseById } from '../../../env'
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-
+import axios from 'axios';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
 import UserTableHead from '../user-table-head';
@@ -26,7 +26,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 export default function UserPage() {
   const [page, setPage] = useState(0);
-
+   const[ref,setRef] =useState(false)
   const [order, setOrder] = useState('asc');
 
   const [selected, setSelected] = useState([]);
@@ -36,7 +36,8 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
+  
+  const [users, setUsers] = useState([]);
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
     if (id !== '') {
@@ -44,7 +45,28 @@ export default function UserPage() {
       setOrderBy(id);
     }
   };
-
+  useEffect(()=>{
+    fetch()
+  },[ref])
+   const fetch=async()=>{
+    try {
+      const response=await axios.get("http://localhost:3000/api/user/allUser")
+     const filtered=response.data.map((e) => ({
+        id:e.id,
+        avatarUrl: e.imgUrl,
+        name: e.firstName&&e.lastName,
+        company:e.email,
+        isActive:e.isActive,
+        isVerified:e.phoneNumber,
+        role:e.role,
+      }));
+      console.log(filtered);
+     setUsers(filtered)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+ 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = users.map((n) => n.name);
@@ -94,6 +116,22 @@ export default function UserPage() {
 
   const notFound = !dataFiltered.length && !!filterName;
 
+
+  const BanUser = (id) => {
+    axios
+      .put(`${BanUseById}/${id}`)
+      .then((res) => {
+      
+      // Trigger fetch after deletion
+      setRef(!ref)
+      })
+      .catch((err) => console.log(err));
+  };
+
+ 
+
+
+
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -126,6 +164,7 @@ export default function UserPage() {
                   { id: 'company', label: 'Email' },
                   { id: 'role', label: 'Role' },
                   { id: 'isVerified', label: 'Phone number', align: 'center' },
+                  { id: 'isActive', label: 'Active?', align: 'center' },
                   { id: 'status', label: '' },
                   { id: '' },
                 ]}
@@ -136,6 +175,9 @@ export default function UserPage() {
                   .map((row) => (
                     <UserTableRow
                       key={row.id}
+                      row={row}
+                      BanUser={BanUser}
+                      id={row.id}
                       name={row.name}
                       role={row.role}
                       status={row.status}
@@ -146,7 +188,6 @@ export default function UserPage() {
                       handleClick={(event) => handleClick(event, row.name)}
                     />
                   ))}
-
                 <TableEmptyRows
                   height={77}
                   emptyRows={emptyRows(page, rowsPerPage, users.length)}

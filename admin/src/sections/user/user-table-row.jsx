@@ -1,34 +1,20 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
-import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
-import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
-import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-
+import Popover from '@mui/material/Popover';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { ImBlocked } from "react-icons/im";
-import { prototype } from 'apexcharts';
+import { GoArrowSwitch } from "react-icons/go";
+import { useRouter } from 'src/routes/hooks';
 
-// ----------------------------------------------------------------------
-
-export default function UserTableRow({
-  id,
-  selected,
-  name,
-  avatarUrl,
-  company,
-  role,
-  isVerified,
-  handleClick,
-}) {
-  console.log("id",id);
+export default function UserTableRow({ row, BanUser }) {
+  const { id, name, avatarUrl, company, role, isVerified,isActive } = row;
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -39,11 +25,14 @@ export default function UserTableRow({
     setOpen(null);
   };
 
+ 
+
+
+
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
+      <TableRow hover tabIndex={-1} style={{cursor:"pointer"}} >
         <TableCell padding="checkbox">
-          <Checkbox disableRipple checked={selected} onChange={handleClick} />
         </TableCell>
 
         <TableCell component="th" scope="row" padding="none">
@@ -60,8 +49,8 @@ export default function UserTableRow({
         <TableCell>{role}</TableCell>
 
         <TableCell align="center">{isVerified}</TableCell>
-
-        
+        <TableCell align="center">{isActive?<p style={{color:"green"}}>yes</p>:<p style={{color:"red"}}>No</p>}</TableCell>
+        <TableCell align="center"></TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
@@ -80,25 +69,11 @@ export default function UserTableRow({
           sx: { width: 140 },
         }}
       >
-        
-
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
-          <ImBlocked style={{marginRight:5}}/>
-          Block
+        <MenuItem onClick={()=>{BanUser(id);handleCloseMenu()}} sx={{ color: 'blue' }}>
+          <GoArrowSwitch style={{ marginRight: 10 }} />
+          Swith statue
         </MenuItem>
       </Popover>
     </>
   );
 }
-
-UserTableRow.propTypes = {
-  id:PropTypes.any,
-  avatarUrl: PropTypes.any,
-  company: PropTypes.any,
-  handleClick: PropTypes.func,
-  isVerified: PropTypes.any,
-  name: PropTypes.any,
-  role: PropTypes.any,
-  selected: PropTypes.any,
-  status: PropTypes.string,
-};

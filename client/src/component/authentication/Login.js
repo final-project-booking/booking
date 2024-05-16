@@ -29,9 +29,9 @@ navigation.navigate("Home");
         setLogin({ ...login, [name]: value });
       };
 
-      const handleSignIn=()=>{
+      const handleSignIn=async()=>{
         // useEffect(()=>{
-          dispatch(signInAsync(login))
+          await dispatch(signInAsync(login))
           navigation.navigate("Home");
 
         // },[])
