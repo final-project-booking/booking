@@ -181,19 +181,19 @@ const ImageIcon = <Icon size={25} name='add-a-photo' />;
           <Text style={styles.overviewTitle}>Key Amenities</Text>
           <View style={styles.amenitiesContainer}>
             <View style={styles.amenityItem}>
-              <MaterialCommunityIcons name="wifi" size={30} color="#007BFF" />
+              <MaterialCommunityIcons name="wifi" size={30} color="#112678" />
               <Text style={styles.amenityLabel}>Free WiFi</Text>
             </View>
             <View style={styles.amenityItem}>
-              <MaterialCommunityIcons name="pool" size={30} color="#007BFF" />
+              <MaterialCommunityIcons name="pool" size={30} color="#112678" />
               <Text style={styles.amenityLabel}>Swimming Pool</Text>
             </View>
             <View style={styles.amenityItem}>
-              <MaterialCommunityIcons name="bed-king-outline" size={30} color="#007BFF" />
+              <MaterialCommunityIcons name="bed-king-outline" size={30} color="#112678" />
               <Text style={styles.amenityLabel}>Luxury Suites</Text>
             </View>
             <View style={styles.amenityItem}>
-              <MaterialCommunityIcons name="car" size={30} color="#007BFF" />
+              <MaterialCommunityIcons name="car" size={30} color="#112678"/>
               <Text style={styles.amenityLabel}>Free Parking</Text>
             </View>
           </View>
@@ -320,9 +320,9 @@ const HotelProfile = () => {
     const onChange = ({ window }) => {
       setDimension(window);
     };
-    Dimensions.addEventListener('change', onChange);
+   const x= Dimensions.addEventListener('change', onChange);
     return () => {
-      Dimensions.removeEventListener('change', onChange);
+     x.remove
     };
   }, []);
 
@@ -503,13 +503,13 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   selectedTabLabel: {
-    color: '#007BFF',
+   color: "#112678",
     fontWeight: 'bold',
   },
   tabIndicator: {
     width: '100%',
     height: 3,
-    backgroundColor: '#007BFF',
+    backgroundColor: '#112678',
     marginTop: 2,
   },
   //////////////////

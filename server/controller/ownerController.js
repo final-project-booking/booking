@@ -77,9 +77,13 @@ module.exports={
                                    
                                 }
                             }
+                        },
+                        include: {
+                            hotel: true, 
                         }
                     });
-                    const allHotels=helper(hotelData.media,result.hotel.id)
+                    const hotelId = owner.hotel[0].id; 
+                    const allHotels=helper(hotelData.media,hotelId);
                     const createMedia=await prisma.media.createMany({
                        data:allHotels
                     })
@@ -98,11 +102,7 @@ module.exports={
             res.status(500).send('Error promoting user to owner');
         }
     },
-
     
-    
-
-
 
 getAllOwners : async function(req, res) {
     try {
@@ -194,8 +194,55 @@ getOnebyId:async(req,res)=>{
     } catch (error) {
         
     }
-}
+},
+getRoomByCategory:async function(req,res){
 
+    try {
+       const {hotelId,view}=req.params
 
+console.log(req.params);
+           let whereCondition={}
+           if(view){
+               whereCondition={
+                   AND:[
+                       {view:{equals:view}},
+                   //    {capacity: {equals:Number(capacity)}},
 
+                   ]
+               }
+           }else if(view){
+               whereCondition={view:{equals:view}}
+           // }else if(capacity){
+           //     whereCondition={capacity:{equals:Number(capacity)}}
+           }
+
+            const room = await prisma.room.findFirst({
+                where:{
+                   hotelId:Number(hotelId),
+                   ...whereCondition,
+
+                },
+                include:{
+                   hotel:true,
+
+                },
+
+              });
+           //    const chekRoom=await prisma.reservation.findFirst({
+           //     where:{
+           //         roomId:Number(room.id)
+           //     }
+
+           // })
+           // if(chekRoom){
+           //     return res.status(400).send({error:"room is already reserved"})
+           // }else{
+
+               // }
+                   res.status(200).send(room)
+
+    } catch (error) {
+       throw error
+    }
+},
 }
