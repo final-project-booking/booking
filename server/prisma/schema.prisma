@@ -26,6 +26,7 @@ model User {
   message        Message[]
   join           JoinChat[]
   reviw          Review[]
+  negociate      Negotiation[]
 }
 
 enum Role {
@@ -93,6 +94,7 @@ model Room {
   reduction       Boolean           @default(false)
   rate            Int
   mediaroom       MediaRoom[]
+    negociate       Negotiation[]
 }
 
 enum View {
@@ -162,3 +164,14 @@ model MediaRoom {
   link      String      
 }
 
+model  Negotiation{
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  room      Room      @relation(fields: [roomId], references: [id])
+  roomId    Int
+  content   String
+  newPrice  Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

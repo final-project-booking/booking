@@ -34,10 +34,10 @@ navigation.navigate("Home");
   
   const handleSignIn=()=>{
     dispatch(signInAsync(login))
+    navigation.navigate("Detail")
   }
   const checkLogin=()=>{
   
-      navigation.navigate("Detail")
    
     }
 
@@ -74,7 +74,7 @@ navigation.navigate("Home");
           <Text style={styles.login_forget}>Forget password ?</Text>
             <TouchableOpacity
             style={styles.buttonContainer}
-            onPress={()=>{handleSignIn(),checkLogin()}}
+            onPress={()=>{handleSignIn()}}
             >
             <Text style={styles.loginText} >Login  </Text>
             </TouchableOpacity>

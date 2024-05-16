@@ -11,11 +11,11 @@ export const negotiation = createAsyncThunk(
     async ({roomId,newPrice,content,userId}) => {
       // console.log("userdata",userData)
       try {
-        const response = await axios.get(`http://${AP_ADRESS}:3000/api/negotiation/${roomId}/${newPrice}/${content}/${userId}`);
+        const response = await axios.post(`http://${AP_ADRESS}:3000/api/negotiation/${roomId}/${newPrice}/${content}/${userId}`);
         console.log("price",response.data);
         return response.data;
       } catch (error) {
-        console.log(error);
+        throw error
       }
     }
   );

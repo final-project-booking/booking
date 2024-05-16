@@ -1,34 +1,73 @@
 import React,{useState,useEffect,useRef} from 'react'
-import { View, Text, StyleSheet, Linking ,ScrollView,Image,Dimensions,TouchableOpacity,TextInput} from 'react-native';
+import { View, Text, StyleSheet, Linking ,ScrollView,Image,Dimensions,TouchableOpacity,TextInput,Animated } from 'react-native';
 import { ActivityIndicator,Modal,Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button,IconButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { negotiation } from '../../reduce/negotiation';
 
 
 
 
 
 export default function Detail({route,navigation}) {
-    
+
     const [dimension, setDimension] = useState(Dimensions.get('window'));
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
     const [newPrice, setNewPrice] = useState(false);
     const [newPrice2, setNewPrice2] = useState(false);
     const [price2, setPrice2] = useState();
-console.log(route.params.people);
+    const [prix,setPrix]=useState()
+    const [input,setInput]=useState('')
+    const [id,setId]=useState()
+    const dispatch=useDispatch()
+console.log(input);
     const scrollRef = useRef();
     const compar=useSelector(state=>state.comparPrice.compar)||[]
+    const user=useSelector(state=>state.userSignIn.userAuth)
+    console.log('user',user);
     console.log('compar',compar);
     const onChange = ({ window }) => {
       setDimension(window);
     };
-    // console.log('root',route.params.numRoom);
+    const body={
+      roomId:id,
+      newPrice:price2,
+      content:input,
+      userId:user?.user?.id||null
+
+    }
+    const userr=async()=>{
+      try {
+        
+      const users=  await AsyncStorage.getItem('user');
+   console.log('users',users);
+        console.log("Token user successfully");
+      } catch (err) {
+        console.log("Error storing token:", err);
+      }
+    }
+  //   const removetoken=async()=>{
+  //     try {
+        
+  //     const token=  await AsyncStorage.removeItem('token');
+  //  console.log('users',token);
+  //       console.log("Token ²remove successfully");
+  //     } catch (err) {
+  //       console.log("Error storing token:", err);
+  //     }
+  //   }
+    // removetoken()
+    userr()
+    const sendNego=(r)=>{
+      dispatch(negotiation(r))
+    }
     const negos=async ()=>{
       if(await checkToken()){
         setPrice2(compar?.mainRooms[0].price)
+        setId(compar?.mainRooms[0].id)
         setNewPrice2(!newPrice2)
       }else{
         setModalVisible(!modalVisible)
@@ -47,8 +86,21 @@ console.log(route.params.people);
         setPrice2(price2 - 50);
       }
     };
-   
+    const pluss = () => {
+      if (prix>=0){
 
+        setPrix(prix + 50);
+      }
+    };
+  
+    const minuss = () => {
+      if (prix>0) {
+        setPrix(prix - 50);
+      }
+    };
+const getCurrentRoomPrice=(p)=>{
+  setPrix(p)
+}
     const checkToken = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
@@ -72,11 +124,16 @@ const check = async () => {
     navigation.navigate('Succes')
   }
 }
-const nego=async ()=>{
-  if(await checkToken()){
+const nego= (p)=>{
+  if(checkToken()){
+  
     setNewPrice(!newPrice)
+    setPrix(p)
+    console.log('ppp',p);
   }else{
-    navigation.navigate('Succes')
+    setNewPrice(!newPrice)
+    setPrix(p)
+    console.log(p);
   }
 }
 
@@ -110,7 +167,7 @@ const nego=async ()=>{
         { url: 'https://www.santoriniview-hotel.gr/media/idijrdoe/santorini-view-hotel-junior-suite-panoramic-caldera-view-10.jpg?rxy=0.612,0.551051051051051&width=800&height=550&rnd=133330453672900000&quality=70' },
         { url: 'https://hamiltonisland.imgix.net/hamiltonisland/media/originals/accommodation/reef-view-hotel/rvh-pool-(1).jpg?width=480&height=600&fit=crop&d=20221101093418'},
       ];
-
+console.log(x);
       const setIndex = event => {
     let viewSize = event.nativeEvent.layoutMeasurement.width;
     let contentOffset = event.nativeEvent.contentOffset.x;
@@ -118,6 +175,7 @@ const nego=async ()=>{
     setSelectedIndex(carouselIndex);
 };
     return (
+      <View style={{flex:1}}>
       <ScrollView>
         <View style={styles.container}>
         <View style={styles.carouselContainer}>
@@ -154,6 +212,7 @@ const nego=async ()=>{
             ))}
           </View>
         </View>
+       
         <View style={styles.detailsContainer}>       
         {compar?.mainRooms ? compar.mainRooms.map((e)=>{
        
@@ -161,10 +220,10 @@ const nego=async ()=>{
          
             return <View>
           <Text style={styles.hotelName}>The Carlton Hotel</Text>
-          <Text style={styles.detailsText}>Rooms:{route?.params.numRoom}</Text>
+          <Text style={styles.detailsText}>Rooms:{route?.params.numRoom || 'N/A'}</Text>
 
           <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
-          <Text style={styles.detailsText}>People:{route.params.people}</Text>
+          <Text style={styles.detailsText}>People:{route?.params.people || 'N/A'}</Text>
 
 
            
@@ -207,7 +266,7 @@ const nego=async ()=>{
         style={{borderRadius:15,width:250,fontSize:15,paddingLeft: 10,borderWidth:1,borderColor:'black',marginTop:17}}
           placeholder='Create somthing'
         />
-        <Button style={{marginTop:15,backgroundColor:'#DCE2FC',color:'black',fontSize:150}}>Send</Button>
+        <Button style={{marginTop:15,backgroundColor:'#DCE2FC',color:'black',fontSize:150}} onPress={()=>sendNego(body)}>Send</Button>
        </View>
           
           </View>
@@ -218,7 +277,7 @@ const nego=async ()=>{
         }):null}
           <View style={{padding:10}}>
 
-
+      
 <View style={{justifyContent:'space-between',marginTop:30}}>
           <View style={{backgroundColor:'#E6E6FA',height:1,width:'100%'}}>
           </View>
@@ -238,8 +297,14 @@ const nego=async ()=>{
             <Text style={styles.amenitiesText}><Icon name='signal-wifi-4-bar' size={20} /> Free Wifi</Text>
             </View>
           </View>
-          <Text style={{height:1,width:'100%', backgroundColor:'#DCE2FC',marginTop:18}}>h</Text>
 </View>
+          <View style={{flexDirection: 'row', bottom: 5, justifyContent: 'space-around', width: '100%',marginTop:30}}>
+  <TouchableOpacity style={{backgroundColor:'#007FFF',borderRadius:15,width:'40%',alignItems:'center'}} onPress={negos}>
+  <Text style={{fontSize:25,color:'white',alignItems:'center'}} >Negotiation</Text></TouchableOpacity>
+  <TouchableOpacity style={{backgroundColor:'#007FFF',borderRadius:15,width:'40%',alignItems:'center'}}>
+  <Text style={{fontSize:25,color:'white',alignItems:'center'}} onPress={check}>Reservation</Text></TouchableOpacity>
+</View>
+          <Text style={{height:1,width:'100%', backgroundColor:'#DCE2FC',marginTop:24}}>h</Text>
 <View style={{alignItems:'center'}}>
 <Text style={{fontSize:20,color:'#00FF40'}}>Another Room</Text>
 </View>
@@ -254,10 +319,7 @@ return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadow
         <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black',fontSize: 17 }}>People:{e?.capacity}</Text>
         <Text style={{ color: 'black',fontSize: 17}}>Price:DT {e?.price}</Text>
         <Text style={{ color: 'black',marginTop:10 ,fontSize: 17}}>Rooms:{route.params.numRoom}</Text>
-        <View style={{justifyContent:'space-between',flexDirection:'row',marginTop:10}}>
-        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,textAlign:'center'}} onPress={nego}><Text style={{color:'black',textAlign:'center',marginTop:5}}>Negotiation</Text></TouchableOpacity>
-        <TouchableOpacity style={{backgroundColor:'#DCE2FC',borderRadius:13,height:30,width:80,}} onPress={check}><Text style={{color:'black',textAlign:'center',marginTop:5}} >Reservation</Text></TouchableOpacity>
-        </View>
+       
       </View>
     </View>
 
@@ -279,14 +341,15 @@ return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadow
         <Icon name='keyboard-backspace' size={30} onPress={() => setNewPrice(!newPrice)}/>
         </Pressable>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '10%' }}>
-         <IconButton icon="minus-circle-outline" size={30} onPress={minus} />
-         <Text style={{fontSize:17}}>{e?.price}</Text>
-        <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={plus} />
+         <IconButton icon="minus-circle-outline" size={30} onPress={minuss} />
+         <Text style={{fontSize:17}}>{prix}</Text>
+        <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={pluss} />
        </View>
        <View>
-        <TextInput onChangeText={(e)=>set} 
+        <TextInput  
         style={{borderRadius:15,width:250,fontSize:15,paddingLeft: 10,borderWidth:1,borderColor:'black',marginTop:17}}
           placeholder='Create somthing'
+          onChangeText={e => setInput(e)}
         />
         <Button style={{marginTop:15,backgroundColor:'#DCE2FC',color:'black',fontSize:150}}>Send</Button>
        </View>
@@ -301,12 +364,7 @@ return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadow
 </View>
        
        
-      <View style={{justifyContent:'space-between',flexDirection:'row',marginTop:40}}>
-  <TouchableOpacity style={{backgroundColor:'#007FFF',borderRadius:15,width:'40%',alignItems:'center'}} onPress={negos}>
-  <Text style={{fontSize:25,color:'white',alignItems:'center'}} >Negotiation</Text></TouchableOpacity>
-  <TouchableOpacity style={{backgroundColor:'#007FFF',borderRadius:15,width:'40%',alignItems:'center'}}>
-  <Text style={{fontSize:25,color:'white',alignItems:'center'}} onPress={check}>Reservation</Text></TouchableOpacity>
-</View>
+    
         </View>
       </View>
       <View style={styles.centeredView}>
@@ -341,10 +399,11 @@ return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadow
         </View>
       </Modal>
 
-      
     </View>
+  
       </ScrollView>
-      
+     
+      </View>
     );
 }
 const styles = StyleSheet.create({
@@ -480,5 +539,26 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       fontSize:20,
       marginTop:15
+    },
+    scrollView: {
+      flex: 1,
+    },
+    contentContainer: {
+      padding: 20,
+    },
+    buttonContainer: {
+      position: 'absolute',
+      alignSelf: 'center',
+    },
+    button: {
+      backgroundColor: 'blue',
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      borderRadius: 5,
+    },
+    buttonText: {
+      color: 'white',
+      textAlign: 'center',
+      fontSize: 16,
     },
   });
