@@ -25,6 +25,7 @@ import AdvancedFilter from './src/component/AdvancedFilter/AdvancedFilter';
 import Detail from './src/component/Detail/Detail';
 import { race } from 'core-js/library/es6/promise';
 import SignUp from './src/component/authentication/SigneUp';
+import Chhat from './screens/Chhat';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -43,7 +44,7 @@ function App() {
     //       // <Hotelprofile/> 
 
     <GestureHandlerRootView> 
-     <OwnerProfile/>
+     <Chhat/>
     </GestureHandlerRootView>
   )}
   
