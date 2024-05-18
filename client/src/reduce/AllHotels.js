@@ -7,7 +7,7 @@ export const AllHotell = createAsyncThunk(
     async () => {
       try {
         const {data} = await axios.get(`http://${AP_ADRESS}:3000/api/owner/all`)
-        console.log("from back",data);
+        console.log("from back",data.user);
         return data
       } catch (error) {
           return error.response.data.message

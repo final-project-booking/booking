@@ -22,6 +22,7 @@ import AllHotels from '../src/component/allHotels/AllHotels.js';
 import RoomByHotel from '../src/component/allHotels/RoomByHotel.js';
 import ChooseGategory from '../src/component/allHotels/ChooseGategory.js';
 import HotelProfile from '../src/component/Hotelprofile/Hotelprofile.js';
+import Notification from '../src/component/UserProfile/Notification.js';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav({Navigation}) {
@@ -29,12 +30,15 @@ function Nav({Navigation}) {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }}/>
+        <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
+        <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
+        <Stack.Screen name="HotelProfile" component={HotelProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
         <Stack.Screen name="Login"  component={Login}  options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-        <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
         <Stack.Screen name="ChooseGategory" component={ChooseGategory} options={{ headerShown: false }}/>
-        <Stack.Screen name="HotelProfile" component={HotelProfile} options={{ headerShown: false }}/>
+
 
        
       
@@ -52,7 +56,6 @@ function Nav({Navigation}) {
         <Stack.Screen name="Succes"  component={Succes}  options={{ headerShown: false }} />  
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
         <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />    
-        <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
        

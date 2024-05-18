@@ -35,7 +35,7 @@ app.use('/api/chat',chat)
 
 app.use("/api/review",review)
 app.use('/api/search',search)
-app.use('/app/negotiation',negotiate)
+app.use('/api/negotiation',negotiate)
 
 app.use('/api', hotel);
 

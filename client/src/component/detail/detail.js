@@ -6,13 +6,15 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button,IconButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { negotiation } from '../../reduce/negotiation';
-
+import {AP_ADRESS} from '../../apAdress'
+import io from 'socket.io-client';
+const socket = io(`http://${AP_ADRESS}:4000`); 
 
 
 
 
 export default function Detail({route,navigation}) {
-
+// console.log('owner',route?.params.ownerId);  
     const [dimension, setDimension] = useState(Dimensions.get('window'));
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
@@ -23,7 +25,7 @@ export default function Detail({route,navigation}) {
     const [input,setInput]=useState('')
     const [id,setId]=useState()
     const dispatch=useDispatch()
-console.log(input);
+
     const scrollRef = useRef();
     const compar=useSelector(state=>state.comparPrice.compar)||[]
     const user=useSelector(state=>state.userSignIn.userAuth)
@@ -36,9 +38,35 @@ console.log(input);
       roomId:id,
       newPrice:price2,
       content:input,
-      userId:user?.user?.id||null
+      userId:user?.user?.id,
 
     }
+    console.log(body);
+    useEffect(() => {
+      if (body) {
+      socket.on('connection', () => {
+        console.log('Connected to server');
+      }); 
+      socket.emit('join',1);
+    if (!socket) console.log("not connected to sockete");
+    
+    
+    socket.on('send_request', (body) => {
+      console.log('data is ready',body);
+     
+    });
+   
+      
+        socket.emit('send_request', body);
+        console.log('somthing happen',body);
+      }
+    
+    return () => socket.off('send_request');
+    }, [body]);
+
+
+
+  console.log('price',price2);
     const userr=async()=>{
       try {
         
@@ -63,7 +91,9 @@ console.log(input);
     userr()
     const sendNego=(r)=>{
       dispatch(negotiation(r))
+      console.log('hello');
     }
+   
     const negos=async ()=>{
       if(await checkToken()){
         setPrice2(compar?.mainRooms[0].price)
@@ -116,7 +146,7 @@ const getCurrentRoomPrice=(p)=>{
       }}
    
 
-// console.log(tokenGeted());
+
 const check = async () => {
   if(await checkToken()){
     setModalVisible(!modalVisible)
@@ -167,7 +197,7 @@ const nego= (p)=>{
         { url: 'https://www.santoriniview-hotel.gr/media/idijrdoe/santorini-view-hotel-junior-suite-panoramic-caldera-view-10.jpg?rxy=0.612,0.551051051051051&width=800&height=550&rnd=133330453672900000&quality=70' },
         { url: 'https://hamiltonisland.imgix.net/hamiltonisland/media/originals/accommodation/reef-view-hotel/rvh-pool-(1).jpg?width=480&height=600&fit=crop&d=20221101093418'},
       ];
-console.log(x);
+
       const setIndex = event => {
     let viewSize = event.nativeEvent.layoutMeasurement.width;
     let contentOffset = event.nativeEvent.contentOffset.x;
@@ -220,10 +250,10 @@ console.log(x);
          
             return <View>
           <Text style={styles.hotelName}>The Carlton Hotel</Text>
-          <Text style={styles.detailsText}>Rooms:{route?.params.numRoom || 'N/A'}</Text>
+          <Text style={styles.detailsText}>Rooms:</Text>
 
           <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
-          <Text style={styles.detailsText}>People:{route?.params.people || 'N/A'}</Text>
+          <Text style={styles.detailsText}>People:{e?.capacity}</Text>
 
 
            
@@ -265,6 +295,7 @@ console.log(x);
         <TextInput
         style={{borderRadius:15,width:250,fontSize:15,paddingLeft: 10,borderWidth:1,borderColor:'black',marginTop:17}}
           placeholder='Create somthing'
+          onChangeText={(text) => setInput(text)}
         />
         <Button style={{marginTop:15,backgroundColor:'#DCE2FC',color:'black',fontSize:150}} onPress={()=>sendNego(body)}>Send</Button>
        </View>
@@ -318,45 +349,11 @@ return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadow
         <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{e?.view}</Text>
         <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black',fontSize: 17 }}>People:{e?.capacity}</Text>
         <Text style={{ color: 'black',fontSize: 17}}>Price:DT {e?.price}</Text>
-        <Text style={{ color: 'black',marginTop:10 ,fontSize: 17}}>Rooms:{route.params.numRoom}</Text>
+        <Text style={{ color: 'black',marginTop:10 ,fontSize: 17}}>Rooms:</Text>
        
       </View>
     </View>
 
-
-    <Modal
-      style={{height:40,width:40}}
-        animationType="slide"
-        transparent={true}
-        visible={newPrice}
-        onRequestClose={() => {
-       
-          setNewPrice(!newPrice);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-          <Pressable
-              style={{marginTop:-10,marginRight:280}}
-              onPress={() => setNewPrice(!newPrice)}>
-        <Icon name='keyboard-backspace' size={30} onPress={() => setNewPrice(!newPrice)}/>
-        </Pressable>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '10%' }}>
-         <IconButton icon="minus-circle-outline" size={30} onPress={minuss} />
-         <Text style={{fontSize:17}}>{prix}</Text>
-        <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={pluss} />
-       </View>
-       <View>
-        <TextInput  
-        style={{borderRadius:15,width:250,fontSize:15,paddingLeft: 10,borderWidth:1,borderColor:'black',marginTop:17}}
-          placeholder='Create somthing'
-          onChangeText={e => setInput(e)}
-        />
-        <Button style={{marginTop:15,backgroundColor:'#DCE2FC',color:'black',fontSize:150}}>Send</Button>
-       </View>
-          
-          </View>
-        </View>
-      </Modal>
 
    
   </TouchableOpacity>

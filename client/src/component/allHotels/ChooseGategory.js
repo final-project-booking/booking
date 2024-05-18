@@ -13,7 +13,7 @@ export default function ChooseGategory({ route, navigation }) {
     const [people, setPeople] = useState(0);
     const [numRoom, setNumRoom] = useState(1);
     const [hotelId,setHotelId]=useState(route.params.hotelId)
-   
+   console.log('choose',route?.params.ownerId);
     
     const dispatch = useDispatch();
     const body={
@@ -129,7 +129,7 @@ console.log('numRoom',numRoom);
     </View>
 
     </View>
-    <Button style={{backgroundColor:'#7CB9E8',width:'50%',marginLeft:99,marginTop:20   }} textColor='black' onPress={()=>{handleGet(body),navigation.navigate('Calander',{hotelId:hotelId,view:selectedValue,plan:selectedPlan,numRoom:numRoom,people:people})}} >Search</Button>
+    <Button style={{backgroundColor:'#7CB9E8',width:'50%',marginLeft:99,marginTop:20   }} textColor='black' onPress={()=>{handleGet(body),navigation.navigate('Calander',{hotelId:hotelId,view:selectedValue,plan:selectedPlan,numRoom:numRoom,people:people,ownerId:route.params.ownerId})}} >Search</Button>
   <Text style={{marginTop:30,width:0,height:0}}>hhh</Text>
     </View>
     </ScrollView>

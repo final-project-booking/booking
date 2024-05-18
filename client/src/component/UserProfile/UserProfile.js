@@ -76,6 +76,10 @@ const HandleButton=()=>{
           <Icon name="creditcard" size={25} color="#161618" />
           <Text style={styles.sidebarText}>Transations</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.sidebarItem} onPress={()=>navigation.navigate('Notification')}>
+          <IconFa name="notifications-none" size={25} color="#161618" />
+          <Text style={styles.sidebarText}>Notification</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.sidebarItem}>
           <Icon name="like2" size={25} color="#161618" />
           <Text style={styles.sidebarText}>Reviews</Text>

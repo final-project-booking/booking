@@ -28,6 +28,7 @@ const body={
   numRoom:numRoom,
   price:prices?.price
 }
+console.log('calendar',route.params.ownerId);
 const handleGet=()=>{
     dispatch(ComparPrice(body))
 }
@@ -109,7 +110,7 @@ chek()
 </Button>
   <Button  mode="contained" style={{width:'30%',backgroundColor:'#0000FF'}}
     onPress={() =>
-       {handleGet(), navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId,numRoom:numRoom,people:people})}
+       {handleGet(), navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId,numRoom:numRoom,people:people,ownerId:route.params.ownerId})}
       }
   >
    Continue

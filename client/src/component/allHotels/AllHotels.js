@@ -18,7 +18,7 @@ console.log('hotel',hotel);
 
   return (
     <ScrollView>
-    <Icon name='arrow-back' size={30} style={{marginTop:25,marginLeft:20,backgroundColor:'#89CFF0',width:29,borderRadius:19}}/>
+    <Icon name='arrow-back' size={30} style={{  height: 40,borderWidth: 1,borderColor:'#dcdcdc',backgroundColor:'#fff',borderRadius: 5,padding: 10,marginBottom: 10}}/>
     <View style={styles.searchInputContainer}>
   <Icon name="search" size={30} style={styles.icon} />
   <TextInput
@@ -29,14 +29,15 @@ console.log('hotel',hotel);
 </View>
 
     {hotel.map((e)=>{
-     return   e.hotel.map((i)=>(
-       <TouchableOpacity style={{shadowOffset: {width: 0,height: 1,},shadowOpacity: 0.25, shadowRadius: 3.84,elevation:5,marginTop:-15}} onPress={()=>navigation.navigate('ChooseGategory',{hotelId:i.id})} >
+    
+      
+      return     <TouchableOpacity key={e.id} style={{ backgroundColor: '#fff',borderRadius: 5,marginTop:10,marginBottom: 10,shadowColor: '#000',shadowOffset: {width: 0,height: 2}}} onPress={()=>navigation.navigate('ChooseGategory',{hotelId:e.id,ownerId:e.owner.id})} >
     <View style={{marginTop: 50 , flexDirection: 'row', alignItems: 'center'}}>
     <View style={{marginRight: 20 }}>
-        <Image source={{uri:'https://image.resabooking.com/images/hotel/Concorde_Green_Park_Palace_3.jpg'}} style={{width: 150, height: 150,marginLeft:16,borderRadius:10,borderTopLeftRadius: 15,borderTopRightRadius: 15,}} />
+        <Image source={{uri:'https://image.resabooking.com/images/hotel/Concorde_Green_Park_Palace_3.jpg'}} style={{  height: 180,width:180,marginLeft:10}} />
     </View>
-    <View style={{marginTop:-20}}>
-        <Text style={{fontSize:20,color:'black',marginBottom:12,color:'black'}}>{i.name}</Text>
+    <View style={{  marginBottom: 10,padding: 10,marginLeft:5}}>
+        <Text style={{fontSize:20,color:'black',marginBottom:12,color:'black'}}>name{e.name}</Text>
         <View style={{flexDirection:'row'}}>  
         <Icon size={20} name='star'style={{marginBottom:15}} color={'#f5a623'}/>
         <Icon size={20} name='star' color={'#f5a623'}/>
@@ -44,8 +45,8 @@ console.log('hotel',hotel);
         <Icon size={20} name='star' color={'#f5a623'}/>
         <Icon size={20} name='star' color={'#f5a623'}/>
         </View>
-        <Text style={{marginLeft:1,marginBottom:15,color:'black'}}>Rooms:{i.rooms}</Text>
-        <Text style={{color:'black'}}><Icon size={20} name='location-pin'/>{e.phoneNumber}</Text>
+        <Text style={{ fontSize: 16, marginBottom: 5}}>Rooms:{e.rooms}</Text>
+        <Text style={{ fontSize: 15,fontWeight: 'bold',marginBottom: 5}}>{e.description}</Text>
     </View>
 </View>
  <View style={{padding:10}}>
@@ -53,7 +54,7 @@ console.log('hotel',hotel);
 </View>
  </TouchableOpacity>  
         
-        ))  
+        
     })}
  
  </ScrollView>
