@@ -9,7 +9,7 @@ export default function Messagecomponent({ currentUser, item }) {
     <View style={currentUserStatus ? {} : { alignItems: "flex-end" }}>
       <View style={styles.messageItemWrapper}>
       <Text>
-              {currentUser}
+              {item.currentUser}
               </Text>
         <View style={styles.messageItemInnerWrapper}>
           <View
