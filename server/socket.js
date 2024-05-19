@@ -28,9 +28,9 @@ io.on('connection', (socket) => {
   socket.on('send_request', (data) => {
     // const {user,room,hotel}=data
     console.log('Received_request', data);
-    console.log('hetel',data.userId);
+    console.log('Received_request',data);
 
-   socket.to(data.userId).emit('Received_request', data);
+   socket.to(data.ownerId).emit('Received_request', data);
 });
 socket.on('accepte_reject', (data) => {
   // const {user,room,hotel}=data

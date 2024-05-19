@@ -1,63 +1,141 @@
-import React,{useEffect,} from 'react'
-import { View ,Text,} from 'react-native'
+import React,{useEffect,useState} from 'react'
+import { View ,Text,StyleSheet} from 'react-native'
 import {Button} from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { getNegotiation } from '../../reduce/negotiation'
 import { useDispatch ,useSelector} from 'react-redux'
-import io from 'socket.io-client';
-import { AP_ADRESS } from '../../apAdress'
-const socket = io(`http://${AP_ADRESS}:3000`); 
+  import io from 'socket.io-client';
+  import { AP_ADRESS } from '../../apAdress'
+  const socket = io(`http://${AP_ADRESS}:4000`); 
+
 export default function Notification({navigation}) {
+  const [receivedData, setReceivedData] = useState([]);
 
   
-  
-
 const dispatch=useDispatch()
 
 const getWhereHotelId=async()=>{
     dispatch(getNegotiation())
 }
-useEffect(() => {
 
-  socket.connect();
+useEffect(() => {
+  // console.log('Attempting to connect to server...');
+
+  socket.on('connect', () => {
+    console.log('Connected to server');
+  });
+
+  socket.on('connect_error', (error) => {
+    console.log('Connection error:', error);
+  });
   socket.on('Received_request', (data) => {
     console.log('Received data:', data);
-    if (Array.isArray(data)) {
-      
-      data.map((item, index) => {
-      return  console.log('Item:', item);
-        
-      });
-    }
+    
+      setReceivedData(...data);
+   
+      console.log('Received data is undefined or null');
+    
   });
-  return () => socket.disconnect();
+
+  return () => {
+    console.log('Disconnecting from server...');
+    socket.disconnect();
+  };
 }, []);
 
+console.log('Received data state:', receivedData);
 
 
-const nego=useSelector(state=>state.getNegotiations.get)
-console.log('nego',nego);
+
+// const nego=useSelector(state=>state.getNegotiations.get)
+// console.log('nego',nego);
   return (
-    <View style={{flex:1}}>
-        <View style={{backgroundColor:'#F0F8FF'}}>
-            <Icon name='arrow-back' size={30} style={{marginTop:10}} onPress={()=>navigation.navigate('UserProfile')}/>
-        <Text style={{textAlign:'center',fontSize:20,color:'black'}}>Notification</Text>
-        </View>
-        <View style={{marginTop:18,justifyContent:'space-between',flexDirection:'row'}}>
-            <View style={{marginLeft:8}}>
-            <Text style={{fontSize:17,color:'black'}}>Content:</Text>
-            <Text style={{fontSize:16,color:'black'}}>Price:</Text>
-            <Text style={{fontSize:16,color:'black'}}>Room N°:</Text>
-
-                </View>
-              <View>
-                <Text style={{marginLeft:70}}>12-04-2024</Text>
-            <View style={{alignItems:'center',flexDirection:'row',marginTop:30}}>
-            <Button  style={{width:80,color:"red",marginTop:10}} textColor='red'>Cancel</Button>
-            <Button  style={{width:80,Color:"black",marginTop:10,borderWidth:1,borderColor:'#B0C4DE'}} textColor='green'>Accept</Button>
-            </View>
-              </View>
-        </View>
+    <View style={styles.container}>
+    <View style={styles.header}>
+      <Icon name='arrow-back' size={30} style={styles.backIcon} onPress={() => navigation.navigate('UserProfile')} />
+      <Text style={styles.headerText}>Notification</Text>
     </View>
+    <View style={styles.contentContainer}>
+      <View style={styles.contentInfo}>
+        <Text style={styles.label}>Content:</Text>
+        <Text style={styles.text}>Your reservation has been confirmed!</Text>
+      </View>
+      <View style={styles.contentInfo}>
+        <Text style={styles.label}>Price:</Text>
+        <Text style={styles.text}>$120</Text>
+      </View>
+      <View style={styles.contentInfo}>
+        <Text style={styles.label}>Room N°:</Text>
+        <Text style={styles.text}>101</Text>
+      </View>
+      <Text style={styles.dateText}>Date: 12-04-2024</Text>
+    </View>
+    <View style={styles.buttonContainer}>
+      <Button mode="outlined" style={styles.cancelButton} onPress={() => { }}>Cancel</Button>
+      <Button mode="contained" style={styles.acceptButton} onPress={() => { }}>Accept</Button>
+    </View>
+  </View>
   )
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F0F8FF',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E1EBEE',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+  },
+  backIcon: {
+    marginRight: 10,
+    marginTop: 10,
+  },
+  headerText: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'black',
+  },
+  contentContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  contentInfo: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  label: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: 'black',
+    marginRight: 5,
+  },
+  text: {
+    fontSize: 16,
+    color: 'black',
+  },
+  dateText: {
+    marginTop: 4,
+    fontSize: 16,
+    color: 'black',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  cancelButton: {
+    width: '40%',
+    color: 'red',
+    borderColor: 'red',
+    borderWidth: 1,
+  },
+  acceptButton: {
+    width: '40%',
+    backgroundColor: 'green',
+  },
+});

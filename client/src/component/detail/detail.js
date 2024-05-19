@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef} from 'react'
+import React,{useState,useEffect,useRef,createContext} from 'react'
 import { View, Text, StyleSheet, Linking ,ScrollView,Image,Dimensions,TouchableOpacity,TextInput,Animated } from 'react-native';
 import { ActivityIndicator,Modal,Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import {AP_ADRESS} from '../../apAdress'
 import io from 'socket.io-client';
 const socket = io(`http://${AP_ADRESS}:4000`); 
 
-
+const { width } = Dimensions.get('window');
 
 
 export default function Detail({route,navigation}) {
@@ -24,6 +24,7 @@ export default function Detail({route,navigation}) {
     const [prix,setPrix]=useState()
     const [input,setInput]=useState('')
     const [id,setId]=useState()
+    const [socketN, setSocketN] = useState(null);
     const dispatch=useDispatch()
 
     const scrollRef = useRef();
@@ -39,7 +40,7 @@ export default function Detail({route,navigation}) {
       newPrice:price2,
       content:input,
       userId:user?.user?.id,
-
+      ownerId:route?.params.ownerId
     }
     console.log(body);
     useEffect(() => {
@@ -205,13 +206,15 @@ const nego= (p)=>{
     setSelectedIndex(carouselIndex);
 };
     return (
-      <View style={{flex:1}}>
+      <View style={styles.container}>
       <ScrollView>
-        <View style={styles.container}>
         <View style={styles.carouselContainer}>
-            <View style={styles.icon}>
-          <Icon name='arrow-back' size={30} style={{zIndex:1 ,paddingTop:5,backgroundColor:'white',borderRadius:55,marginLeft:7 ,opacity:.6}} onPress={()=>navigation.navigate('AllHotels')}/>
-          </View>
+          <Icon
+            name='arrow-back'
+            size={30}
+            style={styles.backIcon}
+            onPress={() => navigation.navigate('AllHotels')}
+          />
           <ScrollView
             horizontal
             ref={scrollRef}
@@ -219,58 +222,57 @@ const nego= (p)=>{
             showsHorizontalScrollIndicator={false}
             pagingEnabled
           >
-          {/* <View style={ styles.coverImageContainer }> */}
             {carouselImages.map((value, key) => (
               <Image
                 key={key}
                 source={{ uri: value.url }}
-                style={[styles.carouselImage, { width: dimension?.width }]}
+                style={[styles.carouselImage, { width: width }]}
                 PlaceholderContent={<ActivityIndicator />}
               />
             ))}
-          {/* </View> */}
           </ScrollView>
-         
+
           <View style={styles.pagination}>
             {carouselImages.map((val, key) => (
               <Text
                 key={key}
-                style={[styles.paginationDot, key === selectedIndex ? styles.selectedDot : styles.normalDot]}
+                style={[
+                  styles.paginationDot,
+                  key === selectedIndex ? styles.selectedDot : styles.normalDot,
+                ]}
               >
                 ⬤
               </Text>
             ))}
           </View>
         </View>
-       
-        <View style={styles.detailsContainer}>       
-        {compar?.mainRooms ? compar.mainRooms.map((e)=>{
-       
 
-         
-            return <View>
-          <Text style={styles.hotelName}>The Carlton Hotel</Text>
-          <Text style={styles.detailsText}>Rooms:</Text>
+        <View style={styles.detailsContainer}>
+          {compar?.mainRooms &&
+            compar.mainRooms.map((e, index) => (
+              <View key={index} style={styles.roomContainer}>
+                <Text style={styles.hotelName}>The Carlton Hotel</Text>
+                <Text style={styles.detailsText}>Rooms:</Text>
+                <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
+                <Text style={styles.detailsText}>People: {e?.capacity}</Text>
 
-          <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
-          <Text style={styles.detailsText}>People:{e?.capacity}</Text>
+                <View style={styles.starsContainer}>
+                  {[...Array(5)].map((_, index) => (
+                    <Icon key={index} size={20} name='star' color={'#f5a623'} />
+                  ))}
+                </View>
 
+                <View style={styles.priceContainer}>
+                  <Text style={styles.priceLabel}>Price</Text>
+                  <Text style={styles.price}>DT {e?.price}</Text>
+                </View>
+              </View>
+            ))}
 
-           
-          
-         <View style={{flexDirection:'row'}}>
-        <Icon size={20} name='star'style={{marginBottom:19}} color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
+          {/* Other content */}
         </View>
-         
-          <View style={{borderWidth:1,borderColor:'black',width:'30%',marginLeft:'60%',textAlign:'center',borderRadius:20}}>
-          <Text style={{ fontSize: 20,marginBottom: 5,textAlign:'center',color:'black'}}>Price</Text>
-          <Text style={{ fontSize: 16,marginBottom: 5,textAlign:'center'}}>DT {e?.price}</Text>
-          </View>
-          <Modal
+
+        <Modal
       style={{height:40,width:40}}
         animationType="slide"
         transparent={true}
@@ -303,259 +305,249 @@ const nego= (p)=>{
           </View>
         </View>
       </Modal>
-          </View>
-     
-        }):null}
-          <View style={{padding:10}}>
-
-      
-<View style={{justifyContent:'space-between',marginTop:30}}>
-          <View style={{backgroundColor:'#E6E6FA',height:1,width:'100%'}}>
-          </View>
-          <View >
-          <Text style={{ fontSize: 30,textAlign: 'center',margin: 5,color: '#333333',}}>What We Offer</Text>
-          </View>
-          </View>
-          <View style={styles.amenitiesContainer}>
-          <View>
-            <Text style={styles.amenitiesText}><Icon name='lunch-dining' size={20} /> Breakfast</Text>
-            <Text style={styles.amenitiesText}><Icon name='tv' size={20} /> TV</Text>
-            <Text style={styles.amenitiesText}><Icon name='air' size={20} /> Air Conditioner</Text>
-            </View>
-            <View>
-            <Text style={styles.amenitiesText}><Icon name='water' size={20} /> Swimming Pool</Text>
-            <Text style={styles.amenitiesText}><Icon name='coffee-maker' size={20} /> Coffee maker</Text>
-            <Text style={styles.amenitiesText}><Icon name='signal-wifi-4-bar' size={20} /> Free Wifi</Text>
-            </View>
-          </View>
-</View>
-          <View style={{flexDirection: 'row', bottom: 5, justifyContent: 'space-around', width: '100%',marginTop:30}}>
-  <TouchableOpacity style={{backgroundColor:'#007FFF',borderRadius:15,width:'40%',alignItems:'center'}} onPress={negos}>
-  <Text style={{fontSize:25,color:'white',alignItems:'center'}} >Negotiation</Text></TouchableOpacity>
-  <TouchableOpacity style={{backgroundColor:'#007FFF',borderRadius:15,width:'40%',alignItems:'center'}}>
-  <Text style={{fontSize:25,color:'white',alignItems:'center'}} onPress={check}>Reservation</Text></TouchableOpacity>
-</View>
-          <Text style={{height:1,width:'100%', backgroundColor:'#DCE2FC',marginTop:24}}>h</Text>
-<View style={{alignItems:'center'}}>
-<Text style={{fontSize:20,color:'#00FF40'}}>Another Room</Text>
-</View>
-<View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center',justifyContent:'space-between' }}>
-{compar?.relatedRooms ? compar.relatedRooms.map((e)=>{
-
-return  <TouchableOpacity style={{ shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }} >
-    <View style={{ marginTop: 20 }}>
-      <Image source={{ uri: 'https://assets-global.website-files.com/5c6d6c45eaa55f57c6367749/65045f093c166fdddb4a94a5_x-65045f0266217.webp' }} style={{ width: 165, height: 150, borderRadius: 10 }} />
-      <View style={{ marginTop: 10 }}>
-        <Text style={{ fontSize: 20, marginBottom: 12, color: 'black' }}>{e?.view}</Text>
-        <Text style={{ marginLeft: 1, marginBottom: 15, color: 'black',fontSize: 17 }}>People:{e?.capacity}</Text>
-        <Text style={{ color: 'black',fontSize: 17}}>Price:DT {e?.price}</Text>
-        <Text style={{ color: 'black',marginTop:10 ,fontSize: 17}}>Rooms:</Text>
-       
-      </View>
-    </View>
-
-
-   
-  </TouchableOpacity>
-}):null}
-</View>
-       
-       
-    
+        {/* Negotiation and Reservation Buttons */}
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity style={styles.button} onPress={negos}>
+            <Text style={styles.buttonText}>Negotiation</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={check}>
+            <Text style={styles.buttonText}>Reservation</Text>
+          </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.centeredView}>
-   
+
+        {/* Another Room Section */}
+        <Text style={styles.divider}></Text>
+        <Text style={styles.anotherRoomText}>Another Room</Text>
+        <View style={styles.relatedRoomsContainer}>
+          {compar?.relatedRooms &&
+            compar.relatedRooms.map((e, index) => (
+              <TouchableOpacity key={index} style={styles.relatedRoomCard}>
+                <Image
+                 source={{ uri: 'https://image.resabooking.com/images/hotel/Concorde_Green_Park_Palace_3.jpg' }}
+                  style={styles.relatedRoomImage}
+                />
+                <View style={styles.relatedRoomDetails}>
+                  <Text style={styles.relatedRoomTitle}>{e?.view}</Text>
+                  <Text style={styles.relatedRoomInfo}>People: {e?.capacity}</Text>
+                  <Text style={styles.relatedRoomInfo}>Price: DT {e?.price}</Text>
+                  <Text style={styles.relatedRoomInfo}>Rooms: {e?.rooms}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+        </View>
+      </ScrollView>
+
+      {/* Modal */}
       <Modal
-      style={{height:40,width:40}}
-        animationType="slide"
+        animationType='slide'
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          // Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
+        onRequestClose={() => setModalVisible(!modalVisible)}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-          <Pressable
-              style={{marginTop:-10,marginRight:280}}
-              onPress={() => setModalVisible(!modalVisible)}>
-        <Icon name='keyboard-backspace' size={30} onPress={() => setModalVisible(!modalVisible)}/>
-        </Pressable>
-          <Text style={styles.modalText}>If you  have an Account? </Text>
-            <TouchableOpacity    style={{backgroundColor:'#DCE2FC',width:80,height:40,borderRadius:40,marginTop:15}}>
-            <Text style={{color:'black',textAlign:'center',marginTop:9}}  onPress={()=>navigation.navigate('Login')}>Login</Text>
-
+            <Pressable onPress={() => setModalVisible(!modalVisible)}>
+              <Icon name='keyboard-backspace' size={30} />
+            </Pressable>
+            <Text style={styles.modalText}>If you have an Account?</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => navigation.navigate('Login')}
+            >
+              <Text style={styles.modalButtonText}>Login</Text>
             </TouchableOpacity>
-            <Text style={styles.modalText}>If you don't have an Account? </Text>
-            <TouchableOpacity style={{backgroundColor:'#DCE2FC',width:80,height:40,borderRadius:40,marginTop:15}}>
-              <Text style={{color:'black',textAlign:'center',marginTop:9}} onPress={()=>navigation.navigate('SignUp')}>Sign Up</Text>
+            <Text style={styles.modalText}>If you don't have an Account?</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => navigation.navigate('SignUp')}
+            >
+              <Text style={styles.modalButtonText}>Sign Up</Text>
             </TouchableOpacity>
-          
           </View>
         </View>
       </Modal>
-
     </View>
-  
-      </ScrollView>
-     
-      </View>
     );
 }
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      
+  container: {
+    flex: 1,
+  },
+  carouselContainer: {
+    marginBottom: 20,
+  },
+  backIcon: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    zIndex: 1,
+    backgroundColor: 'white',
+    borderRadius: 55,
+    padding: 10,
+    opacity: 0.6,
+  },
+  carouselImage: {
+    width: width,
+    height: 250,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  pagination: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  paginationDot: {
+    fontSize: 20,
+    marginRight: 5,
+    color: '#999',
+  },
+  selectedDot: {
+    color: '#333',
+  },
+  detailsContainer: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  roomContainer: {
+    backgroundColor: '#fff',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  hotelName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#333',
+  },
+  detailsText: {
+    marginBottom: 5,
+    color: '#666',
+  },
+  starsContainer: {
+    flexDirection: 'row',
+    marginBottom: 5,
+  },
+  priceContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  priceLabel: {
+    fontSize: 16,
+    color: '#333',
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#007FFF',
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#007FFF',
+    borderRadius: 15,
+    width: '40%',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+  },
+  divider: {
+    height: 1,
+    width: '100%',
+    backgroundColor: '#DCE2FC',
+    marginBottom: 20,
+  },
+  anotherRoomText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#333',
+  },
+  relatedRoomsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  relatedRoomCard: {
+    width: '48%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+    margin:2
+  },
+  relatedRoomImage: {
+    width: '100%',
+    height: 150,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  relatedRoomDetails: {
+    padding: 10,
+  },
+  relatedRoomTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#333',
+  },
+  relatedRoomInfo: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 3,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    carouselContainer: {
-      width: '100%',
-      height: 200,
-      marginBottom: 20,
-    
-      position: 'relative',
-      
-
-    },
-    icon: {
-        position: 'absolute',
-        zIndex: 1,
-        top: 5,
-        left: 5,
-        
-        color:'black'
-      },
-    carouselImage: {
-      height: '100%',
-      resizeMode: 'cover',
-    
-   
-    },
-    pagination: {
-      flexDirection: 'row',
-      position: 'absolute',
-      bottom: 10,
-      alignSelf: 'center',
-    },
-    paginationDot: {
-      marginHorizontal: 5,
-      fontSize: 18,
-    },
-    selectedDot: {
-      color: 'white',
-    },
-    normalDot: {
-      color: '#888',
-    },
-    detailsContainer: {
-      paddingHorizontal: 20,
-    },
-    hotelName: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 10,
-    },
-    detailsText: {
-      fontSize: 16,
-      marginBottom: 5,
-    },
-    rating: {
-      fontSize: 16,
-      marginBottom: 10,
-      color: '#888',
-      flexDirection:'row',
-     justifyContent:'space-around'
-    },
-    amenitiesContainer: {
-      marginTop: 30,
-    //   alignSelf: 'flex-end',
-      justifyContent: 'space-between',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        
-
-    },
-    amenitiesText: {
-      fontSize: 16,
-      marginTop: 5,
-    },
-    buttonContainer: {
-      marginTop: 60,
-      width: '45%',
-    //   flexDirection: 'row',
-    //   bottom: 10,
-      alignSelf: 'flex-end',
-      // backgroundColor:'#DCE2FC',
-      
-      color:'#0000FF'
-    },
-    centeredView: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 22,
-      
-    },
-    modalView: {
-      margin: 20,
-      backgroundColor: 'white',
-      borderRadius: 20,
-      padding: 35,
-      alignItems: 'center',
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5,
-    },
-    button: {
-      fontSize:50,
-      borderRadius: 20,
-      padding: 10,
-      elevation: 0,
-      width:140,
-      height:70,
-    },
-    buttonOpen: {
-      backgroundColor: 'white',
-    },
-    buttonClose: {
-      backgroundColor: 'white',
-    },
-    textStyle: {
-      color: 'black',
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-    modalText: {
-      marginBottom: 15,
-      textAlign: 'center',
-      fontSize:20,
-      marginTop:15
-    },
-    scrollView: {
-      flex: 1,
-    },
-    contentContainer: {
-      padding: 20,
-    },
-    buttonContainer: {
-      position: 'absolute',
-      alignSelf: 'center',
-    },
-    button: {
-      backgroundColor: 'blue',
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-      borderRadius: 5,
-    },
-    buttonText: {
-      color: 'white',
-      textAlign: 'center',
-      fontSize: 16,
-    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  modalButton: {
+    backgroundColor: '#DCE2FC',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginBottom: 10,
+  },
+  modalButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+  },
   });

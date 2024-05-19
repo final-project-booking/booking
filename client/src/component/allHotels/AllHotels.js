@@ -1,11 +1,20 @@
 import React, { useState,useEffect } from 'react'
-import { View ,Image,Text,TouchableOpacity,StyleSheet,TextInput} from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import {
+  Dimensions,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Image,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector ,useDispatch} from 'react-redux';
 import { AllHotell } from '../../reduce/AllHotels';
 import { IconButton,Button } from 'react-native-paper';
-
+const { width } = Dimensions.get('window');
  function AllHotels({navigation}) {
 
 const dispatch=useDispatch()
@@ -17,92 +26,145 @@ const hotel=useSelector(state=>state.allHotels.hotel)
 console.log('hotel',hotel);
 
   return (
-    <ScrollView>
-    <Icon name='arrow-back' size={30} style={{  height: 40,borderWidth: 1,borderColor:'#dcdcdc',backgroundColor:'#fff',borderRadius: 5,padding: 10,marginBottom: 10}}/>
-    <View style={styles.searchInputContainer}>
-  <Icon name="search" size={30} style={styles.icon} />
-  <TextInput
-    placeholder="Search"
-    style={styles.input}
-  />
-  <Button style={styles.Button}>Search</Button>
-</View>
-
-    {hotel.map((e)=>{
-    
-      
-      return     <TouchableOpacity key={e.id} style={{ backgroundColor: '#fff',borderRadius: 5,marginTop:10,marginBottom: 10,shadowColor: '#000',shadowOffset: {width: 0,height: 2}}} onPress={()=>navigation.navigate('ChooseGategory',{hotelId:e.id,ownerId:e.owner.id})} >
-    <View style={{marginTop: 50 , flexDirection: 'row', alignItems: 'center'}}>
-    <View style={{marginRight: 20 }}>
-        <Image source={{uri:'https://image.resabooking.com/images/hotel/Concorde_Green_Park_Palace_3.jpg'}} style={{  height: 180,width:180,marginLeft:10}} />
-    </View>
-    <View style={{  marginBottom: 10,padding: 10,marginLeft:5}}>
-        <Text style={{fontSize:20,color:'black',marginBottom:12,color:'black'}}>name{e.name}</Text>
-        <View style={{flexDirection:'row'}}>  
-        <Icon size={20} name='star'style={{marginBottom:15}} color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <Icon name='arrow-back' size={30} style={styles.backIcon} onPress={() => navigation.goBack()} />
+        <View style={styles.searchInputContainer}>
+          <Icon name="search" size={30} style={styles.icon} />
+          <TextInput 
+            placeholder="Search" 
+            style={styles.input} 
+            placeholderTextColor="#888"
+          />
+          <Button mode="contained" style={styles.searchButton}>Search</Button>
         </View>
-        <Text style={{ fontSize: 16, marginBottom: 5}}>Rooms:{e.rooms}</Text>
-        <Text style={{ fontSize: 15,fontWeight: 'bold',marginBottom: 5}}>{e.description}</Text>
-    </View>
-</View>
- <View style={{padding:10}}>
-<Text style={{height:1,width:'100%', backgroundColor:'#DCE2FC',marginTop:15,}}>h</Text>
-</View>
- </TouchableOpacity>  
-        
-        
-    })}
- 
- </ScrollView>
+        {hotel.map((item) => (
+          <TouchableOpacity 
+            key={item.id} 
+            style={styles.card} 
+            onPress={() => navigation.navigate('ChooseGategory', { hotelId: item.id, ownerId: item.owner.id })}
+          >
+            <View style={styles.cardContent}>
+              <Image 
+                source={{ uri: 'https://image.resabooking.com/images/hotel/Concorde_Green_Park_Palace_3.jpg' }} 
+                style={styles.image} 
+              />
+              <View style={styles.textContainer}>
+                <Text style={styles.hotelName}>{item.name}</Text>
+                <View style={styles.stars}>
+                  {[...Array(5)].map((_, index) => (
+                    <Icon key={index} size={20} name='star' color={'#f5a623'} />
+                  ))}
+                </View>
+                <Text style={styles.rooms}>Rooms: {item.rooms}</Text>
+                <Text style={styles.description}>{item.description}</Text>
+              </View>
+            </View>
+            <View style={styles.dividerContainer}>
+              <Text style={styles.divider}></Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   )
 }
-const styles=StyleSheet.create({
-  // searchInputContainer: {
-  //   height: 50,
-  //   width:'70%',
-  //   backgroundColor:'#f9f9f9',
-  //   marginTop: 15,
-  //   marginLeft: 20,
-  //   borderTopLeftRadius: 30,
-  //   borderBottomLeftRadius: 30,
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  // },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
+  backIcon: {
+    margin: 10,
+    borderWidth: 1,
+    borderColor: '#dcdcdc',
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    padding: 10,
+    alignSelf: 'flex-start',
+  },
   searchInputContainer: {
-    width:'82%',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 5,
-    borderWidth: 1,
-    borderRadius: 23,
     backgroundColor: '#fff',
-    marginLeft:49,
-    marginTop:30
+    borderRadius: 5,
+    padding: 10,
+    marginHorizontal: 10,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  icon: {
+    marginRight: 10,
+    color: '#888',
   },
   input: {
     flex: 1,
-    borderRadius: 15,
-    width:'50%',
-    fontSize: 20,
-    paddingLeft: 10,
-    borderWidth: 0,
-    outline: 'none',
+    height: 40,
+    borderColor: '#dcdcdc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
   },
-  icon: {
+  searchButton: {
+    backgroundColor: '#7CB9E8',
     marginLeft: 10,
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginVertical: 10,
+    marginHorizontal: 10,
+    padding: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  image: {
+    height: 180,
+    width: width * 0.4,
+    borderRadius: 10,
+    marginRight: 20,
+  },
+  textContainer: {
+    flex: 1,
+  },
+  hotelName: {
+    fontSize: 22,
+    color: 'black',
+    marginBottom: 12,
+    fontWeight: 'bold',
+  },
+  stars: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  rooms: {
+    fontSize: 16,
+    marginBottom: 5,
     color: '#333',
   },
-  button: {
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    marginLeft: 10,
-    backgroundColor: '#007bff',
-    color: '#0000FF',
-    borderRadius: 15,
+  description: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#444',
   },
-})
+  dividerContainer: {
+    padding: 10,
+  },
+  divider: {
+    height: 1,
+    width: '100%',
+    backgroundColor: '#DCE2FC',
+  },
+});
 export default AllHotels
