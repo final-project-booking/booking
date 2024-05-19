@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 export default function Chhat() {
   return (
     <GlobalState>
-      <NavigationContainer>
+      <NavigationContainer independent={true}>
         <Stack.Navigator>
           {/* all the screens here */}
           <Stack.Screen

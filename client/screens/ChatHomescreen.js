@@ -9,8 +9,13 @@ import {
     View,
   } from "react-native";
   import homeImage from "../assets/chat-home-image.jpg";
-  import { useContext, useEffect } from "react";
+  import { useContext, useEffect,useState } from "react";
   import { GlobalContext } from "../context";
+  import { useDispatch, useSelector } from 'react-redux';
+  import AsyncStorage from '@react-native-async-storage/async-storage';
+  import { jwtDecode } from 'jwt-decode';
+  import { getOneAsync } from '../src/reduce/getOne';
+  
   
   export default function ChatHomescreen({ navigation }) {
     const {
@@ -23,32 +28,65 @@ import {
       allUsers,
       setAllUsers,
     } = useContext(GlobalContext);
+   
+    const dispatch = useDispatch();
+    const [profile, setProfile] = useState(null);
+
+    useEffect(() => {
+      const fetchUserProfile = async () => {
+        try {
+          const token = await AsyncStorage.getItem('token');
+          const decoded = jwtDecode(token);
+          const userId = decoded.id;
+          const userData = await dispatch(getOneAsync(userId));
+          setProfile(userData.payload);
+        } catch (error) {
+          console.log('Error fetching user data:', error);
+        }
+      };
   
-    function handleRegisterAndSignIn(isLogin) {
+      fetchUserProfile();
+    }, [dispatch]);
+   
+    let Fullname 
+    if ((profile?.firstName&&profile?.lastName)===undefined){
+      Fullname=""
+    }else{
+      Fullname=profile?.firstName+' '+profile?.lastName
+    }
+     
+ 
+    const handlePress = () => {
+      setCurrentUserName(Fullname);
+      handleRegisterAndSignIn()
+  }
+
+    function handleRegisterAndSignIn() {
+      
       if (currentUserName.trim() !== "") {
         const index = allUsers.findIndex(
           (userItem) => userItem === currentUserName
         );
   
-        if (isLogin) {
-          if (index === -1) {
-            Alert.alert("Please register first");
-          } else {
-            setCurrentUser(currentUserName);
-          }
-        } else {
+        // if (isLogin) {
+        //   if (index === -1) {
+        //     Alert.alert("Please register first");
+        //   } else {
+           // setCurrentUser(currentUserName);
+          // }
+        // } else {
           if (index === -1) {
             allUsers.push(currentUserName);
             setAllUsers(allUsers);
             setCurrentUser(currentUserName);
-          } else {
-            Alert.alert("Already registered ! Please login");
-          }
+          // } else {
+          //   Alert.alert("Already registered ! Please login");
+          // }
         }
   
         setCurrentUserName("");
       } else {
-        Alert.alert("User name field is empty");
+        Alert.alert("Please Login First!!");
       }
   
       Keyboard.dismiss();
@@ -59,6 +97,7 @@ import {
     }, [currentUser]);
   
     console.log(allUsers, currentUser);
+    console.log(Fullname,'Fullname');
   
     return (
       <View style={styles.mainWrapper}>
@@ -103,7 +142,7 @@ import {
               </Text>
               <Pressable
                 style={styles.button}
-                onPress={() => setShowLoginView(true)}
+                onPress={() =>handlePress()}
               >
                 <View>
                   <Text style={styles.buttonText}>Get Started</Text>

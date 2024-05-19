@@ -44,7 +44,7 @@ function App() {
     //       // <Hotelprofile/> 
 
     <GestureHandlerRootView> 
-     <Chhat/>
+     <Nav/>
     </GestureHandlerRootView>
   )}
   
