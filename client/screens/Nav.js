@@ -22,6 +22,7 @@ import AllHotels from '../src/component/allHotels/AllHotels.js';
 import RoomByHotel from '../src/component/allHotels/RoomByHotel.js';
 import ChooseGategory from '../src/component/allHotels/ChooseGategory.js';
 import HotelProfile from '../src/component/Hotelprofile/Hotelprofile.js';
+import Chhat from './Chhat.js';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav({Navigation}) {
@@ -55,7 +56,7 @@ function Nav({Navigation}) {
         <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
-       
+        <Stack.Screen name="Chhat" component={Chhat} options={{ headerShown: false }}/>
        
       </Stack.Navigator>
     </NavigationContainer>
@@ -104,6 +105,19 @@ function TabNavigator({Navigation}) {
     headerShown: false,
     tabBarIcon: ({ color, size }) => (
       <Favorite name="favorite" color={color} size={size} />
+    ),
+    tabBarLabelStyle: {
+      fontSize: 14
+    }
+  }}
+/>
+<Tab.Screen
+  name="Chat"
+  component={Chhat}
+  options={{
+    headerShown: false,
+    tabBarIcon: ({ color, size }) => (
+      <Icon name="chat" color={color} size={size} />
     ),
     tabBarLabelStyle: {
       fontSize: 14

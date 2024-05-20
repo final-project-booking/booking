@@ -124,6 +124,8 @@ model Message {
 
 model RoomChat {
   id       Int        @id @default(autoincrement())
+  name     String
+  description  String
   messages Message[]
   join     JoinChat[]
 }
