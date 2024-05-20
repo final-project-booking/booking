@@ -115,5 +115,21 @@ module.exports = {
         } catch (error) {
             throw error
         }
-    }
+    },
+    getAllClinet: async (req, res) => {
+        try {
+          const clients = await user.findMany({ where: { role: 'user' } })
+          res.json(clients)
+        } catch (error) {
+          res.status(500).json({ error: error.message })
+        }
+      },
+      getAllOwner:async (req,res)=>{
+        try {
+            const owner = await user.findMany({ where: { role: 'owner' } })
+          res.json(owner)
+        } catch (error) {
+            throw error
+        }
+      }
 }

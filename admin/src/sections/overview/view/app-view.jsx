@@ -1,10 +1,18 @@
 import { faker } from '@faker-js/faker';
+import React,{useState,useEffect} from 'react';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import './appView.css'
 
 import Iconify from 'src/components/iconify';
+import { FaUsers } from "react-icons/fa";
+import { SiHiltonhotelsandresorts } from "react-icons/si";
+import { ImTicket } from "react-icons/im";
+import { MdStar } from "react-icons/md";
+
 
 import AppTasks from '../app-tasks';
 import AppNewsUpdate from '../app-news-update';
@@ -16,9 +24,110 @@ import AppTrafficBySite from '../app-traffic-by-site';
 import AppCurrentSubject from '../app-current-subject';
 import AppConversionRates from '../app-conversion-rates';
 
+
+import axios from 'axios';
+import {getAllUser,getAllHotels,allClient,allOwner,allReservation,allReviews,deleteRev} from '../../../env'
+
 // ----------------------------------------------------------------------
 
 export default function AppView() {
+
+  const[userCout,setUserCount]=useState(0)
+  const[hotelsCount,setHotelCount]=useState(0)
+  // console.log("hotels",hotelsCount);
+  const [client,setClient]=useState(0)
+  const [owner,setOwner]=useState(0)
+  const [reservationCount,setReservationCount]=useState(0)
+  const [reviews,setReviews]=useState([])
+  const [searchTerm, setSearchTerm] = useState('');
+const [displayCount, setDisplayCount] = useState(5);
+const [reservations,setReservation]=useState([])
+console.log('reservations',reservations);
+console.log("count",reservationCount);
+
+
+
+  useEffect(()=>{
+    fetch()
+    fetchHotels();
+    fetchClient()
+    fetchOwner()
+    fetchReservation()
+    fetchReviews()
+    console.log("review",reviews);
+  },[])
+   const fetch=async()=>{
+    try {
+      const response=await axios.get(getAllUser)
+      setUserCount(response.data.length-1);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+   const fetchReviews=async()=>{
+    try {
+      const response=await axios.get(allReviews)
+      setReviews(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const fetchHotels = async () => {
+    try {
+      const response = await axios.get(getAllHotels);
+      setHotelCount(response.data.length-1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchReservation = async () => {
+    try {
+      const response = await axios.get(allReservation);
+      setReservationCount(response.data.length-1);
+      setReservation(response.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  const fetchClient = async () => {
+    try {
+      const response = await axios.get(allClient);
+      setClient(response.data.length-1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchOwner = async () => {
+    try {
+      const response = await axios.get(allOwner);
+      setOwner(response.data.length-1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteOne=async(_id)=>{
+    try {
+      const response=await axios.delete(`${deleteRev}/${_id}`)
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const star=<MdStar color='yellow'/>
+  const hotelRatings = ['5 stars hotels', '4 stars hotels', '3 stars hotels', '2 stars hotels', '1 stars hotels'];
+
+  const reservationCounts = reservations.reduce((counts, res) => {
+    const rating = res.room.hotel.rating;
+    if (!counts[rating]) {
+      counts[rating] = 0;
+    }
+    counts[rating]++;
+    return counts;
+  }, {});
+  
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -26,79 +135,82 @@ export default function AppView() {
       </Typography>
 
       <Grid container spacing={3}>
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3} style={{width:385}}>
           <AppWidgetSummary
-            title="Weekly Sales"
-            total={714000}
+            title="Number of hotels"
+            total={hotelsCount}
             color="success"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
+            icon={<SiHiltonhotelsandresorts size={70} color='#32de84'/>}
           />
         </Grid>
 
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3} style={{width:385}}>
           <AppWidgetSummary
-            title="New Users"
-            total={1352831}
+            title="Number of users"
+            total={userCout}
             color="info"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+            icon={<FaUsers size={70} color='#6CB4EE'/>}
           />
         </Grid>
 
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Item Orders"
-            total={1723315}
-            color="warning"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
-          />
-        </Grid>
+        <Grid xs={12} sm={6} md={3} style={{width:385}}>
+        
+  <AppWidgetSummary
+    title="Number of reservations"
+    total={reservationCount} 
+    color="warning"
+    icon={<ImTicket size={70} color='#FFD700' />}
+  />
+</Grid>
 
-        <Grid xs={12} sm={6} md={3}>
+        {/* <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Bug Reports"
             total={234}
             color="error"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
           />
-        </Grid>
+        </Grid> */}
 
         <Grid xs={12} md={6} lg={8}>
           <AppWebsiteVisits
-            title="Website Visits"
-            subheader="(+43%) than last year"
+            title="Monthly reservation"
+            // subheader="(+43%) than last year"
             chart={{
               labels: [
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
+                '01/02/2024',
+                '02/02/2024',
+                '03/02/2024',
+                '04/02/2024',
+                '05/02/2024',
+                '06/02/2024',
+                '07/02/2024',
+                '08/02/2024',
+                '09/02/2024',
+                '10/02/2024',
+                '11/02/2024',
+                '12/02/2024',
+                '01/02/2025'
               ],
               series: [
                 {
-                  name: 'Team A',
+                  name: 'Clients reserved',
                   type: 'column',
                   fill: 'solid',
-                  data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
+                  data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30,50],
                 },
-                {
-                  name: 'Team B',
-                  type: 'area',
-                  fill: 'gradient',
-                  data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-                },
-                {
-                  name: 'Team C',
-                  type: 'line',
-                  fill: 'solid',
-                  data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-                },
+                // {
+                //   name: 'Team B',
+                //   type: 'area',
+                //   fill: 'gradient',
+                //   data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
+                // },
+                // {
+                //   name: 'Team C',
+                //   type: 'line',
+                //   fill: 'solid',
+                //   data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
+                // },
               ],
             }}
           />
@@ -109,16 +221,14 @@ export default function AppView() {
             title="Current Visits"
             chart={{
               series: [
-                { label: 'America', value: 4344 },
-                { label: 'Asia', value: 5435 },
-                { label: 'Europe', value: 1443 },
-                { label: 'Africa', value: 4443 },
+                { label: 'Owner', value: owner },
+                { label: 'Clinet', value: client }
               ],
             }}
           />
         </Grid>
 
-        <Grid xs={12} md={6} lg={8}>
+        {/* <Grid xs={12} md={6} lg={8}>
           <AppConversionRates
             title="Conversion Rates"
             subheader="(+43%) than last year"
@@ -137,9 +247,56 @@ export default function AppView() {
               ],
             }}
           />
-        </Grid>
+        </Grid> */}
 
-        <Grid xs={12} md={6} lg={4}>
+
+        <Grid xs={12} md={6} lg={8}>
+        {/* <input className='inputSearch'
+    placeholder='Search by name' 
+    onClick={(event) => { event.stopPropagation()}}
+    onChange={(event) => { setSearchTerm(event.target.value); event.stopPropagation()}}></input> */}
+  <AppNewsUpdate
+   
+    title="Reviews"
+    header={
+    <input style={{marginLeft:23,marginTop:10}} className='inputSearch'
+      placeholder='Search by name' 
+      onClick={(event) => { event.stopPropagation()}}
+      onChange={(event) => { setSearchTerm(event.target.value); event.stopPropagation()}}
+    />
+  }
+    list={reviews.filter(rev => rev.user.firstName||rev.user.lastName.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, displayCount).map((rev) => ({
+      id: rev.id,
+      title: (
+        <>
+          {rev.user.firstName} {rev.user.lastName}{' '}
+          {[...Array(rev.stars)].map((_, i) => (
+            <MdStar key={i} color='#FFD700' />
+          ))}
+        </>
+      ),
+      description: rev.content,
+      image: rev.user.imgUrl,
+      postedAt: rev.hotel.name,
+    }))}
+    onDelete={async(id)=>{await deleteOne(id);fetchReviews()}}
+  />
+  <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount + 5) }}>See more</Button>
+  <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount -5) }}>See less</Button>
+</Grid>
+
+<Grid xs={12} md={6} lg={4}>
+  <AppOrderTimeline
+    title="Reservation rate"
+    list={hotelRatings.map((rating, index) => ({
+      id: index,
+      title: `${reservationCounts[5 - index] || "No"} reservations for ${rating}`,
+      type: `order${index + 1}`,
+      // time: reservationCounts[5 - index] || 0,
+    }))}
+  />
+</Grid>
+        {/* <Grid xs={12} md={6} lg={4}>
           <AppCurrentSubject
             title="Current Subject"
             chart={{
@@ -151,40 +308,11 @@ export default function AppView() {
               ],
             }}
           />
-        </Grid>
+        </Grid> */}
 
-        <Grid xs={12} md={6} lg={8}>
-          <AppNewsUpdate
-            title="News Update"
-            list={[...Array(5)].map((_, index) => ({
-              id: faker.string.uuid(),
-              title: faker.person.jobTitle(),
-              description: faker.commerce.productDescription(),
-              image: `/assets/images/covers/cover_${index + 1}.jpg`,
-              postedAt: faker.date.recent(),
-            }))}
-          />
-        </Grid>
+       
 
-        <Grid xs={12} md={6} lg={4}>
-          <AppOrderTimeline
-            title="Order Timeline"
-            list={[...Array(5)].map((_, index) => ({
-              id: faker.string.uuid(),
-              title: [
-                '1983, orders, $4220',
-                '12 Invoices have been paid',
-                'Order #37745 from September',
-                'New order placed #XF-2356',
-                'New order placed #XF-2346',
-              ][index],
-              type: `order${index + 1}`,
-              time: faker.date.past(),
-            }))}
-          />
-        </Grid>
-
-        <Grid xs={12} md={6} lg={4}>
+        {/* <Grid xs={12} md={6} lg={4}>
           <AppTrafficBySite
             title="Traffic by Site"
             list={[
@@ -210,9 +338,9 @@ export default function AppView() {
               },
             ]}
           />
-        </Grid>
+        </Grid> */}
 
-        <Grid xs={12} md={6} lg={8}>
+        {/* <Grid xs={12} md={6} lg={8}>
           <AppTasks
             title="Tasks"
             list={[
@@ -223,7 +351,7 @@ export default function AppView() {
               { id: '5', name: 'Sprint Showcase' },
             ]}
           />
-        </Grid>
+        </Grid> */}
       </Grid>
     </Container>
   );

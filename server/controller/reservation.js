@@ -82,12 +82,24 @@ module.exports={
     },
     getAllReservations:async function(req,res){
         try {
-            const reservations=await reservation.findMany()
+            const reservations=await reservation.findMany({
+              include:{room:{include:{hotel:true}}}
+            })
             res.status(200).send(reservations)
         } catch (error) {
             console.log(error);
         }
     },
+  //   getReservationByHotelId:async function(req,res){
+  //     try {
+  //         const reservations=await reservation.findMany({
+  //           include:{room:{include:{hotel:true}}}
+  //         })
+  //         res.status(200).send(reservations)
+  //     } catch (error) {
+  //         throw error
+  //     }
+  // },
     getReservationByUserId:async function(req,res){
         try {
             const reservations=await reservation.findMany({where:{userId:Number(req.params.userId)}})
