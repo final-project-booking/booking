@@ -152,7 +152,8 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: '#112678',
+    Button:"#112678"
   },
   input: {
     flex: 1,
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#112678',
     borderRadius: 4,
     fontSize: 16,
   },
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#B5C18E',
+    color: '#112678',
     marginLeft: 310,
   },
   hotelInfo: {
