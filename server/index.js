@@ -17,7 +17,7 @@ const negotiate=require('./router/negotiation')
 const bodyParser = require('body-parser');
 const hotel = require('./router/hotel');
 const pay = require ('./controller/Payment')
-
+const favorite=require('./router/favorite')
 
 const socketIO = require("socket.io")(http, {
   cors: {
@@ -42,8 +42,8 @@ app.use('/api/chat',chat)
 
 app.use("/api/review",review)
 app.use('/api/search',search)
-app.use('/app/negotiation',negotiate)
-
+app.use('/api/negotiation',negotiate)
+app.use('/api/favorite',favorite)
 app.use('/api', hotel);
 
 app.use('/api/pay',pay)

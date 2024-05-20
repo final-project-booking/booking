@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const {addNegotiation,getNegotiation}=require('../controller/negotiate')
+const {addNegotiation,getNegotiation,getUserWhereHotelId}=require('../controller/negotiate')
 router.post('/:roomId/:newPrice/:content/:userId',addNegotiation)
-router.get('/',getNegotiation)
+router.get('/:hotelId',getNegotiation)
+router.get('/get/:hotelId',getUserWhereHotelId)
 module.exports = router;

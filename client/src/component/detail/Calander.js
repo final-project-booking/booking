@@ -28,6 +28,7 @@ const body={
   numRoom:numRoom,
   price:prices?.price
 }
+console.log('calendar',route.params.ownerId);
 const handleGet=()=>{
     dispatch(ComparPrice(body))
 }
@@ -76,71 +77,102 @@ chek()
   },[])
 
   return (
-    <View style={{flex:1,backgroundColor:'#DCE2FC'}}>
-    <View style={{ flexDirection: 'row', alignItems: 'center' ,marginTop:20,marginLeft:20}}>
-    <Text style={{fontWeight:'bold',fontSize:15,color:'black'}}>
-    <View style={{ backgroundColor: '#89CFF0', borderRadius: 30,padding:'auto'}}>
-  <Icon name='arrow-back' size={25} />
-  </View>
-  Choose Your Arrival & Departure
-  </Text>
-</View>
-    <View style={{ marginTop:50 }}>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.backButton}>
+          <Icon name='arrow-back' size={25} color='black' />
+        </View>
+        <Text style={styles.headerText}>Choose Your Arrival & Departure</Text>
+      </View>
       <Calendar
+        style={styles.calendar}
         onDayPress={(day) => handleDateChange(day.dateString)}
         markedDates={getMarkedDates()}
         markingType={'custom'}
         minDate={today}
         theme={{
-    backgroundColor: '#DCE2FC',
-    calendarBackground: '#DCE2FC',
-    color:'#DCE2FC',
-    textSectionTitleColor: 'black',
-    dayTextColor: 'black',
-    todayTextColor: '#00adf5', 
-  }}
- 
+          backgroundColor: '#DCE2FC',
+          calendarBackground: '#DCE2FC',
+          textSectionTitleColor: 'black',
+          dayTextColor: 'black',
+          todayTextColor: '#00adf5',
+        }}
       />
-    </View>
-        <View style={styles.buttonX}><Text style={styles.text}>start:{selectedDates.start}</Text><Text style={styles.text}>End:{selectedDates.end}</Text></View>
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 80,margin:20 }}>
-    <Button mode="black" fontWeight='bold'  style={{ width: '30%', backgroundColor: '#DCE2FC', borderWidth: 1, borderColor: 'black', }}>
-  Reset
-</Button>
-  <Button  mode="contained" style={{width:'30%',backgroundColor:'#0000FF'}}
-    onPress={() =>
-       {handleGet(), navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId,numRoom:numRoom,people:people})}
-      }
-  >
-   Continue
-  </Button>
-    </View>
-  
+      <View style={styles.dateInfoContainer}>
+       
+        <Text style={styles.dateInfoText}>Start: {selectedDates.start}</Text>
+        <Text style={styles.dateInfoText}>End: {selectedDates.end}</Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button mode="outlined" fontWeight='bold' color='black' style={styles.resetButton} onPress={() => { }}>
+          Reset
+        </Button>
+        <Button mode="contained" style={styles.continueButton} 
+        onPress={() =>
+          {handleGet(), navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId,numRoom:numRoom,people:people,ownerId:route.params.ownerId})}
+         }>
+          Continue
+        </Button>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-text:{
-  color:'black',
-  fontSize:15,
-  textAlign:'center',
-  marginLeft:10,
-  fontWeight:'bold'
-},
-buttonX:{
-  flex:1,
-  justifyContent:'center'
-  ,marginTop:60
-  ,marginLeft:120
-  ,backgroundColor:'#DCE2FC'
-  ,height:70
-  ,width:150,
-  borderRadius:8 ,
-  flexWrap: 'wrap',
-  borderWidth:1,
-  border:'1px solid Blue',
-  // borderBottomColor:'black'
-  
-}
+  container: {
+    flex: 1,
+    backgroundColor: '#DCE2FC',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 10,
+  },
+  backButton: {
+    backgroundColor: '#89CFF0',
+    borderRadius: 30,
+    padding: 10,
+    marginRight: 10,
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: 'black',
+  },
+  calendar: {
+    width: '100%',
+    marginBottom: 20,
+    marginTop:100
+  },
+  dateInfoContainer: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  dateInfoTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#333',
+  },
+  dateInfoText: {
+    fontSize: 16,
+    color: 'black',
+    marginBottom: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
+    marginTop:110
+  },
+  resetButton: {
+    flex: 1,
+    marginRight: 10,
+  },
+  continueButton: {
+    flex: 1,
+    backgroundColor: '#0000FF',
+  },
 })

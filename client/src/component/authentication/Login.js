@@ -11,6 +11,8 @@ import{
 }from "react-native"
 import { useDispatch ,useSelector} from 'react-redux';
 import {signInAsync} from "../../reduce/authentication/signInReducer"
+import {AP_ADRESS} from '../../apAdress'
+
 
 
 const Login = ({navigation}) => {
@@ -34,7 +36,14 @@ navigation.navigate("Home");
 
   const handleSignIn=()=>{
     dispatch(signInAsync(login))
-    navigation.navigate("Home")
+    
+    if(success){
+      navigation.navigate("Home")
+    } else{
+      console.log('somthing happen');
+    }
+   
+
   }
   const checkLogin=()=>{
 

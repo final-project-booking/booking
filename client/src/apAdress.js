@@ -1,3 +1,3 @@
-export const AP_ADRESS="192.168.11.236"
+export const AP_ADRESS="192.168.11.245"
 export const cloud_name="dockwpvkl"
 export const  preset="psocp6cg"
