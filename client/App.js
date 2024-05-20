@@ -2,7 +2,6 @@ import React, { useEffect ,useState} from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text, StyleSheet, Linking ,ScrollView,Image,Dimensions,TouchableOpacity,TextInput,Button } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Nav from './screens/Nav';

@@ -1,13 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { View, ScrollView, Image, StatusBar } from 'react-native';
-import arrowRight from '../../Photo/arrow-right.png';
-import SwipeButton from 'rn-swipe-button';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 
-const OnboardingScreen = ({ onboardingImages, nav }) => {
+const Migrations = ({ onboardingImages, nav }) => {
   const scrollViewRef = useRef(null);
   const [railBackgroundColor, setRailBackgroundColor] = useState("rgba(128,128,128,0.2)");
   const [currentPage, setCurrentPage] = useState(0);
-  const [swipeStatusMessage, setSwipeStatusMessage] = useState('ENJOY HOLIDAYS');
 
   const handleNext = () => {
     setRailBackgroundColor("#FFFFFF");
@@ -16,7 +13,7 @@ const OnboardingScreen = ({ onboardingImages, nav }) => {
       scrollViewRef.current.scrollTo({ x: nextPage * 550, animated: true });
       setCurrentPage(nextPage);
     } else {
-      nav.replace('AppFace');
+      nav.replace('OwnerProfile');
     }
   };
 
@@ -43,37 +40,44 @@ const OnboardingScreen = ({ onboardingImages, nav }) => {
           </View>
         ))}
       </ScrollView>
-      <View style={{ position: 'absolute', bottom: 20, left: 0, right: 0, alignItems: 'center' }}>
-        <StatusBar barStyle="dark-content" />
-        <View style={[{ width: 300, height: 100 }]}>
-          <SwipeButton
-            thumbIconImageSource={arrowRight}
-            onSwipeSuccess={handleNext}
-            title={swipeStatusMessage} 
-            railBackgroundColor={railBackgroundColor}
-            railBorderColor={railBackgroundColor}
-            thumbIconBackgroundColor={railBackgroundColor}
-            thumbIconBorderColor={railBackgroundColor}
-            thumbIconImageStyles={{ width: 20, height: 20 }}
-          />
-        </View>
+      
+      <View style={{ position: 'absolute', alignItems: 'center',        
+ }}>
+  <Text style={[{   color: 'white', fontWeight: 'bold', 
+    textAlign: 'center',
+     marginTop: 280,
+    fontSize: 32}]}>
+ '1. Ensure all property details are accurate and up-to-date.\n'
+              '2. Respond to booking inquiries promptly.\n'
+              '3. Maintain high standards of cleanliness and hospitality.\n'
+              '4. Address guest issues and feedback constructively.\n',
+  </Text>
+        
+          <TouchableOpacity onPress={handleNext} style={[{ width: 70, height: 40 , backgroundColor: 'blue', 
+    borderRadius: 8,
+    alignItems: 'center',
+     }]}> 
+              <Text style={{ fontSize: 22, fontWeight: 'bold', color: 'white',alignItems:"center"}}>Next</Text>
+          </TouchableOpacity>
+
+
       </View>
     </View>
   );
 };
 
-const Onboarding = ({ navigation }) => {
+const Migration = ({ navigation }) => {
   const onboardingImages = [
-    require('../../Photo/Screen1.jpeg'),
-    // require('../../Photo/screen2.jpg'),
-    // require('../../Photo/screen3.jpeg'),
+    // require('../../Photo/Screen1.jpeg'),
+    // require('../../Photo/detail.jpeg'),
+    require('../../Photo/detail2.webp'),
   ];
 
   return (
     <View style={{ flex: 1 }}>
-      <OnboardingScreen nav={navigation} onboardingImages={onboardingImages} />
+      <Migrations nav={navigation} onboardingImages={onboardingImages} />
     </View>
   );
 };
 
-export default Onboarding;
+export default Migration;

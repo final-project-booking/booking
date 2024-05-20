@@ -28,6 +28,8 @@ import HotelProfile from '../src/component/Hotelprofile/Hotelprofile.js';
 import Notification from '../src/component/UserProfile/Notification.js';
 import { Button, Dialog, Portal, PaperProvider, Text } from 'react-native-paper';
 import ReservationProfile from '../src/component/Detail/ReservationProfile.js';
+import Migrations from "../src/component/OwnerProfile/Migrations.js"
+import Chhat from './Chhat.js';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav({Navigation}) {
@@ -85,8 +87,13 @@ function Nav({Navigation}) {
    
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
         <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />    
+        <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />   
+
+        <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />
+        <Stack.Screen name="Migrations" component={Migrations} options={{headerShown: false}} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
+        <Stack.Screen name="Chhat" component={Chhat} options={{ headerShown: false }}/>
        
       </Stack.Navigator>
      
@@ -136,6 +143,19 @@ function TabNavigator({Navigation}) {
     headerShown: false,
     tabBarIcon: ({ color, size }) => (
       <Favorite name="favorite" color={color} size={size} />
+    ),
+    tabBarLabelStyle: {
+      fontSize: 14
+    }
+  }}
+/>
+<Tab.Screen
+  name="Chat"
+  component={Chhat}
+  options={{
+    headerShown: false,
+    tabBarIcon: ({ color, size }) => (
+      <Icon name="chat" color={color} size={size} />
     ),
     tabBarLabelStyle: {
       fontSize: 14

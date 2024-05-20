@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import {
@@ -48,7 +50,6 @@ export default function Map({ onLocationSelect }) {
       const response = await Geocoder.from(searchQuery);
       const { lat, lng } = response.results[0].geometry.location;
 
-      // Update the region
       const newRegion = {
         latitude: lat,
         longitude: lng,
@@ -60,7 +61,6 @@ export default function Map({ onLocationSelect }) {
         onLocationSelect({ latitude: lat, longitude: lng });
       }
 
-      // Now search for hotels around the city
       await searchHotels(lat, lng);
     } catch (error) {
       console.error('Error searching city coordinates:', error);
@@ -100,10 +100,16 @@ export default function Map({ onLocationSelect }) {
       </View>
       {region ? (
         <MapView style={styles.map} initialRegion={region} region={region}>
-          <Marker coordinate={{ latitude: region.latitude, longitude: region.longitude }} />
-          {renderHotels().map((marker, index) => (
-            <Marker key={index} coordinate={marker} pinColor="blue" />
-          ))}
+        {/* <Marker coordinate={{ latitude: region.latitude, longitude: region.longitude }} />  */}
+          {/* {renderHotels().map((hotel, index) => ( 
+             <Marker
+              key={index}
+              coordinate={{ latitude: hotel.latitude, longitude: hotel.longitude }}
+              title={hotel.name}
+              pinColor="blue"
+            />
+          )
+          )} */}
         </MapView>
       ) : (
         <MapView style={styles.map} />

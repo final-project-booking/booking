@@ -1,170 +1,162 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, FlatList, Image, TouchableOpacity } from 'react-native';
+import { Alert, ScrollView, StyleSheet, TextInput, Text, View, Button, TouchableOpacity } from 'react-native';
+import { useConfirmPayment, StripeProvider } from '@stripe/stripe-react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { colors } from './Color';
+import {AP_ADRESS} from "../../apAdress"
 
-const PropertyList = () => {
-    const propertyData = [
-        {
-          id: '1',
-          image: 'https://source.unsplash.com/900x900/?house',
-          price: '$250,000',
-          address: '123 Main St',
-          squareMeters: '150',
-          beds: '3',
-          baths: '2',
-          parking: '1'
-        },
-        {
-          id: '2',
-          image: 'https://source.unsplash.com/900x900/?apartment',
-          price: '$400,000',
-          address: '456 Oak Ave',
-          squareMeters: '200',
-          beds: '4',
-          baths: '3',
-          parking: '2'
-        },
-        {
-          id: '3',
-          image: 'https://source.unsplash.com/900x900/?house+front',
-          price: '$150,000',
-          address: '789 Maple Rd',
-          squareMeters: '100',
-          beds: '2',
-          baths: '1',
-          parking: '0'
-        },
-        {
-          id: '4',
-          image: 'https://source.unsplash.com/900x900/?small+house',
-          price: '$150,000',
-          address: '789 Maple Rd',
-          squareMeters: '100',
-          beds: '2',
-          baths: '1',
-          parking: '0'
-        }
-      ];
-  const [searchText, setSearchText] = useState('');
+export default function Card() {
+  const API_URL = "http://192.168.11.186:3000/api/pay/pay";
 
-  const handleSearch = (text) => {
-    setSearchText(text);
-  }
+  const [name, setName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [cvv, setCvv] = useState('');
+  const { confirmPayment, loading } = useConfirmPayment();
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.card}>
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <View style={styles.cardBody}>
-        <Text style={styles.price}>{item.price}</Text>
-        <Text style={styles.address}>{item.address}</Text>
-        <Text style={styles.squareMeters}>{item.squareMeters} sq. m.</Text>
-      </View>
-      <View style={styles.cardFooter}>
-        <Text style={styles.beds}>{item.beds} beds</Text>
-        <Text style={styles.baths}>{item.baths} baths</Text>
-        <Text style={styles.parking}>{item.parking} parking</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  const fetchPaymentIntentClientSecret = async () => {
+    const response = await fetch(`${API_URL}/create-payment-intent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        paymentMethodType: 'card',
+        currency: 'usd',
+      }),
+    });
+    const { clientSecret } = await response.json();
+    return clientSecret;
+  };
+
+  const handlePayPress = async () => {
+    const clientSecret = await fetchPaymentIntentClientSecret();
+
+    const billingDetails = { name };
+
+    const { error, paymentIntent } = await confirmPayment(clientSecret, {
+      type: 'Card',
+      billingDetails,
+      paymentMethod: {
+        card: {
+          number: cardNumber,
+          expMonth: parseInt(expiryDate.split('/')[0], 10),
+          expYear: parseInt(expiryDate.split('/')[1], 10),
+          cvc: cvv,
+        },
+      },
+    });
+
+    if (error) {
+      Alert.alert(`Error code: ${error.code}`, error.message);
+      console.log('Payment confirmation error', error.message);
+    } else if (paymentIntent) {
+      Alert.alert(
+        'Success',
+        `The payment was confirmed successfully! currency: ${paymentIntent.currency}`
+      );
+      console.log('Success from promise', paymentIntent);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.searchInputContainer}>
+    <StripeProvider publishableKey="pk_live_51PGMZUIxZAKhTyZwpce6rNZyzBWyqMkq3VTcwmF5sKs829nJaD8KawGguJdyMKg4buw2pAnv4bOtEdkv6VrcUa5900DWtLQ7hp">
+      <ScrollView style={styles.container}>
+        {/* <Text>Try a test card:</Text>
+        <Text>4242424242424242 (Visa)</Text>
+        <Text>5555555555554444 (Mastercard)</Text>
+        <Text>4000002500003155 (Requires 3DSecure)</Text>
+        <Text>Use any future expiration, any 3 digit CVC, and any postal code.</Text> */}
         <TextInput
-          style={styles.searchInput}
-          placeholder="Search properties..."
-          onChangeText={handleSearch}
-          value={searchText}
+          autoCapitalize="none"
+          placeholder="Name"
+          keyboardType="name-phone-pad"
+          onChangeText={setName}
+          style={styles.input}
         />
-      </View>
-      <FlatList
-        contentContainerStyle={styles.propertyListContainer}
-        data={propertyData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
+        <View style={styles.cardInputContainer}>
+          <View style={styles.cardInputSection}>
+            <Icon name="credit-card" size={20} color="#000" style={styles.icon} />
+            <TextInput
+              placeholder="Card Number"
+              keyboardType="number-pad"
+              onChangeText={setCardNumber}
+              style={styles.cardInput}
+            />
+          </View>
+          <View style={styles.cardInputSection}>
+            <Icon name="calendar" size={20} color="#000" style={styles.icon} />
+            <TextInput
+              placeholder="MM/YY"
+              keyboardType="number-pad"
+              onChangeText={setExpiryDate}
+              style={styles.cardInput}
+            />
+          </View>
+          <View style={styles.cardInputSection}>
+            <Icon name="lock" size={20} color="#000" style={styles.icon} />
+            <TextInput
+              placeholder="CVV"
+              keyboardType="number-pad"
+              secureTextEntry
+              onChangeText={setCvv}
+              style={styles.cardInput}
+            />
+          </View>
+        </View>
+        <TouchableOpacity onPress={handlePayPress} disabled={loading}  style={styles.TouchableOpacity}>
+              <Text style={styles.Text} > Pay </Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </StripeProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop:60,
+    backgroundColor: colors.white,
+    paddingTop: 20,
+    paddingHorizontal: 16,
   },
-  searchInputContainer:{
-    paddingHorizontal:20,
+  cardInputContainer: {
+    marginVertical: 20,
   },
-  searchInput: {
-    height: 40,
-    borderWidth: 1,
-    borderColor:'#dcdcdc',
-    backgroundColor:'#fff',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10
-  },
-  propertyListContainer:{
-    paddingHorizontal:20,
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    marginTop:10,
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5
-  },
-  image: {
-    height: 150,
-    marginBottom: 10,
-    borderTopLeftRadius:5,
-    borderTopRightRadius:5,
-  },
-  cardBody: {
-    marginBottom: 10,
-    padding: 10,
-  },
-  price: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 5
-  },
-  address: {
-    fontSize: 16,
-    marginBottom: 5
-  },
-  squareMeters: {
-    fontSize: 14,
-    marginBottom: 5,
-    color: '#666'
-  },
-  cardFooter: {
-    padding: 10,
+  cardInputSection: {
     flexDirection: 'row',
-    borderTopWidth:1,
-    borderTopColor:'#dcdcdc',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomColor: colors.slate,
+    borderBottomWidth: 1.5,
+    marginBottom: 20,
   },
-  beds: {
-    fontSize: 14,
-    color:'#ffa500',
-    fontWeight: 'bold'
+  icon: {
+    marginRight: 10,
   },
-  baths: {
-    fontSize: 14,
-    color:'#ffa500',
-    fontWeight: 'bold'
+  cardInput: {
+    flex: 1,
+    height: 44,
   },
-  parking: {
-    fontSize: 14,
-    color:'#ffa500',
-    fontWeight: 'bold'
+  input: {
+    height: 44,
+    borderBottomColor: colors.slate,
+    borderBottomWidth: 1.5,
+    marginBottom: 20,
+  },
+  TouchableOpacity:{
+    backgroundColor: "#112678",
+    borderRadius: 25,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginTop: 20,
+    marginBottom: 20,
+    marginLeft: 30,
+    marginRight: 30,
+    color: '#fff',
+    fontSize: 20,
+  },
+  Text:{
+    marginLeft: 120,
+    color: '#FFFFFF',
+    fontSize: 20,
   }
 });
-
-export default PropertyList

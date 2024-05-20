@@ -23,7 +23,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {jwtDecode} from "jwt-decode";
 
 import { AllHotell } from '../../reduce/Hotels';
-
 const { width } = Dimensions.get('screen');
 const cardWidth = width / 1.8;
 import socket from '../../../socket';
@@ -244,7 +243,10 @@ const opacity = scrollX.interpolate({
             </Text>
           </View>
         </View>
+        <Image source={require('../../Photo/logo-no-background.png')} style={{width:150,height:100, size:10,objectFit:"cover"}}/> 
+        
         {/* <Icon name="person-outline" size={38}  color='#161618'/> */}
+
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.searchInputContainer}>

@@ -42,7 +42,7 @@ module.exports = {
         }
     
         const token = jwt.sign({ id: foundUser.id ,role:foundUser.role }, process.env.SECRET_KEY);
-        // console.log(token);
+        console.log(token);
         delete foundUser.password;
         res.status(200).send({ token, user: foundUser });
     },
@@ -115,5 +115,21 @@ module.exports = {
         } catch (error) {
             throw error
         }
-    }
+    },
+    getAllClinet: async (req, res) => {
+        try {
+          const clients = await user.findMany({ where: { role: 'user' } })
+          res.json(clients)
+        } catch (error) {
+          res.status(500).json({ error: error.message })
+        }
+      },
+      getAllOwner:async (req,res)=>{
+        try {
+            const owner = await user.findMany({ where: { role: 'owner' } })
+          res.json(owner)
+        } catch (error) {
+            throw error
+        }
+      }
 }
