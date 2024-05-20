@@ -15,6 +15,8 @@ import { configureStore } from '@reduxjs/toolkit';
   import HotelSlice from './SliceAction/HotelsSlice'
   import getNegotiations from './SliceAction/getNegociation'
   import getOwner from './SliceAction/getUserwhereHotelId'
+  import favoriteSlice from './SliceAction/favoriteHotel'
+  import getFavoriteSlice from './SliceAction/getFavorite'
 const store = configureStore({
   reducer: {
     userSignUp:signUpSlice,
@@ -36,7 +38,9 @@ const store = configureStore({
     allHotels:AllHotels,
     hotelSlice:HotelSlice,
     getNegotiations:getNegotiations,
-    getOwner:getOwner
+    getOwner:getOwner,
+    favoriteSlice:favoriteSlice,
+    getFavoriteSlice:getFavoriteSlice
 }
 });
 

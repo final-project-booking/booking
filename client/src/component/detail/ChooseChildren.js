@@ -50,31 +50,57 @@ console.log('Received data state:', receivedData);
 // const nego=useSelector(state=>state.getNegotiations.get)
 // console.log('nego',nego);
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Icon name='arrow-back' size={30} style={styles.backIcon} onPress={() => navigation.navigate('UserProfile')} />
-        <Text style={styles.headerText}>Notification</Text>
+    <SafeAreaView style={styles.container}>
+    <ScrollView>
+      <Icon name='arrow-back' size={30} style={styles.backIcon} onPress={() => navigation.goBack()} />
+      <View style={styles.searchInputContainer}>
+        <Icon name="search" size={30} style={styles.icon} />
+        <TextInput 
+          placeholder="Search" 
+          style={styles.input} 
+          placeholderTextColor="#888"
+        />
+        <Button mode="contained" style={styles.searchButton}>Search</Button>
       </View>
-      <View style={styles.contentContainer}>
-        <View style={styles.contentInfo}>
-          <Text style={styles.label}>Content:</Text>
-          <Text style={styles.text}>Your reservation has been confirmed!</Text>
-        </View>
-        <View style={styles.contentInfo}>
-          <Text style={styles.label}>Price:</Text>
-          <Text style={styles.text}>$120</Text>
-        </View>
-        <View style={styles.contentInfo}>
-          <Text style={styles.label}>Room N°:</Text>
-          <Text style={styles.text}>101</Text>
-        </View>
-        <Text style={styles.dateText}>Date: 12-04-2024</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button mode="outlined" style={styles.cancelButton} onPress={() => { }}>Cancel</Button>
-        <Button mode="contained" style={styles.acceptButton} onPress={() => { }}>Accept</Button>
-      </View>
-    </View>
+      {hotel.map((item) => (
+        <TouchableOpacity 
+          key={item.id} 
+          style={styles.card} 
+          onPress={() => navigation.navigate('ChooseGategory', { hotelId: item.id, ownerId: item.owner.id })}
+        >
+          <View style={styles.favoriteButton}>
+            <Icon name="star" size={15} color='orange' />
+            <Text style={styles.ratingText}>5.0</Text>
+          </View>
+          <Image 
+            source={{ uri: 'https://image.resabooking.com/images/hotel/Concorde_Green_Park_Palace_3.jpg' }} 
+            style={styles.cardImage} 
+          />
+          <View style={styles.cardDetails}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View>
+                <Text style={styles.cardTitle}>{item.name}</Text>
+              </View>
+              <Icon name="heart" size={26} color='#ff6347' style={styles.heartIcon} />
+            </View>
+            <View style={styles.ratingContainer}>
+              <View style={styles.rating}>
+                {[...Array(5)].map((_, index) => (
+                  <Icon key={index} size={15} name='star' color={'orange'} />
+                ))}
+              </View>
+              <Text style={styles.reviewCount}>365 reviews</Text>
+            </View>
+            <Text style={styles.rooms}>Rooms: {item.rooms}</Text>
+            <Text style={styles.description}>{item.description}</Text>
+          </View>
+          <View style={styles.dividerContainer}>
+            <Text style={styles.divider}></Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  </SafeAreaView>
   )
 }
   const styles = StyleSheet.create({

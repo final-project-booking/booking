@@ -6,7 +6,7 @@ http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io'); 
 
-app.use(cors()); 
+// app.use(cors()); 
 
 const server = http.createServer(app); 
 
@@ -14,12 +14,11 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: '*',
-    methods: ['GET', 'POST'],
   },
 });
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log('a user connected',socket.id);
   socket.on('join', (userId) => {
     console.log('user join room',userId);
     socket.join(userId);
@@ -28,14 +27,12 @@ io.on('connection', (socket) => {
   socket.on('send_request', (data) => {
     // const {user,room,hotel}=data
     console.log('Received_request', data);
-    console.log('Received_request',data);
-
-   socket.to(data.ownerId).emit('Received_request', data);
-});
+    socket.to(data.body.ownerId).emit('Received_request', data);
+  });
 socket.on('accepte_reject', (data) => {
   // const {user,room,hotel}=data
   console.log('Received_request:', data);
-  socket.to().emit('response_request', data);
+  socket.to(user.id).emit('response_request', data);
 });
 socket.on('disconnect', () => {
   console.log('A user disconnected');

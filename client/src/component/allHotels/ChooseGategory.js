@@ -20,6 +20,7 @@ export default function ChooseGategory({ route, navigation }) {
         view:selectedValue,
         hotelId:hotelId,
             }
+            console.log('body',body);
 const handleGet=(obj)=>{
     dispatch(fetchRoomByCategory(obj))
 }
@@ -128,10 +129,8 @@ console.log('numRoom',numRoom);
       <Button
         style={styles.searchButton}
         textColor='black'
-        onPress={() => {
-          const body = { hotelId: route.params.hotelId, view: selectedValue, plan: selectedPlan, numRoom, people, ownerId: route.params.ownerId };
-          handleGet(body);
-          navigation.navigate('Calander', body);
+        onPress={() => { handleGet(body), 
+          navigation.navigate('Calander', { hotelId: route.params.hotelId, view: selectedValue, plan: selectedPlan, numRoom:numRoom, people:people, ownerId: route.params.ownerId });
         }}
       >
         Search

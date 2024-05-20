@@ -14,6 +14,7 @@ const UserProfile = ({ navigation }) => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('token'); 
+      await AsyncStorage.removeItem('user'); 
       navigation.navigate('AppFace'); 
     } catch (error) {
       console.error('Error logging out:', error);
@@ -30,7 +31,7 @@ const HandleButton=()=>{
         const token = await AsyncStorage.getItem('token');
         const decoded = jwtDecode(token);
         const userId = decoded.id;
-        const userData = await dispatch(getOneAsync(userId));
+        const userData =  dispatch(getOneAsync(userId));
         setProfile(userData.payload);
       } catch (error) {
         console.log('Error fetching user data:', error);

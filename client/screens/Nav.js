@@ -1,4 +1,7 @@
-import React from 'react';
+import React,{useEffect} from 'react';
+import { View } from 'react-native';
+import io from 'socket.io-client';
+import {AP_ADRESS} from '../src/apAdress.js'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -8,7 +11,7 @@ import EditProfile from '../src/component/editprofile/EditProfile';
 import Home from "../src/component/HomePage/Home"
 import OwnerProfile from "../src/component/OwnerProfile/OwnerProfile"
 import AppFace from "../src/component/AppFace/AppFace.js";
-import Succes from '../src/component/Detail/Succes.js'
+import Favorites from '../src/component/Detail/FavoriteCart'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFa from 'react-native-vector-icons/FontAwesome';
 import Hotels, { FA5Style } from 'react-native-vector-icons/FontAwesome5'
@@ -23,20 +26,46 @@ import RoomByHotel from '../src/component/allHotels/RoomByHotel.js';
 import ChooseGategory from '../src/component/allHotels/ChooseGategory.js';
 import HotelProfile from '../src/component/Hotelprofile/Hotelprofile.js';
 import Notification from '../src/component/UserProfile/Notification.js';
+import { Button, Dialog, Portal, PaperProvider, Text } from 'react-native-paper';
+import ReservationProfile from '../src/component/Detail/ReservationProfile.js';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav({Navigation}) {
-  
+  // const [visible, setVisible] = React.useState(false);
+
+  // const showDialog = () => setVisible(true);
+
+  // const hideDialog = () => setVisible(false);
+
+//   const element = <PaperProvider> 
+//   <View>
+//      <Button onPress={showDialog}>Show Dialog</Button>
+//      <Portal>
+//        <Dialog visible={visible} onDismiss={hideDialog}>
+//          <Dialog.Title>Alert</Dialog.Title>
+//          <Dialog.Content>
+//            <Text variant="bodyMedium">This is simple dialog</Text>
+//          </Dialog.Content>
+//          <Dialog.Actions>
+//            <Button onPress={hideDialog}>Done</Button>
+//          </Dialog.Actions>
+//        </Dialog>
+//      </Portal>
+//    </View> 
+//  </PaperProvider>
   return (
     <NavigationContainer>
+
       <Stack.Navigator>
+        <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-        <Stack.Screen name="ChooseChildren" component={ChooseChildren} options={{ headerShown: false }}/>
+        <Stack.Screen name="ReservationProfile" component={ReservationProfile} options={{ headerShown: false }}/>
+        <Stack.Screen name="Favorites"  component={Favorites}  options={{ headerShown: false }} />  
         <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
+        <Stack.Screen name="ChooseChildren" component={ChooseChildren} options={{ headerShown: false }}/>
         <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }}/>
         <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
         <Stack.Screen name="HotelProfile" component={HotelProfile} options={{ headerShown: false }}/>
-        <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
         <Stack.Screen name="Login"  component={Login}  options={{ headerShown: false }} />
         <Stack.Screen name="ChooseGategory" component={ChooseGategory} options={{ headerShown: false }}/>
 
@@ -54,14 +83,13 @@ function Nav({Navigation}) {
     
         <Stack.Screen name="Calander" component={Calander} options={{ headerShown: false }}/>
    
-        <Stack.Screen name="Succes"  component={Succes}  options={{ headerShown: false }} />  
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
         <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />    
         <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
        
-       
       </Stack.Navigator>
+     
     </NavigationContainer>
 
   );
@@ -103,7 +131,7 @@ function TabNavigator({Navigation}) {
 />
 <Tab.Screen
   name="Favorite"
-  component={Home}
+  component={Favorites}
   options={{
     headerShown: false,
     tabBarIcon: ({ color, size }) => (

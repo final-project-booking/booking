@@ -6,17 +6,16 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button,IconButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { negotiation } from '../../reduce/negotiation';
-import {AP_ADRESS} from '../../apAdress'
-import io from 'socket.io-client';
-const socket = io(`http://${AP_ADRESS}:4000`); 
+import ReservationProfile from './ReservationProfile';
+import socket from "../../../socket" 
 
 const { width } = Dimensions.get('window');
 
 
+
 export default function Detail({route,navigation}) {
-// console.log('owner',route?.params.ownerId);  
+ 
     const [dimension, setDimension] = useState(Dimensions.get('window'));
-    const [selectedIndex, setSelectedIndex] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
     const [newPrice, setNewPrice] = useState(false);
     const [newPrice2, setNewPrice2] = useState(false);
@@ -25,86 +24,66 @@ export default function Detail({route,navigation}) {
     const [input,setInput]=useState('')
     const [id,setId]=useState()
     const [socketN, setSocketN] = useState(null);
+    const [userId,setUserId]=useState()
+    const [user,setUser]=useState({})
     const dispatch=useDispatch()
 
     const scrollRef = useRef();
     const compar=useSelector(state=>state.comparPrice.compar)||[]
-    const user=useSelector(state=>state.userSignIn.userAuth)
-    console.log('user',user);
+  
+
     console.log('compar',compar);
-    const onChange = ({ window }) => {
-      setDimension(window);
-    };
+  
     const body={
       roomId:id,
       newPrice:price2,
       content:input,
-      userId:user?.user?.id,
-      ownerId:route?.params.ownerId
+      ownerId:route?.params?.ownerId
     }
     console.log(body);
     useEffect(() => {
-      if (body) {
+      getUsers()
+   
       socket.on('connection', () => {
         console.log('Connected to server');
       }); 
-      socket.emit('join',1);
+      
     if (!socket) console.log("not connected to sockete");
-    
-    
-    socket.on('send_request', (body) => {
-      console.log('data is ready',body);
-     
-    });
+    socket.emit('join',route?.params?.ownerId);
    
       
-        socket.emit('send_request', body);
-        console.log('somthing happen',body);
-      }
+     
+      
     
-    return () => socket.off('send_request');
-    }, [body]);
+    return () => socket.off('disconnect');
+    }, []);
 
 
 
-  console.log('price',price2);
-    const userr=async()=>{
+  // console.log('price',price2);
+    const getUsers=async()=>{
       try {
         
       const users=  await AsyncStorage.getItem('user');
-   console.log('users',users);
+      if(users){
+        const parse =JSON.parse(users)
+         setUser(parse)
+
+
+      }
         console.log("Token user successfully");
       } catch (err) {
         console.log("Error storing token:", err);
       }
     }
-  //   const removetoken=async()=>{
-  //     try {
-        
-  //     const token=  await AsyncStorage.removeItem('token');
-  //  console.log('users',token);
-  //       console.log("Token ²remove successfully");
-  //     } catch (err) {
-  //       console.log("Error storing token:", err);
-  //     }
-  //   }
-    // removetoken()
-    userr()
+  
     const sendNego=(r)=>{
-      dispatch(negotiation(r))
+      socket.emit('send_request',{user,body,room:compar})
+      // dispatch(negotiation(r))
       console.log('hello');
     }
    
-    const negos=async ()=>{
-      if(await checkToken()){
-        setPrice2(compar?.mainRooms[0].price)
-        setId(compar?.mainRooms[0].id)
-        setNewPrice2(!newPrice2)
-      }else{
-        setModalVisible(!modalVisible)
-
-      }
-    }
+   
     const plus = () => {
       if (price2>=0){
 
@@ -117,21 +96,7 @@ export default function Detail({route,navigation}) {
         setPrice2(price2 - 50);
       }
     };
-    const pluss = () => {
-      if (prix>=0){
 
-        setPrix(prix + 50);
-      }
-    };
-  
-    const minuss = () => {
-      if (prix>0) {
-        setPrix(prix - 50);
-      }
-    };
-const getCurrentRoomPrice=(p)=>{
-  setPrix(p)
-}
     const checkToken = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
@@ -146,7 +111,16 @@ const getCurrentRoomPrice=(p)=>{
         return false;
       }}
    
-
+      const negos=async ()=>{
+        if(await checkToken()){
+          setPrice2(compar?.mainRooms[0].price)
+          setId(compar?.mainRooms[0].id)
+          setNewPrice2(!newPrice2)
+        }else{
+          setModalVisible(!modalVisible)
+  
+        }
+      }
 
 const check = async () => {
   if(await checkToken()){
@@ -169,83 +143,11 @@ const nego= (p)=>{
 }
 
 
-    useEffect(() => {
-     const subscription= Dimensions.addEventListener('change', onChange)
-      return () => {
-        subscription.remove();
-      };
-    }, []);
-    const x=2
-    const y=2
-    useEffect(() => {
-        const interval = setInterval(() => {
-          setSelectedIndex(prevSelectedIndex =>
-            prevSelectedIndex === carouselImages.length - 1 ? 0 : prevSelectedIndex + 1
-          );
-          scrollRef.current.scrollTo({
-            animated: true,
-            y: 0,
-            x: dimension.width * selectedIndex,
-          });
-        }, 3000);
-        return () => clearInterval(interval);
-      }, [dimension.width, selectedIndex]);
 
-      const carouselImages = [
-          { url: 'https://img.freepik.com/free-photo/luxury-classic-modern-bedroom-suite-hotel_105762-1787.jpg' },
-          { url: 'https://hips.hearstapps.com/hmg-prod/images/grand-hotel-tremezzo-6479210d9dae0.jpeg' },
-        { url: 'https://media.istockphoto.com/id/1084656062/photo/interior-of-a-hotel-bathroom.jpg?s=612x612&w=0&k=20&c=rZxxHZ_QxV4SZtNwi1izI1jKLckdS9Uz0LZc_M41_OE=' },
-        { url: 'https://www.santoriniview-hotel.gr/media/idijrdoe/santorini-view-hotel-junior-suite-panoramic-caldera-view-10.jpg?rxy=0.612,0.551051051051051&width=800&height=550&rnd=133330453672900000&quality=70' },
-        { url: 'https://hamiltonisland.imgix.net/hamiltonisland/media/originals/accommodation/reef-view-hotel/rvh-pool-(1).jpg?width=480&height=600&fit=crop&d=20221101093418'},
-      ];
-
-      const setIndex = event => {
-    let viewSize = event.nativeEvent.layoutMeasurement.width;
-    let contentOffset = event.nativeEvent.contentOffset.x;
-    let carouselIndex = Math.floor(contentOffset / viewSize);
-    setSelectedIndex(carouselIndex);
-};
     return (
       <View style={styles.container}>
       <ScrollView>
-        <View style={styles.carouselContainer}>
-          <Icon
-            name='arrow-back'
-            size={30}
-            style={styles.backIcon}
-            onPress={() => navigation.navigate('AllHotels')}
-          />
-          <ScrollView
-            horizontal
-            ref={scrollRef}
-            onMomentumScrollEnd={setIndex}
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled
-          >
-            {carouselImages.map((value, key) => (
-              <Image
-                key={key}
-                source={{ uri: value.url }}
-                style={[styles.carouselImage, { width: width }]}
-                PlaceholderContent={<ActivityIndicator />}
-              />
-            ))}
-          </ScrollView>
-
-          <View style={styles.pagination}>
-            {carouselImages.map((val, key) => (
-              <Text
-                key={key}
-                style={[
-                  styles.paginationDot,
-                  key === selectedIndex ? styles.selectedDot : styles.normalDot,
-                ]}
-              >
-                ⬤
-              </Text>
-            ))}
-          </View>
-        </View>
+      <ReservationProfile/>
 
         <View style={styles.detailsContainer}>
           {compar?.mainRooms &&
@@ -264,12 +166,12 @@ const nego= (p)=>{
 
                 <View style={styles.priceContainer}>
                   <Text style={styles.priceLabel}>Price</Text>
-                  <Text style={styles.price}>DT {e?.price}</Text>
+                  <Text style={styles.price}>{e?.price} DT</Text>
                 </View>
               </View>
             ))}
 
-          {/* Other content */}
+    
         </View>
 
         <Modal
@@ -278,7 +180,6 @@ const nego= (p)=>{
         transparent={true}
         visible={newPrice2}
         onRequestClose={() => {
-          // Alert.alert('Modal has been closed.');
           setNewPrice2(!newPrice2);
         }}>
         <View style={styles.centeredView}>
@@ -305,7 +206,6 @@ const nego= (p)=>{
           </View>
         </View>
       </Modal>
-        {/* Negotiation and Reservation Buttons */}
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.button} onPress={negos}>
             <Text style={styles.buttonText}>Negotiation</Text>
@@ -315,7 +215,7 @@ const nego= (p)=>{
           </TouchableOpacity>
         </View>
 
-        {/* Another Room Section */}
+      
         <Text style={styles.divider}></Text>
         <Text style={styles.anotherRoomText}>Another Room</Text>
         <View style={styles.relatedRoomsContainer}>
@@ -337,7 +237,6 @@ const nego= (p)=>{
         </View>
       </ScrollView>
 
-      {/* Modal */}
       <Modal
         animationType='slide'
         transparent={true}

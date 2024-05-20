@@ -8,25 +8,26 @@ generator client {
 }
 
 model User {
-  id             Int           @id @default(autoincrement())
+  id             Int             @id @default(autoincrement())
   imgUrl         String
   firstName      String
   lastName       String
-  email          String        @unique
+  email          String          @unique
   password       String
   phoneNumber    Int
   longitude      Float?
   latitude       Float?
-  isActive       Boolean       @default(true)
+  isActive       Boolean         @default(true)
   activationCode String
-  role           Role?         @default(user)
-  owner          Owner?        @relation(fields: [ownerId], references: [id])
-  ownerId        Int?          @unique
+  role           Role?           @default(user)
+  owner          Owner?          @relation(fields: [ownerId], references: [id])
+  ownerId        Int?            @unique
   reservation    Reservation[]
   message        Message[]
   join           JoinChat[]
   reviw          Review[]
   negociate      Negotiation[]
+  favoritedBy    FavoriteHotel[]
 }
 
 enum Role {
@@ -35,7 +36,7 @@ enum Role {
 }
 
 model Hotel {
-  id          Int      @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   name        String
   imgUrl      String?
   longitude   Float?
@@ -44,11 +45,12 @@ model Hotel {
   rating      Int
   rooms       Int
   licence     String
-  owner       Owner?   @relation(fields: [ownerId], references: [id])
+  owner       Owner?          @relation(fields: [ownerId], references: [id])
   ownerId     Int?
   room        Room[]
   media       Media[]
   review      Review[]
+  favoritedBy FavoriteHotel[]
 }
 
 enum MealPlan {
@@ -175,4 +177,12 @@ model Negotiation {
   newPrice  Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model FavoriteHotel {
+  id      Int   @id @default(autoincrement())
+  userId  Int
+  hotelId Int
+  user    User  @relation(fields: [userId], references: [id])
+  hotel   Hotel @relation(fields: [hotelId], references: [id])
 }
