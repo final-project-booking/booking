@@ -22,7 +22,8 @@ import AllHotels from '../src/component/allHotels/AllHotels.js';
 import RoomByHotel from '../src/component/allHotels/RoomByHotel.js';
 import ChooseGategory from '../src/component/allHotels/ChooseGategory.js';
 import HotelProfile from '../src/component/Hotelprofile/Hotelprofile.js';
-import Migration from "../src/component/OwnerProfile/Migrations.js"
+import Migrations from "../src/component/OwnerProfile/Migrations.js"
+import Chhat from './Chhat.js';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav({Navigation}) {
@@ -52,12 +53,14 @@ function Nav({Navigation}) {
    
         <Stack.Screen name="Succes"  component={Succes}  options={{ headerShown: false }} />  
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
-        <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />    
+        <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />   
+
         <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />
+        <Stack.Screen name="Migrations" component={Migrations} options={{headerShown: false}} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
+        <Stack.Screen name="Chhat" component={Chhat} options={{ headerShown: false }}/>
        
-       <Stack.Screen name="Migration" component={Migration} options={{headerShown:false}} />
       </Stack.Navigator>
     </NavigationContainer>
 
@@ -105,6 +108,19 @@ function TabNavigator({Navigation}) {
     headerShown: false,
     tabBarIcon: ({ color, size }) => (
       <Favorite name="favorite" color={color} size={size} />
+    ),
+    tabBarLabelStyle: {
+      fontSize: 14
+    }
+  }}
+/>
+<Tab.Screen
+  name="Chat"
+  component={Chhat}
+  options={{
+    headerShown: false,
+    tabBarIcon: ({ color, size }) => (
+      <Icon name="chat" color={color} size={size} />
     ),
     tabBarLabelStyle: {
       fontSize: 14

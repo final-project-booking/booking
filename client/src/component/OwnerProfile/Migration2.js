@@ -43,18 +43,19 @@ const Migrations = ({ onboardingImages, nav }) => {
       
       <View style={{ position: 'absolute', alignItems: 'center',        
  }}>
-  <Text style={[{   color: 'white', 
+  <Text style={[{   color: 'white', fontWeight: 'bold', 
     textAlign: 'center',
      marginTop: 280,
-    fontSize: 22}]}>
-  you are responsible for managing your property listings, and ensuring guest satisfaction. Please adhere to the following rules and processes
+    fontSize: 32}]}>
+ '1. Ensure all property details are accurate and up-to-date.\n'
+              '2. Respond to booking inquiries promptly.\n'
+              '3. Maintain high standards of cleanliness and hospitality.\n'
+              '4. Address guest issues and feedback constructively.\n',
   </Text>
         
           <TouchableOpacity onPress={handleNext} style={[{ width: 70, height: 40 , backgroundColor: 'blue', 
-          marginTop:100,
     borderRadius: 8,
     alignItems: 'center',
-    marginRight:10
      }]}> 
               <Text style={{ fontSize: 22, fontWeight: 'bold', color: 'white',alignItems:"center"}}>Next</Text>
           </TouchableOpacity>
@@ -68,8 +69,8 @@ const Migrations = ({ onboardingImages, nav }) => {
 const Migration = ({ navigation }) => {
   const onboardingImages = [
     // require('../../Photo/Screen1.jpeg'),
-    require('../../Photo/detail.jpeg'),
-    // require('../../Photo/detail2.webp'),
+    // require('../../Photo/detail.jpeg'),
+    require('../../Photo/detail2.webp'),
   ];
 
   return (

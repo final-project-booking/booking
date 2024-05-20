@@ -34,7 +34,7 @@ navigation.navigate("Home");
 
   const handleSignIn=()=>{
     dispatch(signInAsync(login))
-    navigation.navigate("Detail")
+    navigation.navigate("Home")
   }
   const checkLogin=()=>{
 
