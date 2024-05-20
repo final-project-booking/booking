@@ -112,7 +112,7 @@ const EditProfile = ({navigation}) => {
         try {
          
         const userId = await tokenGeted();
-        // console.log("user",user);
+        console.log("user",user);
         dispatch(editeAsync({ id: userId, userData: user }));
       
       } catch (error) {

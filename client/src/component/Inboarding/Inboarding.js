@@ -1,21 +1,24 @@
 import React, { useState, useRef } from 'react';
-import { View, ScrollView, Image, Text, StatusBar } from 'react-native';
+import { View, ScrollView, Image, StatusBar } from 'react-native';
 import arrowRight from '../../Photo/arrow-right.png';
 import SwipeButton from 'rn-swipe-button';
-import styles from './Styles'
-const OnboardingScreen = ({ onboardingImages , nav }) => {
+
+const OnboardingScreen = ({ onboardingImages, nav }) => {
   const scrollViewRef = useRef(null);
+  const [railBackgroundColor, setRailBackgroundColor] = useState("rgba(128,128,128,0.2)");
   const [currentPage, setCurrentPage] = useState(0);
   const [swipeStatusMessage, setSwipeStatusMessage] = useState('ENJOY HOLIDAYS');
+
   const handleNext = () => {
+    setRailBackgroundColor("#FFFFFF");
     if (currentPage < onboardingImages.length - 1) {
       const nextPage = currentPage + 1;
       scrollViewRef.current.scrollTo({ x: nextPage * 550, animated: true });
       setCurrentPage(nextPage);
-    }    else {
+    } else {
       nav.replace('AppFace');
     }
-  }
+  };
 
   const handleScroll = (event) => {
     const offsetX = event.nativeEvent.contentOffset.x;
@@ -42,15 +45,14 @@ const OnboardingScreen = ({ onboardingImages , nav }) => {
       </ScrollView>
       <View style={{ position: 'absolute', bottom: 20, left: 0, right: 0, alignItems: 'center' }}>
         <StatusBar barStyle="dark-content" />
-        <View style={[styles.container, { width: 300, height: 100 }]}>
-          {/* <Text>{swipeStatusMessage}</Text> */}
+        <View style={[{ width: 300, height: 100 }]}>
           <SwipeButton
             thumbIconImageSource={arrowRight}
-            onSwipeSuccess={() => handleNext()}
-            title={swipeStatusMessage}
-            railBackgroundColor="#E5E5E5"
-            railBorderColor="#E5E5E5"
-            thumbIconBackgroundColor="#DCE2FC"
+            onSwipeSuccess={handleNext}
+            title={swipeStatusMessage} 
+            railBackgroundColor={railBackgroundColor}
+            railBorderColor={railBackgroundColor}
+            thumbIconBackgroundColor={railBackgroundColor}
             thumbIconBorderColor="#DCE2FC"
             thumbIconImageStyles={{ width: 20, height: 20 }}
           />
@@ -60,13 +62,13 @@ const OnboardingScreen = ({ onboardingImages , nav }) => {
   );
 };
 
-const Onboarding = ({navigation}) => {
- 
+const Onboarding = ({ navigation }) => {
   const onboardingImages = [
     require('../../Photo/Screen1.jpeg'),
     // require('../../Photo/screen2.jpg'),
     // require('../../Photo/screen3.jpeg'),
   ];
+
   return (
     <View style={{ flex: 1 }}>
       <OnboardingScreen nav={navigation} onboardingImages={onboardingImages} />

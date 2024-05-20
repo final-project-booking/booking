@@ -84,7 +84,7 @@ const opacity = scrollX.interpolate({
                   ...styles.categoryListText,
                   color:
                     selectedCategoryIndex == index
-                      ? "#11278"
+                      ? "#112678"
                       :   '#161618',
                 }}>
                 {item}
@@ -125,11 +125,11 @@ const opacity = scrollX.interpolate({
           </Text>
         </View>
         <Image style={styles.topHotelCardImage} source={{uri:hotel.imgUrl}} />
-        <View style={{ paddingVertical: 5, paddingHorizontal: 10 }}>
+         <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
           <Text style={{ fontSize: 10, fontWeight: 'bold', color  :   '#161618' }}>{hotel.name}</Text>
-          <Text style={{ fontSize: 7, fontWeight: 'bold',  color: '#161618'}}>
-            {hotel.description}
-          </Text>
+          {/* <Text style={{ fontSize: 7, fontWeight: 'bold',  color: '#161618'}}>
+            {hotel.name}
+          </Text>  */}
         </View>
       </View>
     );
@@ -163,9 +163,9 @@ const opacity = scrollX.interpolate({
                 <Text style={{ fontWeight: 'bold', fontSize: 17 ,color  :   '#161618'}}>
                   {hotel.name}
                 </Text>
-                <Text style={{ color: '#161618', fontSize: 12 }}>
+                {/* <Text style={{ color: '#161618', fontSize: 12 }}>
                   {hotel.description}
-                </Text>
+                </Text> */}
               </View>
               <Icon name="bookmark-border" size={26} color='#161678'/>
             </View>
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   cardImage: {
-    height: 200,
+    height: 250,
     width: '100%',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
@@ -320,12 +320,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardDetails: {
-    height: 100,
+    height: 80,
     borderRadius: 15,
     backgroundColor: "#E7E9F2",
     position: 'absolute',
     bottom: 0,
-    padding: 20,
+    padding: 10,
     width: '100%',
   },
   cardOverlay: {

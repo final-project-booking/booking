@@ -102,5 +102,18 @@ module.exports = {
             throw error    
 
         }
+    },
+    banUser:async(req,res)=>{
+        try {
+            let id=req.params.id
+
+            const users=await user.findUnique({ where: { id:parseInt(id)}})
+            const update=await user.update({ where: { id:parseInt(users.id)},data:{
+                isActive:!users.isActive
+            } })
+            res.json(update)
+        } catch (error) {
+            throw error
+        }
     }
 }

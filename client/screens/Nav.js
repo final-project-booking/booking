@@ -66,7 +66,10 @@ function Nav({Navigation}) {
 
 function TabNavigator({Navigation}) {
   return (
-    <Tab.Navigator  color="#112678">
+    <Tab.Navigator   tabBarOptions={{
+      activeTintColor: '#112678',
+      inactiveTintColor: 'gray',
+    }}  >
       <Tab.Screen
    
   name="Home"
