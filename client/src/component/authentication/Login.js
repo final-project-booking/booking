@@ -31,22 +31,21 @@ navigation.navigate("Home");
   const handleInputChange = (name, value) => {
     setLogin({ ...login, [name]: value });
   };
-  
+
   const handleSignIn=()=>{
     dispatch(signInAsync(login))
     navigation.navigate("Detail")
   }
   const checkLogin=()=>{
-  
-   
-    }
 
-      const isError = error || (error.email || error.password);
+
+    }
+const isError = error || (error.email || error.password);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
           <Text style={styles.login}>Log in</Text>
-          
+
           <View style={styles.loginContainer}>
           <View style={styles.login_inputsContainer}>
             <Text style={styles.login_label}>Email</Text>
@@ -56,7 +55,7 @@ navigation.navigate("Home");
             onChangeText={(text) => handleInputChange('email', text)}
             value={login.email}
             />
-            
+
             <Text style={styles.login_label}>Password</Text>
             <TextInput
             style={styles.input}
@@ -66,7 +65,7 @@ navigation.navigate("Home");
             value={login.password}
             />
           </View><View>
-            
+
           {isError && (
         <Text style={styles.errorText}>Invalid email or password</Text>
       )}
@@ -85,7 +84,7 @@ navigation.navigate("Home");
 
 
 const styles = StyleSheet.create({
-  
+
   login_inputsContainer:{
     marginTop:"40%",
     borderStyle:"solid",
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
     fontSize:15,
     fontWeight:"bold"
   },
-  
+
   login_label:{
     marginBottom:-10,
     marginTop:30,
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
     alignItems:"center",
     marginTop:-130
   },
-  login:{
+login:{
     fontSize:30,
     marginTop:50,
     textAlign:"center",
@@ -141,7 +140,7 @@ const styles = StyleSheet.create({
       marginTop: 20,
       paddingLeft: 20,
     },
-    
+
       buttonContainer: {
         marginTop: 10,
         height: 45,
@@ -153,7 +152,7 @@ const styles = StyleSheet.create({
         borderStyle:"solid",
         backgroundColor: '#112678'
       },
-      
+
       loginText: {
         color: 'white',
         fontWeight: 'bold',

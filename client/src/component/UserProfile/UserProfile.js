@@ -22,7 +22,7 @@ const UserProfile = ({ navigation }) => {
   };
 
 const HandleButton=()=>{
-  navigation.navigate('OwnerProfile');
+  navigation.navigate('Migration');
 }
   useEffect(() => {
     const fetchUserProfile = async () => {

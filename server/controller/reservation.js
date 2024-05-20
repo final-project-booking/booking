@@ -69,7 +69,7 @@ module.exports={
     
           
         } catch (error) {
-          throw error
+          console.log(error);
         }
       },
     removeReservation:async function(req,res){
@@ -77,7 +77,7 @@ module.exports={
             const reservations=await reservation.delete({where:{id:Number(req.params.id)}})
             res.status(200).send(reservations)
         } catch (error) {
-            throw error
+            console.log(error);
         }
     },
     getAllReservations:async function(req,res){
@@ -85,7 +85,7 @@ module.exports={
             const reservations=await reservation.findMany()
             res.status(200).send(reservations)
         } catch (error) {
-            throw error
+            console.log(error);
         }
     },
     getReservationByUserId:async function(req,res){
@@ -93,7 +93,7 @@ module.exports={
             const reservations=await reservation.findMany({where:{userId:Number(req.params.userId)}})
             res.status(200).send(reservations)
         } catch (error) {
-            throw error
+            console.log(error);
         }
     }
 }

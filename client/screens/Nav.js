@@ -22,6 +22,7 @@ import AllHotels from '../src/component/allHotels/AllHotels.js';
 import RoomByHotel from '../src/component/allHotels/RoomByHotel.js';
 import ChooseGategory from '../src/component/allHotels/ChooseGategory.js';
 import HotelProfile from '../src/component/Hotelprofile/Hotelprofile.js';
+import Migration from "../src/component/OwnerProfile/Migrations.js"
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav({Navigation}) {
@@ -56,7 +57,7 @@ function Nav({Navigation}) {
         <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
        
-       
+       <Stack.Screen name="Migration" component={Migration} options={{headerShown:false}} />
       </Stack.Navigator>
     </NavigationContainer>
 
