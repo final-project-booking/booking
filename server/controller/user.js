@@ -42,7 +42,7 @@ module.exports = {
         }
     
         const token = jwt.sign({ id: foundUser.id ,role:foundUser.role }, process.env.SECRET_KEY);
-        // console.log(token);
+        console.log(token);
         delete foundUser.password;
         res.status(200).send({ token, user: foundUser });
     },
