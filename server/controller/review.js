@@ -43,6 +43,32 @@ module.exports = {
         } catch (error) {
             throw error
         }
+    },
+    getAllReviews:async(req,res)=>{
+        try {
+            const reviews=await review.findMany({
+                
+                include:{
+                    hotel:true,
+                    user:true
+                }
+            })
+            res.status(200).send(reviews)
+        } catch (error) {
+            throw error
+        }
+    },
+    deletReviw:async(req,res)=>{
+        try {
+            const deleted=await review.delete({
+                where:{
+                    id:parseInt(req.params.id)
+                }
+            })
+            res.status(200).send(deleted)
+        } catch (error) {
+            throw error
+        }
     }
 }
 

@@ -44,7 +44,7 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }) 
     colors,
     labels: series.map((i) => i.label),
     stroke: {
-      colors: [theme.palette.background.paper],
+      colors: ["theme.palette.background.paper"],
     },
     legend: {
       floating: true,

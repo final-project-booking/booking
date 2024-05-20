@@ -1,10 +1,18 @@
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import {getAllHotels} from "../../env"
 
 import Chart, { useChart } from 'src/components/chart';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +39,7 @@ export default function AppWebsiteVisits({ title, subheader, chart, ...other }) 
       y: {
         formatter: (value) => {
           if (typeof value !== 'undefined') {
-            return `${value.toFixed(0)} visits`;
+            return value.toFixed(0);
           }
           return value;
         },
@@ -40,21 +48,67 @@ export default function AppWebsiteVisits({ title, subheader, chart, ...other }) 
     ...options,
   });
 
+const [hotels,setHotels]=useState([])
+const [hotelId,setHotelId]=useState(0)
+const [displayCount, setDisplayCount] = useState(5);
+const [searchTerm, setSearchTerm] = useState('');
+// console.log('id',hotelId);
+
+  const fetchAllHotels=async()=>{
+    try{
+      const response=await axios.get(getAllHotels)
+      setHotels(response.data)
+    }
+    catch(err){
+      console.log(err);
+    }
+
+  }
+  useEffect(()=>{
+    fetchAllHotels()
+    ,[]})
+
   return (
     <Card {...other}>
-      <CardHeader title={title} subheader={subheader} />
+    <CardHeader title={title} subheader={subheader} />
+  
+    <FormControl  variant="filled" sx={{ m: 1, width:200 }}>
+      <InputLabel  id="demo-simple-select-filled-label">Search for Hotels</InputLabel>
+      <Select
+  labelId="demo-simple-select-filled-label"
+  id="demo-simple-select-filled"
+  
+  >
+  <MenuItem value="">
+    <input 
+    placeholder='Search' 
+    style={{height:30}} 
+    onClick={(event) => { event.stopPropagation()}}
+    onChange={(event) => { setSearchTerm(event.target.value); event.stopPropagation()}}></input>
+  </MenuItem>
+  {hotels.filter(hotel => hotel.name.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, displayCount).map(hotel => {
+  return <MenuItem >{hotel.name}</MenuItem>
+})}
+  <MenuItem style={{justifyContent:"space-between"}} value="">
+  <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount + 5) }}>See more</Button>
+  <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount -5) }}>See less</Button>
+</MenuItem>
+  
+</Select>
 
-      <Box sx={{ p: 3, pb: 1 }}>
-        <Chart
-          dir="ltr"
-          type="line"
-          series={series}
-          options={chartOptions}
-          width="100%"
-          height={364}
-        />
-      </Box>
-    </Card>
+    </FormControl>
+  
+    <Box sx={{ p: 3, pb: 1 }}>
+      <Chart
+        dir="ltr"
+        type="line"
+        series={series}
+        options={chartOptions}
+        width="100%"
+        height={364}
+      />
+    </Box>
+  </Card>
   );
 }
 
