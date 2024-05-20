@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
 socket.on('accepte_reject', (data) => {
   // const {user,room,hotel}=data
   console.log('Received_request:', data);
-  socket.to(user.id).emit('response_request', data);
+  socket.to(data.user.id).emit('response_request', data);
 });
 socket.on('disconnect', () => {
   console.log('A user disconnected');

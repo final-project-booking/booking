@@ -87,9 +87,9 @@ function Nav({Navigation}) {
    
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
         <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />    
-        <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />   
+ 
 
-        <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
+       
         <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />
         <Stack.Screen name="Migrations" component={Migrations} options={{headerShown: false}} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>

@@ -29,14 +29,16 @@ function App() {
       
       setModalVisible(!modalVisible);
     });
-    socket.on('response_request', (data) => {
-      console.log('sponse_request', data);
-      
-    });
+  
     return () => {
       socket.disconnect();
     };
   },[])
+  const response=()=>{
+    socket.on('response_request', (data) => {
+      console.log('response_request', data);
+    });
+  }
 console.log('data request',data);
   const showDialog=()=>{
     return (
