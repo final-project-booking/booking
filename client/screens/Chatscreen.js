@@ -33,8 +33,9 @@ export default function Chatscreen({ navigation }) {
   }, [socket]);
 
   function handleLogout() {
-    setCurrentUser("");
-    setShowLoginView(false);
+    // setCurrentUser("");
+    // setShowLoginView(false);
+    navigation.navigate("ChatHomescreen")
   }
 
   useEffect(() => {
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
-    backgroundColor: "#703efe",
+    backgroundColor: "#112678",
     padding: 12,
     width: "100%",
     elevation: 1,

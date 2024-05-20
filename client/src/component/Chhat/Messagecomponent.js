@@ -16,12 +16,12 @@ export default function Messagecomponent({ currentUser, item }) {
             style={
               currentUserStatus
                 ? styles.messageItem
-                : [styles.messageItem, { backgroundColor: "#703efe" }]
+                : [styles.messageItem, { backgroundColor: "#DCE2FC" }]
             }
           >
             <Text
               style={
-                currentUserStatus ? { color: "#000" } : { color: "#e5c1fe" }
+                currentUserStatus ? { color: "#161618" } : { color: "#161618" }
               }
             >
               {item.text}
@@ -36,7 +36,7 @@ export default function Messagecomponent({ currentUser, item }) {
 
 const styles = StyleSheet.create({
   messageItemWrapper: {
-    maxWidth: "50%",
+    maxWidth: "60%",
     marginBottom: 15,
   },
   messageItemInnerWrapper: {
@@ -45,9 +45,10 @@ const styles = StyleSheet.create({
   },
   messageItem: {
     width: "100%",
+    height:60,
     backgroundColor: "#ffffff",
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 20,
     marginBottom: 2,
   },
   messageTime : {

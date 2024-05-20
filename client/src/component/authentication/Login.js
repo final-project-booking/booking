@@ -37,7 +37,7 @@ navigation.navigate("Home");
   }
   const checkLogin=()=>{
   
-      navigation.navigate("Detail")
+      navigation.navigate("Home")
    
     }
 

@@ -36,6 +36,8 @@ import {
       const fetchUserProfile = async () => {
         try {
           const token = await AsyncStorage.getItem('token');
+          console.log(token,'token');
+        //  const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywicm9sZSI6InVzZXIiLCJpYXQiOjE3MTYxOTgxMjl9.-VNS4jD9Z4uDabJg_W-C5DvNXPcKO4AijXj_QvBrGZ0";
           const decoded = jwtDecode(token);
           const userId = decoded.id;
           const userData = await dispatch(getOneAsync(userId));
@@ -84,7 +86,7 @@ import {
           // }
         }
   
-        setCurrentUserName("");
+        // setCurrentUserName("");
       } else {
         Alert.alert("Please Login First!!");
       }
@@ -193,7 +195,7 @@ import {
       padding: 8,
     },
     button: {
-      backgroundColor: "#703efe",
+      backgroundColor: "#112678",
       padding: 15,
       marginVertical: 10,
       width: "34%",
