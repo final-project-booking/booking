@@ -299,13 +299,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   promoteButton: {
-    marginTop: 30,
+    marginTop: 200,
     padding: 10,
     backgroundColor: 'rgba(0, 123, 255, 1)',
     borderRadius: 5,
     alignSelf: 'center',
   },
   promoteText: {
+   // marginBottom: 10,
     fontSize: 18,
     color: 'white',
     textAlign: 'center',
@@ -313,9 +314,9 @@ const styles = StyleSheet.create({
   descriptionText: {
     color: 'white', 
     textAlign: 'center',
-    marginBottom: 20,
-    fontSize: 16,
-    backgroundColor: 'rgba(0, 0, 0, 1)',  // Semi-transparent background for better readability
+    marginTop: 200,
+    fontSize: 22,
+   // backgroundColor: 'rgba(0, 0, 0, 1)',  // Semi-transparent background for better readability
     padding: 10,
     borderRadius: 5,
   },

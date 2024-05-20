@@ -8,20 +8,21 @@ import EditProfile from '../src/component/editprofile/EditProfile';
 import Home from "../src/component/HomePage/Home"
 import OwnerProfile from "../src/component/OwnerProfile/OwnerProfile"
 import AppFace from "../src/component/AppFace/AppFace.js";
-import Succes from '../src/component/detail/Succes.js'
+import Succes from '../src/component/Detail/Succes.js'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFa from 'react-native-vector-icons/FontAwesome';
 import Hotels, { FA5Style } from 'react-native-vector-icons/FontAwesome5'
 import Favorite from "react-native-vector-icons/MaterialIcons"
-import Calander  from '../src/component/detail/Calander.js';
+import Calander  from '../src/component/Detail/Calander.js';
 // import ChooseChildren from '../src/component/Detail/ChooseChildren.js';
 import Login from "../src/component/authentication/Login"
 import SignUp from '../src/component/authentication/SigneUp';
-import Detail from '../src/component/detail/Detail.js';
+import Detail from '../src/component/Detail/Detail.js';
 import AllHotels from '../src/component/allHotels/AllHotels.js';
 import RoomByHotel from '../src/component/allHotels/RoomByHotel.js';
 import ChooseGategory from '../src/component/allHotels/ChooseGategory.js';
 import HotelProfile from '../src/component/Hotelprofile/Hotelprofile.js';
+import Migrations from "../src/component/OwnerProfile/Migrations.js"
 import Chhat from './Chhat.js';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -52,9 +53,11 @@ function Nav({Navigation}) {
    
         <Stack.Screen name="Succes"  component={Succes}  options={{ headerShown: false }} />  
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
-        <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />    
+        <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />   
+
         <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />
+        <Stack.Screen name="Migrations" component={Migrations} options={{headerShown: false}} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Chhat" component={Chhat} options={{ headerShown: false }}/>
        

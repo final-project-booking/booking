@@ -15,7 +15,6 @@ import {
 import { useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../const/Colors';
-
 import { AllHotell } from '../../reduce/Hotels';
 
 const { width } = Dimensions.get('screen');
@@ -209,7 +208,10 @@ const opacity = scrollX.interpolate({
             </Text>
           </View>
         </View>
+        <Image source={require('../../Photo/logo-no-background.png')} style={{width:150,height:100, size:10,objectFit:"cover"}}/> 
+        
         {/* <Icon name="person-outline" size={38}  color='#161618'/> */}
+
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.searchInputContainer}>
