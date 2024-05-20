@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 
 // ----------------------------------------------------------------------
 
-export default function AppWebsiteVisits({ title, subheader, chart, ...other }) {
+export default function AppWebsiteVisits({ title, subheader,func, chart, ...other }) {
   const { labels, colors, series, options } = chart;
 
   const chartOptions = useChart({
@@ -50,6 +50,7 @@ export default function AppWebsiteVisits({ title, subheader, chart, ...other }) 
 
 const [hotels,setHotels]=useState([])
 const [hotelId,setHotelId]=useState(0)
+
 const [displayCount, setDisplayCount] = useState(5);
 const [searchTerm, setSearchTerm] = useState('');
 // console.log('id',hotelId);
@@ -86,9 +87,9 @@ const [searchTerm, setSearchTerm] = useState('');
     onClick={(event) => { event.stopPropagation()}}
     onChange={(event) => { setSearchTerm(event.target.value); event.stopPropagation()}}></input>
   </MenuItem>
-  {hotels.filter(hotel => hotel.name.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, displayCount).map(hotel => {
-  return <MenuItem >{hotel.name}</MenuItem>
-})}
+  {hotels.filter(hotel => hotel.name.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, displayCount).map(hotel => (
+  <MenuItem onClick={() => {func(hotelId); }}>{hotel.name}</MenuItem>
+))}
   <MenuItem style={{justifyContent:"space-between"}} value="">
   <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount + 5) }}>See more</Button>
   <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount -5) }}>See less</Button>

@@ -26,7 +26,7 @@ import AppConversionRates from '../app-conversion-rates';
 
 
 import axios from 'axios';
-import {getAllUser,getAllHotels,allClient,allOwner,allReservation,allReviews,deleteRev} from '../../../env'
+import {getAllUser,getAllHotels,allClient,allOwner,getReservationByHotelId,allReservation,allReviews,deleteRev} from '../../../env'
 
 // ----------------------------------------------------------------------
 
@@ -42,8 +42,9 @@ export default function AppView() {
   const [searchTerm, setSearchTerm] = useState('');
 const [displayCount, setDisplayCount] = useState(5);
 const [reservations,setReservation]=useState([])
-console.log('reservations',reservations);
+const [reservationData,setReservationData]=useState([])
 console.log("count",reservationCount);
+console.log("reservation",reservationData);
 
 
 
@@ -54,7 +55,7 @@ console.log("count",reservationCount);
     fetchOwner()
     fetchReservation()
     fetchReviews()
-    console.log("review",reviews);
+    fetchReservationByhotelId()
   },[])
    const fetch=async()=>{
     try {
@@ -116,7 +117,45 @@ console.log("count",reservationCount);
     }
   }
 
-  const star=<MdStar color='yellow'/>
+  const fetchReservationByhotelId=async(_id)=>{
+    try {
+      const response=await axios.get(`${getReservationByHotelId}/${1}`)
+      let allReservation=[]
+      response.data.room.map(e=>{
+       allReservation= allReservation.join(e.reservation)
+
+      
+      })
+      const filtredData=countReservationsByMonth(allReservation,"2024")
+      setReservationData(filtredData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  const countReservationsByMonth=(reservations, year)=> {
+    // Initialize an array with 12 elements (one for each month) set to 0
+    const monthlyReservations = new Array(12).fill(0);
+  
+    // Iterate through each reservation
+    reservations.forEach(reservation => {
+      // Create a Date object from the startDate
+      const startDate = new Date(reservation.startDate);
+  
+      // Check if the reservation's start date is in the specified year
+      if (startDate.getFullYear() === year) {
+        // Get the zero-based month (0 for January, 1 for February, etc.)
+        const month = startDate.getMonth();
+  
+        // Increment the count for the corresponding month
+        monthlyReservations[month]++;
+      }
+    });
+  
+    return monthlyReservations;
+  }
+  //room[0].reservation[0].endDate
+
   const hotelRatings = ['5 stars hotels', '4 stars hotels', '3 stars hotels', '2 stars hotels', '1 stars hotels'];
 
   const reservationCounts = reservations.reduce((counts, res) => {
@@ -175,7 +214,7 @@ console.log("count",reservationCount);
         <Grid xs={12} md={6} lg={8}>
           <AppWebsiteVisits
             title="Monthly reservation"
-            // subheader="(+43%) than last year"
+            func={fetchReservationByhotelId}
             chart={{
               labels: [
                 '01/02/2024',
@@ -197,7 +236,7 @@ console.log("count",reservationCount);
                   name: 'Clients reserved',
                   type: 'column',
                   fill: 'solid',
-                  data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30,50],
+                  data: reservationData,
                 },
                 // {
                 //   name: 'Team B',
@@ -256,7 +295,6 @@ console.log("count",reservationCount);
     onClick={(event) => { event.stopPropagation()}}
     onChange={(event) => { setSearchTerm(event.target.value); event.stopPropagation()}}></input> */}
   <AppNewsUpdate
-   
     title="Reviews"
     header={
     <input style={{marginLeft:23,marginTop:10}} className='inputSearch'
@@ -280,6 +318,7 @@ console.log("count",reservationCount);
       postedAt: rev.hotel.name,
     }))}
     onDelete={async(id)=>{await deleteOne(id);fetchReviews()}}
+    
   />
   <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount + 5) }}>See more</Button>
   <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount -5) }}>See less</Button>
