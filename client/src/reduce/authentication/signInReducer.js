@@ -11,8 +11,9 @@ export const signInAsync = createAsyncThunk(
       console.log(response.data);
       try {
         await AsyncStorage.setItem('token', response.data.token);
-        await AsyncStorage.setItem('user', response.data.user);
-
+        const stringify=JSON.stringify(response.data.user)
+        await AsyncStorage.setItem('user', stringify);
+console.log('back',response.data.token);
         console.log("Token stored successfully");
       } catch (err) {
         console.log("Error storing token:", err);
