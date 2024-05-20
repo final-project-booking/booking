@@ -22,7 +22,7 @@ import ChooseGategory from './src/component/allHotels/ChooseGategory';
 import Hotelprofile from './src/component/Hotelprofile/Hotelprofile';
 import OwnerProfile from './src/component/OwnerProfile/OwnerProfile';
 import AdvancedFilter from './src/component/AdvancedFilter/AdvancedFilter';
-import Detail from './src/component/Detail/Detail';
+import Detail from './src/component/detail/Detail.js';
 import { race } from 'core-js/library/es6/promise';
 import SignUp from './src/component/authentication/SigneUp';
 import Chhat from './screens/Chhat';
