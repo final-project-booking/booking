@@ -46,7 +46,9 @@ const [reservationData,setReservationData]=useState([])
 console.log("count",reservationCount);
 console.log("reservation",reservationData);
 
-
+const handleHotelSelection = (id) => {
+  fetchReservationByHotelId(id);
+};
 
   useEffect(()=>{
     fetch()
@@ -55,7 +57,7 @@ console.log("reservation",reservationData);
     fetchOwner()
     fetchReservation()
     fetchReviews()
-    fetchReservationByhotelId()
+    // fetchReservationByHotelId()
   },[])
    const fetch=async()=>{
     try {
@@ -117,24 +119,25 @@ console.log("reservation",reservationData);
     }
   }
 
-  const fetchReservationByhotelId=async(_id)=>{
+  const fetchReservationByHotelId = async (_id) => {
     try {
-      const response=await axios.get(`${getReservationByHotelId}/${1}`)
-      let allReservation=[]
-      response.data.room.map(e=>{
-       allReservation= allReservation.join(e.reservation)
-
-      
-      })
-      const filtredData=countReservationsByMonth(allReservation,"2024")
-      setReservationData(filtredData);
+      const response = await axios.get(`${getReservationByHotelId}/${_id}`);
+      let allReservations = [];
+  
+      response.data.room.forEach(room => {
+        allReservations = allReservations.concat(room.reservation);
+      });
+  
+      const filteredData = countReservationsByMonth(allReservations, 2024);
+      setReservationData(filteredData);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
-  }
+  };
+  
   
   const countReservationsByMonth=(reservations, year)=> {
-    // Initialize an array with 12 elements (one for each month) set to 0
+    
     const monthlyReservations = new Array(12).fill(0);
   
     // Iterate through each reservation
@@ -179,7 +182,7 @@ console.log("reservation",reservationData);
             title="Number of hotels"
             total={hotelsCount}
             color="success"
-            icon={<SiHiltonhotelsandresorts size={70} color='#32de84'/>}
+            icon={<SiHiltonhotelsandresorts size={70} color='#7CB9E8'/>}
           />
         </Grid>
 
@@ -188,7 +191,7 @@ console.log("reservation",reservationData);
             title="Number of users"
             total={userCout}
             color="info"
-            icon={<FaUsers size={70} color='#6CB4EE'/>}
+            icon={<FaUsers size={70} color='#112678'/>}
           />
         </Grid>
 
@@ -197,8 +200,7 @@ console.log("reservation",reservationData);
   <AppWidgetSummary
     title="Number of reservations"
     total={reservationCount} 
-    color="warning"
-    icon={<ImTicket size={70} color='#FFD700' />}
+    icon={<ImTicket size={70} color='rgb(255, 171, 0)' />}
   />
 </Grid>
 
@@ -214,7 +216,7 @@ console.log("reservation",reservationData);
         <Grid xs={12} md={6} lg={8}>
           <AppWebsiteVisits
             title="Monthly reservation"
-            func={fetchReservationByhotelId}
+            func={handleHotelSelection}
             chart={{
               labels: [
                 '01/02/2024',
@@ -260,7 +262,7 @@ console.log("reservation",reservationData);
             title="Current Visits"
             chart={{
               series: [
-                { label: 'Owner', value: owner },
+                { label: 'Owner', value: owner},
                 { label: 'Clinet', value: client }
               ],
             }}
