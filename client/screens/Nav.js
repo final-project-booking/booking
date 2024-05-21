@@ -30,6 +30,9 @@ import { Button, Dialog, Portal, PaperProvider, Text } from 'react-native-paper'
 import ReservationProfile from '../src/component/Detail/ReservationProfile.js';
 import Migrations from "../src/component/OwnerProfile/Migrations.js"
 import Chhat from './Chhat.js';
+import Payment from '../src/component/Payment/Payment.js'
+import App from '../App.js';
+import CodeQR from '../src/component/AboutUs/CodeQR';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav({Navigation}) {
@@ -59,8 +62,9 @@ function Nav({Navigation}) {
     <NavigationContainer>
 
       <Stack.Navigator>
-        <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name="CodeQR" component={CodeQR} options={{ headerShown: false }}/>
+        <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
         <Stack.Screen name="ReservationProfile" component={ReservationProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Favorites"  component={Favorites}  options={{ headerShown: false }} />  
         <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
@@ -70,6 +74,8 @@ function Nav({Navigation}) {
         <Stack.Screen name="HotelProfile" component={HotelProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Login"  component={Login}  options={{ headerShown: false }} />
         <Stack.Screen name="ChooseGategory" component={ChooseGategory} options={{ headerShown: false }}/>
+        <Stack.Screen name="Payment" component={Payment} options={{ headerShown: false }}/>
+    
 
 
        

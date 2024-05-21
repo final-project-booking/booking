@@ -6,17 +6,17 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Nav from './screens/Nav';
 import socket from './socket';
-import { ActivityIndicator,Modal,Pressable } from 'react-native';
+import { Modal,Pressable } from 'react-native';
 
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function App() {
+function App({route,navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState({});
-
-
+  // const [visible, setVisible] = React.useState(false);
+  const [msg,setMsg]=useState('')
   useEffect(()=>{
     
     socket.on('connection', () => {
@@ -29,16 +29,16 @@ function App() {
       
       setModalVisible(!modalVisible);
     });
-  
+  // socket.on('response_request',(data)=>{
+  //   console.log('response_request response_requestresponse_request'  , data);
+  //   setData(data);
+  //   setVisible(true);
+  // })
     return () => {
       socket.disconnect();
     };
   },[])
-  const response=()=>{
-    socket.on('response_request', (data) => {
-      console.log('response_request', data);
-    });
-  }
+
 console.log('data request',data);
   const showDialog=()=>{
     return (
@@ -53,36 +53,78 @@ console.log('data request',data);
           <Pressable style={styles.closeButton} onPress={() => setModalVisible(!modalVisible)}>
             <Icon name='keyboard-backspace' size={30} />
           </Pressable>
-          <Text style={styles.modalText}>Content: {data?.body?.content}</Text>
+          <Text style={styles.modalText}>Message: {data?.body?.content}</Text>
           <TouchableOpacity
             style={styles.modalButton}
-            onPress={() => navigation.navigate('Login')}
+           
           >
             <Text style={styles.modalButtonText}>Price: {data?.body?.newPrice}</Text>
           </TouchableOpacity>
-          <Text style={styles.modalText}>Room N°: {data?.body?.newPrice}</Text>
+          <Text style={styles.modalText}>Room N°: {data?.body?.roomId}</Text>
           <Text style={styles.modalText}>From: {data?.user?.firstName} {data?.user?.lastName}</Text>
+          <Text style={styles.modalText}>Hotel:{data?.body?.hotelName} </Text>
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.actionButton} onPress={() => { /* Cancel action */ }}>
+            <Pressable style={styles.actionButton} onPress={() =>Cancel()}>
               <Text style={styles.actionButtonText}>Cancel</Text>
             </Pressable>
-            <Pressable style={styles.actionButton} onPress={() => { /* Accept action */ }}>
+            <Pressable style={styles.actionButton} onPress={() => Accept()}>
               <Text style={styles.actionButtonText}>Accept</Text>
             </Pressable>
           </View>
         </View>
       </View>
     </Modal>
-    
 
     )
   }
+
+  // const showResponse=()=>{
+  //   return (
+  //     <Modal
+  //     animationType='slide'
+  //     transparent={true}
+  //     visible={visible}
+  //     onRequestClose={() => setVisible(!visible)}
+  //   >
+  //     <View style={styles.centeredView}>
+  //       <View style={styles.modalView}>
+  //         <Text style={styles.modalText}>{data.status}</Text>
+  //         <TouchableOpacity
+  //           style={styles.modalButton}
+            
+  //         >
+  //           <Text style={styles.modalButtonText}>Price: {data?.body?.newPrice}</Text>
+  //         </TouchableOpacity>
+  //         <Text style={styles.modalText}>Room N°: {data?.body?.roomId}</Text>
+  //         <Text style={styles.modalText}> {data?.user?.firstName} {data?.user?.lastName}</Text>
+  //         <View style={styles.buttonContainer}>
+  //           <Pressable style={styles.actionButton} onPress={() =>navigation.navigate('Payment',{roomId:data.body.roomId,userId:data.body.userId,dates:data.body.dates})}>
+  //             <Text style={styles.actionButtonText}>Okey</Text>
+  //           </Pressable>
+  //         </View>
+  //       </View>
+  //     </View>
+  //   </Modal>
+
+  //   )
+  // }
+ const Accept=()=>{
+  setMsg('Your offer is accepted')
+  socket.emit('accepte_reject', { user: data.user, body: data.body, status: 'Your offer is accepted' });
+  setModalVisible(false);
+ }
+ const Cancel=()=>{
+  setMsg('Your offer is accepted')
+  socket.emit('accepte_reject', { user: data.user, body: data.body, status: 'Your offer is not accepted' });
+  setModalVisible(false);
+ }
 
   return (
 
 
     <GestureHandlerRootView> 
     {showDialog()}
+   
       <Nav/>
     </GestureHandlerRootView>
     
@@ -118,18 +160,22 @@ console.log('data request',data);
       textAlign: 'center',
       fontSize: 16,
       color: '#333',
+      marginTop:10
     },
     modalButton: {
-      backgroundColor: '#2196F3',
-      borderRadius: 20,
+      // backgroundColor: '#2196F3',
+      borderRadius: 15,
       padding: 10,
-      elevation: 2,
-      marginVertical: 10,
+        // elevation: 2,
+        // marginVertical: 10,
       width: '50%',
       alignItems: 'center',
+      borderColor:'black',
+      borderWidth:1
+      
     },
     modalButtonText: {
-      color: 'white',
+      color: 'black',
       fontWeight: 'bold',
       textAlign: 'center',
     },

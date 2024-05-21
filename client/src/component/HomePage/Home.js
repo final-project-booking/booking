@@ -21,12 +21,13 @@ import { favoriteHotel } from '../../reduce/favoriteHotel';
 import COLORS from '../const/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {jwtDecode} from "jwt-decode";
+import { Modal,Pressable } from 'react-native';
 
 import { AllHotell } from '../../reduce/Hotels';
 const { width } = Dimensions.get('screen');
 const cardWidth = width / 1.8;
 import socket from '../../../socket';
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({route, navigation }) => {
 const [userId,setUserId]=useState()
 const [isFavorite, setIsFavorite] = useState(false);
   const dispatch=useDispatch()
@@ -44,9 +45,13 @@ const [isFavorite, setIsFavorite] = useState(false);
 
     
     },[])
+    useEffect(()=>{
+    
+    },[])
 
+   
+ 
 
-// console.log(hotel,"hotelss")
 
 const tokenGeted = async () => {
   try {
@@ -64,7 +69,7 @@ const fetchUserId = async () => {
     
   
 }
-// console.log('hello',userId);
+
 
 
 const postFvorite=(r)=>{ 
@@ -249,6 +254,7 @@ const opacity = scrollX.interpolate({
 
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
+    
         <View style={styles.searchInputContainer}>
           <Icon name="search" size={30} style={{ marginLeft: 20 , color: '#161618' }} />  
           <TextInput
@@ -387,6 +393,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
   },
+  
 });
 
 export default HomeScreen;

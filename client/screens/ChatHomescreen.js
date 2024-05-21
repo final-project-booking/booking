@@ -15,6 +15,7 @@ import {
   import AsyncStorage from '@react-native-async-storage/async-storage';
   import { jwtDecode } from 'jwt-decode';
   import { getOneAsync } from '../src/reduce/getOne';
+import socket from "../socket";
   
   
   export default function ChatHomescreen({ navigation }) {
@@ -33,22 +34,26 @@ import {
     const [profile, setProfile] = useState(null);
 
     useEffect(() => {
+      socket.on('chatConnection',(data)=>{
+        console.log('chatConnection',data);
+      })
+
       const fetchUserProfile = async () => {
         try {
-          const token = await AsyncStorage.getItem('token');
+
+          const token = await AsyncStorage.getItem('user');
           console.log(token,'token');
         //  const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywicm9sZSI6InVzZXIiLCJpYXQiOjE3MTYxOTgxMjl9.-VNS4jD9Z4uDabJg_W-C5DvNXPcKO4AijXj_QvBrGZ0";
-          const decoded = jwtDecode(token);
-          const userId = decoded.id;
-          const userData = await dispatch(getOneAsync(userId));
-          setProfile(userData.payload);
+          // const decoded = jwtDecode(token);
+      const parse=JSON.parse(token)
+          setProfile(parse);
         } catch (error) {
           console.log('Error fetching user data:', error);
         }
       };
   
       fetchUserProfile();
-    }, [dispatch]);
+    }, []);
    
     let Fullname 
     if ((profile?.firstName&&profile?.lastName)===undefined){

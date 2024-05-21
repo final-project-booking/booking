@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { colors } from './Color';
 import {AP_ADRESS} from "../../apAdress"
 
-export default function Card() {
+export default function Card({route,navigation}) {
   const API_URL = "http://192.168.11.186:3000/api/pay/pay";
 
   const [name, setName] = useState('');
@@ -13,7 +13,7 @@ export default function Card() {
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
   const { confirmPayment, loading } = useConfirmPayment();
-
+console.log('hello',route?.params.data);
   const fetchPaymentIntentClientSecret = async () => {
     const response = await fetch(`${API_URL}/create-payment-intent`, {
       method: 'POST',
@@ -104,7 +104,7 @@ export default function Card() {
             />
           </View>
         </View>
-        <TouchableOpacity onPress={handlePayPress} disabled={loading}  style={styles.TouchableOpacity}>
+        <TouchableOpacity onPress={()=>{handlePayPress(),navigation.navigate('CodeQR',{data:route?.params?.data})}} disabled={loading}  style={styles.TouchableOpacity}>
               <Text style={styles.Text} > Pay </Text>
         </TouchableOpacity>
       </ScrollView>
