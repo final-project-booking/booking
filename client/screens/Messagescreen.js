@@ -50,7 +50,7 @@ export default function Messagescreen({ navigation, route }) {
 
   useEffect(()=>{
     socket.emit('findGroup', currentGroupID)
-    socket.on('foundGroup', (allChats)=> setAllChatMessages(allChats))
+    socket.on('foundGroup', (allChats)=> setAllChatMessages((prev)=>[...prev,allChats]))
   },[socket])
 
 

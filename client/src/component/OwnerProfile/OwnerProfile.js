@@ -79,6 +79,7 @@ const OwnerProfile = () => {
   };
   
   const handleSave = () => {
+    //send notification 
     dispatch(
       promoteToOwner({
         ...hotelData,

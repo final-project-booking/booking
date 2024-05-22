@@ -10,7 +10,7 @@ import UserProfile from "../src/component/UserProfile/UserProfile"
 import EditProfile from '../src/component/editprofile/EditProfile';
 import Home from "../src/component/HomePage/Home"
 import OwnerProfile from "../src/component/OwnerProfile/OwnerProfile"
-import AppFace from "../src/component/AppFace/AppFace.js";
+// import AppFace from "../src/component/AppFace/AppFace.js";
 import Favorites from '../src/component/Detail/FavoriteCart'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFa from 'react-native-vector-icons/FontAwesome';
@@ -31,6 +31,9 @@ import ReservationProfile from '../src/component/Detail/ReservationProfile.js';
 import Migrations from "../src/component/OwnerProfile/Migrations.js"
 import Migrations2 from "../src/component/OwnerProfile/Migration2.js"
 import Chhat from './Chhat.js';
+import Payment from '../src/component/Payment/Payment.js'
+import App from '../App.js';
+import CodeQR from '../src/component/AboutUs/CodeQR';
 import Map from "../src/component/Map/Map.js"
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -61,9 +64,12 @@ function Nav({Navigation}) {
     <NavigationContainer>
 
       <Stack.Navigator>
-        <Stack.Screen name="Map" component={Map} options={{ headerShown: false }}/>
-        <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name="Map" component={Map} options={{ headerShown: false }}/>
+        
+      <Stack.Screen name="Calander" component={Calander} options={{ headerShown: false }}/>
+        <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
+        <Stack.Screen name="CodeQR" component={CodeQR} options={{ headerShown: false }}/>
         <Stack.Screen name="ReservationProfile" component={ReservationProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Favorites"  component={Favorites}  options={{ headerShown: false }} />  
         <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
@@ -73,6 +79,8 @@ function Nav({Navigation}) {
         <Stack.Screen name="HotelProfile" component={HotelProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Login"  component={Login}  options={{ headerShown: false }} />
         <Stack.Screen name="ChooseGategory" component={ChooseGategory} options={{ headerShown: false }}/>
+        <Stack.Screen name="Payment" component={Payment} options={{ headerShown: false }}/>
+    
 
 
        
@@ -86,9 +94,8 @@ function Nav({Navigation}) {
        
         <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }}/>
     
-        <Stack.Screen name="Calander" component={Calander} options={{ headerShown: false }}/>
    
-        <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
+        {/* <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/> */}
         <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />    
  
 

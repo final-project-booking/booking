@@ -30,14 +30,15 @@ io.on('connection', (socket) => {
     socket.to(data.body.ownerId).emit('Received_request', data);
   });
 socket.on('accepte_reject', (data) => {
-  // const {user,room,hotel}=data
-  console.log('Received_request:', data);
+  console.log('accepte_reject:', data);
   socket.to(data.user.id).emit('response_request', data);
 });
 socket.on('disconnect', () => {
   console.log('A user disconnected');
 });
 });
+
+
 
 
 // const rooms = {};

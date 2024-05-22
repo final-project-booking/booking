@@ -1,6 +1,8 @@
 import React,{useState,useEffect,useRef,createContext} from 'react'
 import { View, Text, StyleSheet, Linking ,ScrollView,Image,Dimensions,TouchableOpacity,TextInput,Animated } from 'react-native';
 import { ActivityIndicator,Modal,Pressable } from 'react-native';
+import { decode } from "base-64";
+global.atob = decode;
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button,IconButton } from 'react-native-paper';
@@ -8,6 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { negotiation } from '../../reduce/negotiation';
 import ReservationProfile from './ReservationProfile';
 import socket from "../../../socket" 
+
+import {jwtDecode} from "jwt-decode";
 
 const { width } = Dimensions.get('window');
 
@@ -26,19 +30,35 @@ export default function Detail({route,navigation}) {
     const [socketN, setSocketN] = useState(null);
     const [userId,setUserId]=useState()
     const [user,setUser]=useState({})
+    const [visible, setVisible] = React.useState(false);
+    const [data, setData] = useState({});
+
     const dispatch=useDispatch()
 
     const scrollRef = useRef();
     const compar=useSelector(state=>state.comparPrice.compar)||[]
-  
-
+    const tokenGeted = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const decoded = jwtDecode(token);
+        setUserId(decoded.id)
+        return decoded.id;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    tokenGeted()
+    console.log('id',userId);
     console.log('compar',compar);
   
     const body={
       roomId:id,
       newPrice:price2,
       content:input,
-      ownerId:route?.params?.ownerId
+      ownerId:route?.params?.ownerId,
+      userId:userId,
+      dates:route?.params?.selectedDates,
+      hotelName:route?.params?.hotelName
     }
     console.log(body);
     useEffect(() => {
@@ -52,13 +72,49 @@ export default function Detail({route,navigation}) {
     socket.emit('join',route?.params?.ownerId);
    
       
-     
+    socket.on('response_request',(data)=>{
+      console.log('response_request response_requestresponse_request'  , data);
+      setData(data);
+      setVisible(true);
+    })
       
     
     return () => socket.off('disconnect');
     }, []);
 
-
+    const showResponse=()=>{
+      return (
+        <Modal
+        animationType='slide'
+        transparent={true}
+        visible={visible}
+        onRequestClose={() => setVisible(!visible)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+          <Pressable style={styles.closeButton} onPress={() => setVisible(false)}>
+            <Icon name='keyboard-backspace' size={30} />
+          </Pressable>
+            <Text style={styles.modalText}>{data.status}</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              
+            >
+              <Text style={styles.modalButtonText}>Price: {data?.body?.newPrice}</Text>
+            </TouchableOpacity>
+            <Text style={styles.modalText}>Room N°: {data?.body?.roomId}</Text>
+            <Text style={styles.modalText}> {data?.user?.firstName} {data?.user?.lastName}</Text>
+            <View style={styles.buttonContainer}>
+              <Pressable style={styles.actionButton} onPress={() =>navigation.navigate('Payment',{data})}>
+                <Text style={styles.actionButtonText}>Okey</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+  
+      )
+    }
 
   // console.log('price',price2);
     const getUsers=async()=>{
@@ -79,7 +135,7 @@ export default function Detail({route,navigation}) {
   
     const sendNego=(r)=>{
       socket.emit('send_request',{user,body,room:compar})
-      // dispatch(negotiation(r))
+      dispatch(negotiation(r))
       console.log('hello');
     }
    
@@ -100,7 +156,8 @@ export default function Detail({route,navigation}) {
     const checkToken = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        console.log(token);
+        console.log('hhhhhhhhhhhhhhhhh',token);
+        
         if(token !== null) {
           return true;
         } else {
@@ -143,12 +200,12 @@ const nego= (p)=>{
 }
 
 
+return (
 
-    return (
       <View style={styles.container}>
+      {showResponse()}
       <ScrollView>
       <ReservationProfile/>
-
         <View style={styles.detailsContainer}>
           {compar?.mainRooms &&
             compar.mainRooms.map((e, index) => (
@@ -447,6 +504,74 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
+    textAlign: 'center',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dimmed background for focus
+  },
+  modalView: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+    marginBottom: 15,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#333',
+    marginTop:10
+  },
+  modalButton: {
+    // backgroundColor: '#2196F3',
+    borderRadius: 15,
+    padding: 10,
+      // elevation: 2,
+      // marginVertical: 10,
+    width: '50%',
+    alignItems: 'center',
+    borderColor:'black',
+    borderWidth:1
+    
+  },
+  modalButtonText: {
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginTop: 20,
+  },
+  actionButton: {
+    backgroundColor: '#2196F3',
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: '45%',
+    alignItems: 'center',
+  },
+  actionButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   });

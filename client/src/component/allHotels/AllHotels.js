@@ -45,7 +45,7 @@ console.log('hotel',hotel);
         <TouchableOpacity 
           key={item.id} 
           style={styles.card} 
-          onPress={() => navigation.navigate('ChooseGategory', { hotelId: item.id, ownerId: item.owner.id })}
+          onPress={() => navigation.navigate('ChooseGategory', { hotelId: item.id, ownerId: item.owner.id ,hotelName:item.name})}
         >
           <View style={styles.favoriteButton}>
             <Icon name="star" size={15} color='orange' />
