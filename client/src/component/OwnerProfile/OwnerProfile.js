@@ -154,6 +154,11 @@ const OwnerProfile = () => {
                 <View />
                 <View />
                </View>
+               <ScrollView horizontal>
+               {hotelData.media.map((uri, index) => (
+               <Image key={index} source={{ uri }} style={{ width: 100, height: 100, marginRight: 10 }} />
+                ))}
+              </ScrollView>
               <Text style={styles.label}>Rating:</Text>
               <Picker
                 selectedValue={hotelData.rating}

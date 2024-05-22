@@ -32,11 +32,11 @@ export default function Chatscreen({ navigation }) {
     });
   }, [socket]);
 
-  function handleLogout() {
-    // setCurrentUser("");
-    // setShowLoginView(false);
-    navigation.navigate("ChatHomescreen")
-  }
+  // function handleLogout() {
+  //   // setCurrentUser("");
+  //   // setShowLoginView(false);
+  //   navigation.navigate("ChatHomescreen")
+  // }
 
   useEffect(() => {
     if (currentUser.trim() === "") navigation.navigate("ChatHomescreen");
@@ -46,10 +46,10 @@ export default function Chatscreen({ navigation }) {
     <View style={styles.mainWrapper}>
       <View style={styles.topContainer}>
         <View style={styles.header}>
-          <Text style={styles.heading}>Welcome {currentUser}!</Text>
-          <Pressable onPress={handleLogout}>
+          <Text style={styles.heading}>Welcome {currentUser}</Text>
+          {/* <Pressable onPress={handleLogout}>
             <AntDesign name="logout" size={30} color={"black"} />
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
       <View style={styles.listContainer}>
