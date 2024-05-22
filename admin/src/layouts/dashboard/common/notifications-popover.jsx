@@ -76,7 +76,7 @@ const NOTIFICATIONS = [
 
 export default function NotificationsPopover() {
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState(NOTIFICATIONS);
+  const [notifications, setNotifications] = useState({});
 
   const totalUnRead = 5
 
@@ -153,9 +153,9 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(0, 2).map((notification) => (
+            {/* {notifications.slice(0, 2).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
-            ))}
+            ))} */}
           </List>
 
           {/* <List
