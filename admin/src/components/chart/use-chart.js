@@ -31,15 +31,16 @@ export default function useChart(options) {
   const baseOptions = {
     // Colors
     colors: [
-      theme.palette.primary.main,
+     "#112678",
+   
       theme.palette.warning.main,
-      theme.palette.info.main,
-      theme.palette.error.main,
-      theme.palette.success.main,
-      theme.palette.warning.dark,
-      theme.palette.success.darker,
-      theme.palette.info.dark,
-      theme.palette.info.darker,
+      // theme.palette.info.main,
+      // theme.palette.error.main,
+      // theme.palette.success.main,
+      // theme.palette.warning.dark,
+      // theme.palette.success.darker,
+      // theme.palette.info.dark,
+      // theme.palette.info.darker,
     ],
 
     // Chart
