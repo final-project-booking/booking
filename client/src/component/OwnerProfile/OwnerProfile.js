@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity,Button,ImageBackground ,Dimensions} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Map from '../Map/Map';

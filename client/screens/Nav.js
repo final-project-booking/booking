@@ -33,7 +33,7 @@ import Migrations2 from "../src/component/OwnerProfile/Migration2.js"
 import Chhat from './Chhat.js';
 import Payment from '../src/component/Payment/Payment.js'
 import App from '../App.js';
-import CodeQR from '../src/component/AboutUs/CodeQR';
+import CodeQR from '../src/component/aboutUs/CodeQR.js';
 import Map from "../src/component/Map/Map.js"
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
