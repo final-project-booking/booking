@@ -413,11 +413,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: '#007FFF',
+    backgroundColor: '#112678',
     borderRadius: 15,
     width: '40%',
     alignItems: 'center',
     paddingVertical: 10,
+    // justifyContent: 'center',
+    height: '99%',
   },
   buttonText: {
     fontSize: 18,

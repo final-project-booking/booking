@@ -32,6 +32,8 @@ import Migrations from "../src/component/OwnerProfile/Migrations.js"
 import Migrations2 from "../src/component/OwnerProfile/Migration2.js"
 import Chhat from './Chhat.js';
 import Map from "../src/component/Map/Map.js"
+import Payment from "../src/component/Payment/Payment"
+import CodeQR from '../src/component/AboutUs/CodeQR.js'
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav({Navigation}) {
@@ -74,6 +76,8 @@ function Nav({Navigation}) {
         <Stack.Screen name="HotelProfile" component={HotelProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Login"  component={Login}  options={{ headerShown: false }} />
         <Stack.Screen name="ChooseGategory" component={ChooseGategory} options={{ headerShown: false }}/>
+        <Stack.Screen name="Payment" component={Payment} options={{ headerShown: false }}/>
+        <Stack.Screen name="CodeQR" component={CodeQR} options={{ headerShown: false }}/>
 
 
        

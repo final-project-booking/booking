@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 10,
-    backgroundColor: '#00adf5',
+    backgroundColor: '#112678',
     borderRadius: 50,
   },
   headerText: {
@@ -312,17 +312,22 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderColor: 'black',
     borderWidth: 1,
-    paddingVertical: 12,
+    // paddingVertical: 12,
     borderRadius: 30,
+    justifyContent: 'center',
     alignItems: 'center',
+    height: 50,
   },
   continueButton: {
     flex: 1,
     marginLeft: 10,
-    backgroundColor: '#00adf5',
-    paddingVertical: 12,
+    backgroundColor: '#112678',
+    // paddingVertical: 12,
     borderRadius: 30,
     alignItems: 'center',
+    justifyContent: 'center',
+
+    height: 50,
   },
 });
 
