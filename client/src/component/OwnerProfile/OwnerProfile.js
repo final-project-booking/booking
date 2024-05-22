@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch } from 'react-redux';
 import { promoteToOwner } from '../../reduce/Ownerprofile';
 import pic from '../../Photo/owner.jpg'
+import Icons from "react-native-vector-icons/Ionicons"
 const OwnerProfile = () => {
   const [profile, setProfile] = useState({
     firstName: 'John',
@@ -111,9 +112,18 @@ const OwnerProfile = () => {
         {view === 'inputs' && (
           <View style={styles.paddedContent}>
           <>
+          <View style={ {
+   
+  height: 70,
+
+justifyContent: 'center',
+    backgroundColor:"#112678"
+
+  }}>
             <TouchableOpacity onPress={() => setView('profile')}>
-              <Text style={styles.linkText}>← Back</Text>
+              <Icons name="chevron-back-circle-outline" color='#ffffff' size={40}  paddingLeft={10}/>
             </TouchableOpacity>
+    </View>
             <View style={styles.formContainer}>
               <Text style={styles.formHeading}>Create Your Hotel</Text>
               <TextInput
@@ -154,6 +164,11 @@ const OwnerProfile = () => {
                 <View />
                 <View />
                </View>
+               <ScrollView horizontal>
+            {hotelData.media.map((uri, index) => (
+              <Image key={index} source={{ uri }} style={{ width: 100, height: 100, marginRight: 10 }} />
+            ))}
+          </ScrollView>
               <Text style={styles.label}>Rating:</Text>
               <Picker
                 selectedValue={hotelData.rating}
@@ -166,8 +181,11 @@ const OwnerProfile = () => {
                 <Picker.Item label="5 Stars" value="5" />
               </Picker>
             </View>
-            <TouchableOpacity onPress={() => setView('map')}>
-              <Text style={styles.linkText}>Next →</Text>
+            <TouchableOpacity onPress={() => setView('map')} style={[{ width: 70, height: 40 , backgroundColor: '#112678', 
+    borderRadius: 8,
+    alignItems: 'center',marginLeft:150
+     }]}>
+              <Text style={{ alignItems: 'center' ,paddingTop:6,paddingRight:3,color:"#ffffff" ,fontSize:20}}> Next</Text>
             </TouchableOpacity>
           </>
           </View>
@@ -176,9 +194,18 @@ const OwnerProfile = () => {
         {view === 'map' && (
           <View style={styles.paddedContent}>
           <>
+          <View style={ {
+   
+   height: 70,
+ 
+ justifyContent: 'center',
+     backgroundColor:"#112678"
+ 
+   }}>
             <TouchableOpacity onPress={() => setView('inputs')}>
-              <Text style={styles.linkText}>← Back</Text>
+            <Icons name="chevron-back-circle-outline" color='#ffffff' size={40}  paddingLeft={10}/>
             </TouchableOpacity>
+            </View>
             <View style={styles.mapContainer}>
               <Map />
             </View>
@@ -211,7 +238,7 @@ const styles = StyleSheet.create({
   //
   paddedContent: {
     flex: 1,
-    padding: 20,  // Apply padding here for other views
+     // Apply padding here for other views
   },
   //
   heading: {
@@ -241,14 +268,15 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   linkText: {
-    fontSize: 18,
-    color: '#007BFF',
-    textDecorationLine: 'underline',
-    textAlign: 'center',
-    marginBottom: 20,
+    fontSize: 20,
+    color: '#FFFFFF',
+    // textDecorationLine: 'underline',
+    // textAlign: 'center',
+    // marginBottom: 20,
   },
   formContainer: {
-    marginTop: 20,
+    //marginTop: 100,
+    padding:43
   },
   formHeading: {
     fontSize: 18,
@@ -275,16 +303,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   mapContainer: {
-    height: 400,
-    marginTop: 20,
+    height: 650,
+    marginTop: 5,
     marginBottom: 20,
   },
   submitButton: {
-    backgroundColor: '#4CAF50',
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 20,
+    backgroundColor: '#112678',
+    // padding: 15,
+    justifyContent: 'center',
+    borderRadius:20,
+    marginBottom: 10,
+    width:90,
+    height:40,
     alignItems: 'center',
+    marginLeft:150
   },
   buttonText: {
     color: 'white',
@@ -292,7 +324,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   backgroundImage: {
-    opacity:0.8,
+    opacity:1,
     flex: 1,
     width: '100%',
     height: '100%',
@@ -301,7 +333,8 @@ const styles = StyleSheet.create({
   promoteButton: {
     marginTop: 200,
     padding: 10,
-    backgroundColor: 'rgba(0, 123, 255, 1)',
+    backgroundColor: '#112678',
+    
     borderRadius: 5,
     alignSelf: 'center',
   },
