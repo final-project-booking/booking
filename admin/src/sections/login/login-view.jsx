@@ -13,10 +13,12 @@ import { bgGradient } from 'src/theme/css';
 import { adminInfo } from "./adminInfo.js";
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
-
+import { useNavigate } from "react-router-dom";
+ 
 export default function LoginView() {
   const theme = useTheme();
   const router = useRouter();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [login, setLogin] = useState({ address: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
@@ -25,7 +27,7 @@ export default function LoginView() {
     if (login.address !== adminInfo.email || login.password !== adminInfo.password) {
       setErrorMessage("You have to check your information");
     } else {
-      router.push('/dashboard');
+      navigate('/dashboard');
     }
   };
 

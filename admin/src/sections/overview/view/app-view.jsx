@@ -128,7 +128,7 @@ const handleHotelSelection = (id) => {
         allReservations = allReservations.concat(room.reservation);
       });
   
-      const filteredData = countReservationsByMonth(allReservations, 2024);
+      const filteredData = countReservationsByMonth(allReservations, 1970);
       setReservationData(filteredData);
     } catch (error) {
       console.error(error);

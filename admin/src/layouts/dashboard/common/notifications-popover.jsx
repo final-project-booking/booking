@@ -17,9 +17,10 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
+import { useNavigate } from "react-router-dom";
 
 import { fToNow } from 'src/utils/format-time';
-
+import { HiOutlineLogout } from "react-icons/hi";
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
@@ -74,6 +75,7 @@ const NOTIFICATIONS = [
 ];
 
 export default function NotificationsPopover() {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
 
   const totalUnRead = 5
@@ -96,9 +98,13 @@ export default function NotificationsPopover() {
       }))
     );
   };
+  const handleLogout = () => {
+    navigate("/");
+  };
 
   return (
     <>
+    <h4 style={{color:"rgb(17, 38, 120)",marginRight:20,cursor:"pointer"}} onClick={handleLogout}>Log out</h4>
       <IconButton color={open ? 'primary' : 'default'} onClick={handleOpen}>
         <Badge badgeContent={totalUnRead} color="error">
           <Iconify width={24} icon="solar:bell-bing-bold-duotone" />
