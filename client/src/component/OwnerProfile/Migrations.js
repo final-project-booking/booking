@@ -13,7 +13,7 @@ const Migrations = ({ onboardingImages, nav }) => {
       scrollViewRef.current.scrollTo({ x: nextPage * 550, animated: true });
       setCurrentPage(nextPage);
     } else {
-      nav.replace('OwnerProfile');
+      nav.replace('Migrations2');
     }
   };
 
@@ -46,19 +46,23 @@ const Migrations = ({ onboardingImages, nav }) => {
   <Text style={[{   color: 'white', 
     textAlign: 'center',
      marginTop: 280,
-    fontSize: 22}]}>
+     marginLeft: 10,
+    fontSize: 26}]}>
   you are responsible for managing your property listings, and ensuring guest satisfaction. Please adhere to the following rules and processes
   </Text>
         
-          <TouchableOpacity onPress={handleNext} style={[{ width: 70, height: 40 , backgroundColor: 'blue', 
-          marginTop:100,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginRight:10
+  <TouchableOpacity onPress={handleNext} style={[{    marginTop: 200,
+    justifyContent:'center' ,
+    alignItems:'center',
+   
+    backgroundColor: '#112678',
+    width: 350,
+    borderRadius: 22,
+    height: 40,
+    alignSelf: 'center',
      }]}> 
-              <Text style={{ fontSize: 22, fontWeight: 'bold', color: 'white',alignItems:"center"}}>Next</Text>
+              <Text style={{ fontSize: 20, fontFamily:'', color: 'white',alignItems:"center"}}>Next</Text>
           </TouchableOpacity>
-
 
       </View>
     </View>
@@ -68,7 +72,7 @@ const Migrations = ({ onboardingImages, nav }) => {
 const Migration = ({ navigation }) => {
   const onboardingImages = [
     // require('../../Photo/Screen1.jpeg'),
-    require('../../Photo/detail.jpeg'),
+    require('../../Photo/6523aea35066d9e378121619c8de12ed--dark-interiors-black-dark.jpg'),
     // require('../../Photo/detail2.webp'),
   ];
 

@@ -4,8 +4,9 @@ import { useConfirmPayment, StripeProvider } from '@stripe/stripe-react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { colors } from './Color';
 import {AP_ADRESS} from "../../apAdress"
-
-export default function Card() {
+import {reservation }from '../../reduce/reservation'
+import { useDispatch } from 'react-redux';
+export default function Card({route,navigation}) {
   const API_URL = "http://192.168.11.186:3000/api/pay/pay";
 
   const [name, setName] = useState('');
@@ -13,7 +14,12 @@ export default function Card() {
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
   const { confirmPayment, loading } = useConfirmPayment();
-
+console.log('hello',route?.params.data);
+const body={
+  roomId:route?.params.data?.body.roomId,
+  userId:route?.params.data?.body.userId,
+  dates:route?.params.data?.body.dates
+}
   const fetchPaymentIntentClientSecret = async () => {
     const response = await fetch(`${API_URL}/create-payment-intent`, {
       method: 'POST',
@@ -28,7 +34,7 @@ export default function Card() {
     const { clientSecret } = await response.json();
     return clientSecret;
   };
-
+const dispatch=useDispatch()
   const handlePayPress = async () => {
     const clientSecret = await fetchPaymentIntentClientSecret();
 
@@ -56,8 +62,13 @@ export default function Card() {
         `The payment was confirmed successfully! currency: ${paymentIntent.currency}`
       );
       console.log('Success from promise', paymentIntent);
+      
     }
+    
   };
+  const handleGet=(r)=>{
+    dispatch(reservation(r))
+  }
 
   return (
     <StripeProvider publishableKey="pk_live_51PGMZUIxZAKhTyZwpce6rNZyzBWyqMkq3VTcwmF5sKs829nJaD8KawGguJdyMKg4buw2pAnv4bOtEdkv6VrcUa5900DWtLQ7hp">
@@ -104,7 +115,7 @@ export default function Card() {
             />
           </View>
         </View>
-        <TouchableOpacity onPress={handlePayPress} disabled={loading}  style={styles.TouchableOpacity}>
+        <TouchableOpacity onPress={()=>{handlePayPress(),handleGet(body),navigation.navigate('CodeQR',{data:route?.params?.data})}} disabled={loading}  style={styles.TouchableOpacity}>
               <Text style={styles.Text} > Pay </Text>
         </TouchableOpacity>
       </ScrollView>

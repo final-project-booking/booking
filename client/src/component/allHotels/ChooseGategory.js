@@ -130,7 +130,7 @@ console.log('numRoom',numRoom);
         style={styles.searchButton}
         textColor='black'
         onPress={() => { handleGet(body), 
-          navigation.navigate('Calander', { hotelId: route.params.hotelId, view: selectedValue, plan: selectedPlan, numRoom:numRoom, people:people, ownerId: route.params.ownerId });
+          navigation.navigate('Calander', { hotelId: route.params.hotelId, view: selectedValue, plan: selectedPlan, numRoom:numRoom, people:people, ownerId: route.params.ownerId,hotelName:route.params.hotelName });
         }}
       >
         Search
