@@ -26,7 +26,7 @@ import AppConversionRates from '../app-conversion-rates';
 
 
 import axios from 'axios';
-import {getAllUser,getAllHotels,allClient,allOwner,allReservation,allReviews,deleteRev} from '../../../env'
+import {getAllUser,getAllHotels,allClient,allOwner,getReservationByHotelId,allReservation,allReviews,deleteRev} from '../../../env'
 
 // ----------------------------------------------------------------------
 
@@ -42,10 +42,13 @@ export default function AppView() {
   const [searchTerm, setSearchTerm] = useState('');
 const [displayCount, setDisplayCount] = useState(5);
 const [reservations,setReservation]=useState([])
-console.log('reservations',reservations);
+const [reservationData,setReservationData]=useState([])
 console.log("count",reservationCount);
+console.log("reservation",reservationData);
 
-
+const handleHotelSelection = (id) => {
+  fetchReservationByHotelId(id);
+};
 
   useEffect(()=>{
     fetch()
@@ -54,7 +57,7 @@ console.log("count",reservationCount);
     fetchOwner()
     fetchReservation()
     fetchReviews()
-    console.log("review",reviews);
+    // fetchReservationByHotelId()
   },[])
    const fetch=async()=>{
     try {
@@ -116,7 +119,46 @@ console.log("count",reservationCount);
     }
   }
 
-  const star=<MdStar color='yellow'/>
+  const fetchReservationByHotelId = async (_id) => {
+    try {
+      const response = await axios.get(`${getReservationByHotelId}/${_id}`);
+      let allReservations = [];
+  
+      response.data.room.forEach(room => {
+        allReservations = allReservations.concat(room.reservation);
+      });
+  
+      const filteredData = countReservationsByMonth(allReservations, 1970);
+      setReservationData(filteredData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  
+  const countReservationsByMonth=(reservations, year)=> {
+    
+    const monthlyReservations = new Array(12).fill(0);
+  
+    // Iterate through each reservation
+    reservations.forEach(reservation => {
+      // Create a Date object from the startDate
+      const startDate = new Date(reservation.startDate);
+  
+      // Check if the reservation's start date is in the specified year
+      if (startDate.getFullYear() === year) {
+        // Get the zero-based month (0 for January, 1 for February, etc.)
+        const month = startDate.getMonth();
+  
+        // Increment the count for the corresponding month
+        monthlyReservations[month]++;
+      }
+    });
+  
+    return monthlyReservations;
+  }
+  //room[0].reservation[0].endDate
+
   const hotelRatings = ['5 stars hotels', '4 stars hotels', '3 stars hotels', '2 stars hotels', '1 stars hotels'];
 
   const reservationCounts = reservations.reduce((counts, res) => {
@@ -140,7 +182,7 @@ console.log("count",reservationCount);
             title="Number of hotels"
             total={hotelsCount}
             color="success"
-            icon={<SiHiltonhotelsandresorts size={70} color='#32de84'/>}
+            icon={<SiHiltonhotelsandresorts size={70} color='#7CB9E8'/>}
           />
         </Grid>
 
@@ -149,7 +191,7 @@ console.log("count",reservationCount);
             title="Number of users"
             total={userCout}
             color="info"
-            icon={<FaUsers size={70} color='#6CB4EE'/>}
+            icon={<FaUsers size={70} color='#112678'/>}
           />
         </Grid>
 
@@ -158,8 +200,7 @@ console.log("count",reservationCount);
   <AppWidgetSummary
     title="Number of reservations"
     total={reservationCount} 
-    color="warning"
-    icon={<ImTicket size={70} color='#FFD700' />}
+    icon={<ImTicket size={70} color='rgb(255, 171, 0)' />}
   />
 </Grid>
 
@@ -175,7 +216,7 @@ console.log("count",reservationCount);
         <Grid xs={12} md={6} lg={8}>
           <AppWebsiteVisits
             title="Monthly reservation"
-            // subheader="(+43%) than last year"
+            func={handleHotelSelection}
             chart={{
               labels: [
                 '01/02/2024',
@@ -197,7 +238,7 @@ console.log("count",reservationCount);
                   name: 'Clients reserved',
                   type: 'column',
                   fill: 'solid',
-                  data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30,50],
+                  data: reservationData,
                 },
                 // {
                 //   name: 'Team B',
@@ -221,7 +262,7 @@ console.log("count",reservationCount);
             title="Current Visits"
             chart={{
               series: [
-                { label: 'Owner', value: owner },
+                { label: 'Owner', value: owner},
                 { label: 'Clinet', value: client }
               ],
             }}
@@ -256,7 +297,6 @@ console.log("count",reservationCount);
     onClick={(event) => { event.stopPropagation()}}
     onChange={(event) => { setSearchTerm(event.target.value); event.stopPropagation()}}></input> */}
   <AppNewsUpdate
-   
     title="Reviews"
     header={
     <input style={{marginLeft:23,marginTop:10}} className='inputSearch'
@@ -280,6 +320,7 @@ console.log("count",reservationCount);
       postedAt: rev.hotel.name,
     }))}
     onDelete={async(id)=>{await deleteOne(id);fetchReviews()}}
+    
   />
   <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount + 5) }}>See more</Button>
   <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount -5) }}>See less</Button>
