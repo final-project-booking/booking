@@ -1,7 +1,15 @@
 import React, { useState, useRef } from 'react';
-import { View, ScrollView, Image, StatusBar } from 'react-native';
-import arrowRight from '../../Photo/arrow-right.png';
-import SwipeButton from 'rn-swipe-button';
+import {
+  ScrollView,
+  StatusBar,
+  View,
+  Image,
+  StyleSheet,
+  Dimensions,
+  Text
+} from 'react-native';
+import CustomSwipeButton from './CustomSwipeButton'; // Adjust the import path as necessary
+import arrowRight from '../../Photo/arrow-right.png'; // Adjust the import path as necessary
 
 const OnboardingScreen = ({ onboardingImages, nav }) => {
   const scrollViewRef = useRef(null);
@@ -13,7 +21,7 @@ const OnboardingScreen = ({ onboardingImages, nav }) => {
     setRailBackgroundColor("#FFFFFF");
     if (currentPage < onboardingImages.length - 1) {
       const nextPage = currentPage + 1;
-      scrollViewRef.current.scrollTo({ x: nextPage * 550, animated: true });
+      scrollViewRef.current.scrollTo({ x: nextPage * Dimensions.get('window').width, animated: true });
       setCurrentPage(nextPage);
     } else {
       nav.replace('AppFace');
@@ -22,7 +30,7 @@ const OnboardingScreen = ({ onboardingImages, nav }) => {
 
   const handleScroll = (event) => {
     const offsetX = event.nativeEvent.contentOffset.x;
-    const newPage = Math.floor(offsetX / 550);
+    const newPage = Math.floor(offsetX / Dimensions.get('window').width);
     setCurrentPage(newPage);
   };
 
@@ -38,23 +46,27 @@ const OnboardingScreen = ({ onboardingImages, nav }) => {
         bounces={false}
       >
         {onboardingImages.map((image, index) => (
-          <View key={index} style={{ width: 550, height: '100%' }}>
+          <View key={index} style={{ width: Dimensions.get('window').width, height: '100%' }}>
             <Image source={image} style={{ width: '100%', height: '100%' }} />
+            <View style={styles.textContainer}>
+              <Text style={styles.text}>
+                Swipe
+                 to find your perfect Vacation spot{'\n'}
+                  from a huge selection of hotels{'\n'} 
+                  to stay verified for quality and design
+              </Text>
+            </View>
           </View>
         ))}
       </ScrollView>
       <View style={{ position: 'absolute', bottom: 20, left: 0, right: 0, alignItems: 'center' }}>
         <StatusBar barStyle="dark-content" />
         <View style={[{ width: 300, height: 100 }]}>
-          <SwipeButton
-            thumbIconImageSource={arrowRight}
+          <CustomSwipeButton
             onSwipeSuccess={handleNext}
-            title={swipeStatusMessage} 
+            title={swipeStatusMessage}
             railBackgroundColor={railBackgroundColor}
-            railBorderColor={railBackgroundColor}
-            thumbIconBackgroundColor={railBackgroundColor}
-            thumbIconBorderColor="#DCE2FC"
-            thumbIconImageStyles={{ width: 20, height: 20 }}
+            thumbIconImageSource={arrowRight}
           />
         </View>
       </View>
@@ -75,5 +87,23 @@ const Onboarding = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  textContainer: {
+    position: 'absolute',
+    bottom: 450,
+    left: 20,
+    right: 20,
+  },
+  text: {
+    color: 'black',
+    fontSize: 24,
+    textAlign: 'center',
+    // backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    padding: 10,
+    borderRadius: 5,
+    fontFamily:"Italic"
+  },
+});
 
 export default Onboarding;

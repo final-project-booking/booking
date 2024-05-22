@@ -1,6 +1,6 @@
 import React,{ useState,useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { View,Text ,ScrollView} from 'react-native'
+import { View,Text ,ScrollView,StyleSheet} from 'react-native'
 import {Picker} from '@react-native-picker/picker';
 import { IconButton,Button } from 'react-native-paper';
 import {fetchRoomByCategory} from '../../reduce/getRoomByCategory'
@@ -13,13 +13,14 @@ export default function ChooseGategory({ route, navigation }) {
     const [people, setPeople] = useState(0);
     const [numRoom, setNumRoom] = useState(1);
     const [hotelId,setHotelId]=useState(route.params.hotelId)
-   
+   console.log('choose',route?.params.ownerId);
     
     const dispatch = useDispatch();
     const body={
         view:selectedValue,
         hotelId:hotelId,
             }
+            console.log('body',body);
 const handleGet=(obj)=>{
     dispatch(fetchRoomByCategory(obj))
 }
@@ -58,80 +59,196 @@ console.log('numRoom',numRoom);
 
 
   return (
-    <ScrollView>
-    <View style={{backgroundColor:'#DCE2FC',height:'100%',width:'100%'}}>
-    <View style={{justifyContent:'center'}}>
-    <Text style={{fontSize:50,color:'black',marginTop:12,textAlign:"center",marginTop:20}}>Welcome</Text>
-    </View> 
-    <View>
-    <Text style={{fontSize:25,marginTop:15,margin:18}}>Choose What suits you the most</Text>
-    <Text style={{fontSize:50,color:'black',marginBottom:12,color:'black',textAlign:'center'}}>🤔</Text>
-    </View>
-    <View style={{backgroundColor:'white',margin:14,borderRadius:30}}>
-    <View style={{justifyContent:'space-between', flexDirection: 'row',margin:10}}>
-    <Text style={{fontSize:20,color:'black',marginTop:20}}>Select View:</Text>
-    <View style={{  paddingTop: 40,borderWidth: 1, borderColor: 'black', width: '50%',marginTop:18,marginLeft:70}}>
-    <Picker
-    style={{ height: 50, width: '100%' ,borderWidth:2,borderColor:'black',marginTop:20, position:'absolute', top:-27,}}
-        selectedValue={selectedValue}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-      >
-        <Picker.Item label="Sea View" value="seaView" />
-        <Picker.Item label="Standard View" value="standerView" />
-      </Picker>
-    </View>
-    </View>
-    <Text style={{height:1,backgroundColor:'#6082B6',marginTop:15,margin:10}}>h</Text>
-
-    <View style={{justifyContent:'space-between', flexDirection: 'row',margin:10}}>
-    <Text style={{fontSize:20,color:'black',marginTop:20}}>Meal_Plan:</Text>
-    <View style={{  paddingTop: 40,borderWidth: 1, borderColor: 'black', width: '50%',marginTop:18,marginLeft:70}}>
-    <Picker
-    style={{ height: 50, width: '100%' ,borderWidth:2,borderColor:'black',marginTop:20, position:'absolute', top:-27,}}
-        selectedValue={selectedPlan}
-        onValueChange={(itemValue, itemIndex) => setSelectedPlan(itemValue)}
-      >
-        <Picker.Item label=" all_Inclusive" value=" all_Inclusive" />
-        <Picker.Item label="breakFast" value="breakFast" />
-        <Picker.Item label="halfBoard" value="halfBoard" />
-
-      </Picker>
-    </View>
-    </View>
-    <Text style={{height:1,backgroundColor:'#6082B6',marginTop:15,margin:10}}>h</Text>
-    <View>
-    <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-between',margin:18 }}>
-        <View>
-        <Text style={{fontWeight:'bold',fontSize:20,color:'black'}}>Adults</Text>
-        <Text>Age 13 Or Above</Text>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <View style={styles.container}>
+      <View style={styles.centeredView}>
+        <Text style={styles.chooseText}>Choose What suits you the most</Text>
+        
+      </View>
+  
+      <View style={styles.card}>
+        <View style={styles.row}>
+          <Text style={styles.label}>Select View:</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              style={styles.picker}
+              selectedValue={selectedValue}
+              onValueChange={(itemValue) => setSelectedValue(itemValue)}
+            >
+              <Picker.Item label="Sea View" value="seaView" />
+              <Picker.Item label="Standard View" value="standardView" />
+            </Picker>
+          </View>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '10%' }}>
-         <IconButton icon="minus-circle-outline" size={30} onPress={minus} />
-         <Text style={{fontSize:17}}>{people}</Text>
-        <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={plus} />
-       </View>
-    </View>
-
-    <Text style={{height:1,backgroundColor:'#6082B6',marginTop:5,margin:10}}>h</Text>
-
-    <View style={{ marginTop: 25, flexDirection: 'row', justifyContent: 'space-between',margin:18 }}>
-        <View>
-        <Text style={{fontWeight:'bold',fontSize:20,color:'black'}}>Room</Text>
-        <Icon name='bedroom-parent' size={30} style={{color:'#DCE2FC'}}/>
+        <View style={styles.divider} />
+  
+        <View style={styles.row}>
+          <Text style={styles.label}>Meal Plan:</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              style={styles.picker}
+              selectedValue={selectedPlan}
+              onValueChange={(itemValue) => setSelectedPlan(itemValue)}
+            >
+              <Picker.Item label="All Inclusive" value="all_Inclusive" />
+              <Picker.Item label="Breakfast" value="breakFast" />
+              <Picker.Item label="Half Board" value="halfBoard" />
+            </Picker>
+          </View>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '10%' }}>
-         <IconButton icon="minus-circle-outline" size={30} onPress={remove} />
-         <Text style={{fontSize:17}}>{numRoom}</Text>
-        <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={add} />
-       </View>
+        <View style={styles.divider} />
+  
+        <View style={styles.rowBetween}>
+          <View>
+            <Text style={styles.subLabel}>Adults</Text>
+            <Text>Age 13 Or Above</Text>
+          </View>
+          <View style={styles.counter}>
+            <IconButton icon="minus-circle-outline" size={30} onPress={minus} />
+            <Text style={styles.counterText}>{people}</Text>
+            <IconButton icon="plus-circle-outline" size={30} color="red" onPress={plus} />
+          </View>
+        </View>
+        <View style={styles.divider} />
+  
+        <View style={styles.rowBetween}>
+          <View style={styles.iconWithTitle}>
+            <Icon name="bedroom-parent" size={30} style={styles.roomIcon} />
+            <Text style={styles.subLabel}>Room</Text>
+          </View>
+          <View style={styles.counter}>
+            <IconButton icon="minus-circle-outline" size={30} onPress={remove} />
+            <Text style={styles.counterText}>{numRoom}</Text>
+            <IconButton icon="plus-circle-outline" size={30} color="red" onPress={add} />
+          </View>
+        </View>
+      </View>
+  
+      <Button
+        style={styles.searchButton}
+        textColor="white"
+        onPress={() => {
+          handleGet(body),
+          navigation.navigate('Calander', {
+            hotelId: route.params.hotelId,
+            view: selectedValue,
+            plan: selectedPlan,
+            numRoom: numRoom,
+            people: people,
+            ownerId: route.params.ownerId,
+            hotelName: route.params.hotelName
+          });
+        }}
+      >
+        Search
+      </Button>
     </View>
-
-    </View>
-
-    </View>
-    <Button style={{backgroundColor:'#7CB9E8',width:'50%',marginLeft:99,marginTop:20   }} textColor='black' onPress={()=>{handleGet(body),navigation.navigate('Calander',{hotelId:hotelId,view:selectedValue,plan:selectedPlan,numRoom:numRoom,people:people})}} >Search</Button>
-  <Text style={{marginTop:30,width:0,height:0}}>hhh</Text>
-    </View>
-    </ScrollView>
+  </ScrollView>
+  
   )
 }
+
+const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  container: {
+    width: '100%',
+    maxWidth: 400,
+    padding: 16,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    elevation: 16,
+  },
+  centeredView: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  chooseText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  emoji: {
+    fontSize: 24,
+    textAlign: 'center',
+  },
+  card: {
+    padding: 16,
+    borderRadius: 15,
+    backgroundColor: '#f8f8f8',
+    marginBottom: 20,
+    alignItems: 'center',
+    width: '100%',
+   
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    width: '100%',
+  },
+  rowBetween: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    width: '100%',
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  subLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  pickerContainer: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  picker: {
+    height: 40,
+    width: 180,
+    marginLeft:60
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#ccc',
+    marginVertical: 10,
+    width: '100%',
+  },
+  counter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  counterText: {
+    fontSize: 16,
+    marginHorizontal: 10,
+  },
+  iconWithTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  roomIcon: {
+    marginRight: 5,
+  },
+  searchButton: {
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#2196F3',
+    borderRadius: 40,
+    alignSelf: 'center',
+  },
+});
+
+
+
+
+
+
+  

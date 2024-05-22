@@ -1,4 +1,4 @@
-const {negotiation,user}=require('../database')
+const {negotiation,user,hotel}=require('../database')
 module.exports={
 addNegotiation:async function(req,res){
     try{
@@ -24,11 +24,47 @@ addNegotiation:async function(req,res){
 },
 getNegotiation:async function(req,res){
     try{
-        const negotiationList=await negotiation.findMany()
+        const negotiationList=await negotiation.findMany({
+            where:{
+                room:{
+                   
+                        hotelId:parseInt(req.params.hotelId)
+                    
+                }
+            }
+        })
         res.status(200).json(negotiationList)
     }catch(err){
         console.log(err)
         res.status(500).json({error:err})
     }
-}
+},
+getUserWhereHotelId:async function(req,res){
+    try {
+        const owner=await hotel.findMany({
+            where:{
+                ownerId:parseInt(req.params.ownerId)
+            }
+        })
+        res.status(200).send(owner)
+    } catch (error) {
+        throw error
+    }
+},
+getHotelByName: async function(req,res){
+    try {
+        const {name}=req.params
+        const hotels=await hotel.findMany(
+            {
+                where: {
+                  name:name
+                }
+              }
+        )
+        console.log(hotels);
+        res.status(200).send(hotels);
+    } catch (error) {
+     throw error
+    }
+} 
 }

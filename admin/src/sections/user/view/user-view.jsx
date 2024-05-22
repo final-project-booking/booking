@@ -11,7 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 
-import { BanUseById } from '../../../env'
+import { BanUseById,getAllUser } from '../../../env'
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import axios from 'axios';
@@ -50,7 +50,7 @@ export default function UserPage() {
   },[ref])
    const fetch=async()=>{
     try {
-      const response=await axios.get("http://localhost:3000/api/user/allUser")
+      const response=await axios.get(getAllUser)
      const filtered=response.data.map((e) => ({
         id:e.id,
         avatarUrl: e.imgUrl,

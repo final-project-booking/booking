@@ -49,8 +49,10 @@ module.exports={
                         rating: Number(hotelData.rating),
                         rooms:  Number(hotelData.rooms),
                         licence:hotelData.licence,
-                     
-                    
+                                       
+                    },
+                    include: {
+                        owner: true
                     }
                 });
              const allHotels=helper(hotelData.media,result.id)
@@ -80,6 +82,7 @@ module.exports={
                         },
                         include: {
                             hotel: true, 
+                            user: true
                         }
                     });
                     const hotelId = owner.hotel[0].id; 
@@ -107,15 +110,15 @@ module.exports={
 getAllOwners : async function(req, res) {
     try {
        
-        const owners = await prisma.owner.findMany({
+        const owners = await prisma.hotel.findMany({
             include: {
-                user: true, 
-                hotel: {
-                    include: {
-                        room: true ,
-                        media :true
-                    }
-                }
+                owner:true, 
+                // hotel:{
+                //     include: {
+                //         room:true ,
+                //         media:true
+                //     }
+                // }
             }
         });
 
@@ -245,4 +248,5 @@ console.log(req.params);
        throw error
     }
 },
+
 }

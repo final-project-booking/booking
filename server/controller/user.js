@@ -21,31 +21,41 @@ module.exports = {
      }
     },
  
-    login: async function(req, res) {
-        const { email, password } = req.body;
-        const foundUser = await user.findUnique({ where: { email } });
     
-        if (!foundUser) {
-            return res.status(400).json('Your email does not exist');
-        }
-    
-        const clean = await bcrypt.compare(password, foundUser.password);
-    
-        if (foundUser && clean && !foundUser.activationCode) {
-            res.send({
-                message: "Check your email for activation"
-            });
-        }
-    
-        if (!clean) {
-            return res.status(400).json('Your password is incorrect');
-        }
-    
-        const token = jwt.sign({ id: foundUser.id ,role:foundUser.role }, process.env.SECRET_KEY);
-        // console.log(token);
-        delete foundUser.password;
-        res.status(200).send({ token, user: foundUser });
-    },
+  login: async function (req, res) {
+    const { email, password } = req.body;
+
+    try {
+      const foundUser = await user.findUnique({ where: { email } });
+
+      if (!foundUser) {
+        return res.status(400).json({ message: 'Your email does not exist' });
+      }
+
+      const clean = await bcrypt.compare(password, foundUser.password);
+      if (!clean) {
+        return res.status(400).json({ message: 'Your password is incorrect' });
+      }
+
+      if (foundUser && clean && !foundUser.activationCode) {
+        return res.send({ message: "Check your email for activation" });
+      }
+
+      if (!foundUser.isActive) {
+        return res.status(401).json({ message: "You're banned. Please contact the admin to activate your account" });
+      }
+
+      const token = jwt.sign({ id: foundUser.id, role: foundUser.role }, process.env.SECRET_KEY, { expiresIn: '1h' });
+
+      const { password: _, ...userWithoutPassword } = foundUser;
+
+      res.status(200).send({ token, user: userWithoutPassword });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
+
     
 
     
@@ -115,5 +125,21 @@ module.exports = {
         } catch (error) {
             throw error
         }
-    }
+    },
+    getAllClinet: async (req, res) => {
+        try {
+          const clients = await user.findMany({ where: { role: 'user' } })
+          res.json(clients)
+        } catch (error) {
+          res.status(500).json({ error: error.message })
+        }
+      },
+      getAllOwner:async (req,res)=>{
+        try {
+            const owner = await user.findMany({ where: { role: 'owner' } })
+          res.json(owner)
+        } catch (error) {
+            throw error
+        }
+      }
 }

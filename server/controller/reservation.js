@@ -48,17 +48,17 @@ module.exports={
            
             })
 
-            const availability = await Promise.all(
-              dates.map(async (date,i) => {
-                return dayAvailability.create({
+            // const availability = await Promise.all(
+              // dates.map(async (date,i) => {
+               const x=  await dayAvailability.create({
                   data:{
-                    nigth:date,
+                    nigth:dates,
                     roomId:roomId,
                     availability:false
                   }
                 })
 
-              }))
+              // }))
          
        
            
@@ -69,7 +69,7 @@ module.exports={
     
           
         } catch (error) {
-          throw error
+          
         }
       },
     removeReservation:async function(req,res){
@@ -77,23 +77,44 @@ module.exports={
             const reservations=await reservation.delete({where:{id:Number(req.params.id)}})
             res.status(200).send(reservations)
         } catch (error) {
-            throw error
+            console.log(error);
         }
     },
     getAllReservations:async function(req,res){
         try {
-            const reservations=await reservation.findMany()
+            const reservations=await reservation.findMany({
+              include:{room:{include:{hotel:true}}}
+            })
             res.status(200).send(reservations)
         } catch (error) {
-            throw error
+            console.log(error);
         }
     },
+    getReservationByHotelId:async function(req,res){
+      try {
+          const reservations=await hotel.findUnique({
+            where:{id:parseInt(req.params.id)},
+            include:{
+              room:{
+                include:{
+                  reservation:true
+                }
+              }
+            }
+   
+            
+          })
+          res.status(200).send(reservations)
+      } catch (error) {
+          throw error
+      }
+  },
     getReservationByUserId:async function(req,res){
         try {
             const reservations=await reservation.findMany({where:{userId:Number(req.params.userId)}})
             res.status(200).send(reservations)
         } catch (error) {
-            throw error
+            console.log(error);
         }
     }
 }

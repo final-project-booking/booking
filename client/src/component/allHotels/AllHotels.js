@@ -1,11 +1,23 @@
 import React, { useState,useEffect } from 'react'
-import { View ,Image,Text,TouchableOpacity,StyleSheet,TextInput} from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import {
+  Dimensions,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Image,
+  
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector ,useDispatch} from 'react-redux';
 import { AllHotell } from '../../reduce/AllHotels';
 import { IconButton,Button } from 'react-native-paper';
+import IconS from 'react-native-vector-icons/Fontisto';
 
+const { width } = Dimensions.get('window');
  function AllHotels({navigation}) {
 
 const dispatch=useDispatch()
@@ -17,91 +29,162 @@ const hotel=useSelector(state=>state.allHotels.hotel)
 console.log('hotel',hotel);
 
   return (
+    <SafeAreaView style={styles.container}>
     <ScrollView>
-    <Icon name='arrow-back' size={30} style={{marginTop:25,marginLeft:20,backgroundColor:'#89CFF0',width:29,borderRadius:19}}/>
-    <View style={styles.searchInputContainer}>
-  <Icon name="search" size={30} style={styles.icon} />
-  <TextInput
-    placeholder="Search"
-    style={styles.input}
-  />
-  <Button style={styles.Button}>Search</Button>
-</View>
-
-    {hotel.map((e)=>{
-     return   e.hotel.map((i)=>(
-       <TouchableOpacity style={{shadowOffset: {width: 0,height: 1,},shadowOpacity: 0.25, shadowRadius: 3.84,elevation:5,marginTop:-15}} onPress={()=>navigation.navigate('ChooseGategory',{hotelId:i.id})} >
-    <View style={{marginTop: 50 , flexDirection: 'row', alignItems: 'center'}}>
-    <View style={{marginRight: 20 }}>
-        <Image source={{uri:'https://image.resabooking.com/images/hotel/Concorde_Green_Park_Palace_3.jpg'}} style={{width: 150, height: 150,marginLeft:16,borderRadius:10,borderTopLeftRadius: 15,borderTopRightRadius: 15,}} />
-    </View>
-    <View style={{marginTop:-20}}>
-        <Text style={{fontSize:20,color:'black',marginBottom:12,color:'black'}}>{i.name}</Text>
-        <View style={{flexDirection:'row'}}>  
-        <Icon size={20} name='star'style={{marginBottom:15}} color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
-        <Icon size={20} name='star' color={'#f5a623'}/>
-        </View>
-        <Text style={{marginLeft:1,marginBottom:15,color:'black'}}>Rooms:{i.rooms}</Text>
-        <Text style={{color:'black'}}><Icon size={20} name='location-pin'/>{e.phoneNumber}</Text>
-    </View>
-</View>
- <View style={{padding:10}}>
-<Text style={{height:1,width:'100%', backgroundColor:'#DCE2FC',marginTop:15,}}>h</Text>
-</View>
- </TouchableOpacity>  
-        
-        ))  
-    })}
- 
- </ScrollView>
+      <Icon name='arrow-back' size={30} style={styles.backIcon} onPress={() => navigation.navigate('Home')} />
+      <View style={styles.searchInputContainer}>
+        <Icon name="search" size={30} style={styles.icon} />
+        <TextInput 
+          placeholder="Search" 
+          style={styles.input} 
+          placeholderTextColor="#888"
+        />
+        <Button mode="contained" style={styles.searchButton}>Search</Button>
+      </View>
+      {hotel.map((item) => (
+        <TouchableOpacity 
+          key={item.id} 
+          style={styles.card} 
+          onPress={() => navigation.navigate('ChooseGategory', { hotelId: item.id, ownerId: item.owner.id ,hotelName:item.name})}
+        >
+          <View style={styles.favoriteButton}>
+            <Icon name="star" size={15} color='orange' />
+            <Text style={styles.ratingText}>5.0</Text>
+          </View>
+          <Image 
+            source={{ uri:item.imgUrl }} 
+            style={styles.cardImage} 
+          />
+          <View style={styles.cardDetails}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View>
+                <Text style={styles.cardTitle}>{item.name}</Text>
+              </View>
+              <IconS name="heart" size={26} color='#ff6347' style={styles.heartIcon} />
+            </View>
+            <View style={styles.ratingContainer}>
+              <View style={styles.rating}>
+                {[...Array(5)].map((_, index) => (
+                  <Icon key={index} size={15} name='star' color={'orange'} />
+                ))}
+              </View>
+              <Text style={styles.reviewCount}>365 reviews</Text>
+            </View>
+            <Text style={styles.rooms}>Rooms: {item.rooms}</Text>
+            <Text style={styles.description}>{item.description}</Text>
+          </View>
+          <View style={styles.dividerContainer}>
+            <Text style={styles.divider}></Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  </SafeAreaView>
   )
 }
-const styles=StyleSheet.create({
-  // searchInputContainer: {
-  //   height: 50,
-  //   width:'70%',
-  //   backgroundColor:'#f9f9f9',
-  //   marginTop: 15,
-  //   marginLeft: 20,
-  //   borderTopLeftRadius: 30,
-  //   borderBottomLeftRadius: 30,
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  // },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+    paddingTop: 20,
+  },
+  backIcon: {
+    marginLeft: 20,
+    marginBottom: 10,
+    color: '#333',
+  },
   searchInputContainer: {
-    width:'82%',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 5,
-    borderWidth: 1,
-    borderRadius: 23,
-    backgroundColor: '#fff',
-    marginLeft:49,
-    marginTop:30
+    backgroundColor: '#e8e8e8',
+    borderRadius: 25,
+    marginHorizontal: 20,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+  },
+  icon: {
+    color: '#888',
   },
   input: {
     flex: 1,
-    borderRadius: 15,
-    width:'50%',
-    fontSize: 20,
-    paddingLeft: 10,
-    borderWidth: 0,
-    outline: 'none',
-  },
-  icon: {
     marginLeft: 10,
+    height: 50,
+  },
+  searchButton: {
+    marginLeft: 10,
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    elevation: 10,
+    marginHorizontal: 20,
+    marginBottom: 20,
+    overflow: 'hidden',
+  },
+  favoriteButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ratingText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginLeft: 5,
+  },
+  cardImage: {
+    width: '100%',
+    height: 200,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+  },
+  cardDetails: {
+    padding: 15,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
     color: '#333',
   },
-  button: {
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    marginLeft: 10,
-    backgroundColor: '#007bff',
-    color: '#0000FF',
-    borderRadius: 15,
+  heartIcon: {
+    color: '#ff6347',
+    
   },
-})
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  rating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  reviewCount: {
+    fontSize: 12,
+    color: '#666',
+    marginLeft: 10,
+  },
+  rooms: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 5,
+  },
+  description: {
+    fontSize: 14,
+    color: '#888',
+    marginTop: 5,
+  },
+  dividerContainer: {
+    marginTop: 10,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#e8e8e8',
+  },
+});
 export default AllHotels

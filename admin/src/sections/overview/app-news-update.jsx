@@ -16,30 +16,20 @@ import Scrollbar from 'src/components/scrollbar';
 
 // ----------------------------------------------------------------------
 
-export default function AppNewsUpdate({ title, subheader, list, ...other }) {
+export default function AppNewsUpdate({ title, subheader, header, list, onDelete, ...other }) {
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
-
+      {header}
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
           {list.map((news) => (
-            <NewsItem key={news.id} news={news} />
+            <NewsItem key={news.id} news={news} onDelete={onDelete} />
           ))}
         </Stack>
       </Scrollbar>
 
       <Divider sx={{ borderStyle: 'dashed' }} />
-
-      <Box sx={{ p: 2, textAlign: 'right' }}>
-        <Button
-          size="small"
-          color="inherit"
-          endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
-        >
-          View all
-        </Button>
-      </Box>
     </Card>
   );
 }
@@ -47,13 +37,15 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
 AppNewsUpdate.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
+  header: PropTypes.node,
   list: PropTypes.array.isRequired,
+  onDelete: PropTypes.func,
 };
 
 // ----------------------------------------------------------------------
 
-function NewsItem({ news }) {
-  const { image, title, description, postedAt } = news;
+function NewsItem({ news, onDelete }) {
+  const { id, image, title, description, postedAt } = news;
 
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
@@ -75,8 +67,10 @@ function NewsItem({ news }) {
       </Box>
 
       <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, color: 'text.secondary' }}>
-        {fToNow(postedAt)}
+        {postedAt}
       </Typography>
+
+      <Button style={{color:"red"}} onClick={() =>{onDelete(id)} }>Delete</Button>
     </Stack>
   );
 }

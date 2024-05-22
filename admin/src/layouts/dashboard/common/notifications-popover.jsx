@@ -17,9 +17,10 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
+import { useNavigate } from "react-router-dom";
 
 import { fToNow } from 'src/utils/format-time';
-
+import { HiOutlineLogout } from "react-icons/hi";
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
@@ -74,9 +75,10 @@ const NOTIFICATIONS = [
 ];
 
 export default function NotificationsPopover() {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
 
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+  const totalUnRead = 5
 
   const [open, setOpen] = useState(null);
 
@@ -96,9 +98,13 @@ export default function NotificationsPopover() {
       }))
     );
   };
+  const handleLogout = () => {
+    navigate("/");
+  };
 
   return (
     <>
+    <h4 style={{color:"rgb(17, 38, 120)",marginRight:20,cursor:"pointer"}} onClick={handleLogout}>Log out</h4>
       <IconButton color={open ? 'primary' : 'default'} onClick={handleOpen}>
         <Badge badgeContent={totalUnRead} color="error">
           <Iconify width={24} icon="solar:bell-bing-bold-duotone" />
@@ -122,18 +128,18 @@ export default function NotificationsPopover() {
         <Box sx={{ display: 'flex', alignItems: 'center', py: 2, px: 2.5 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
-            {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               You have {totalUnRead} unread messages
-            </Typography> */}
+            </Typography>
           </Box>
 
-          {/* {totalUnRead > 0 && (
+          {totalUnRead > 0 && (
             <Tooltip title=" Mark all as read">
               <IconButton color="primary" onClick={handleMarkAllAsRead}>
                 <Iconify icon="eva:done-all-fill" />
               </IconButton>
             </Tooltip>
-          )} */}
+          )}
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -147,9 +153,9 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {/* {notifications.slice(0, 2).map((notification) => (
+            {notifications.slice(0, 2).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
-            ))} */}
+            ))}
           </List>
 
           {/* <List
