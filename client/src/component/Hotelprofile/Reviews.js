@@ -20,6 +20,7 @@ const Reviews = () => {
 
     const dispatch = useDispatch();
     const reviews = useSelector(state => state.review.reviw) || [];
+    console.log(reviews);
     useEffect(() => {
         
         dispatch(fetchReviewAsync({ id: 1 }));
@@ -64,7 +65,7 @@ const Reviews = () => {
 
     const bottomSheetRef = useRef(null);
   
-    const snapPoints = useMemo(() => ['5%', '40%'], []);
+    const snapPoints = useMemo(() => ['7%', '70%'], []);
     const BottomSheetContent1 = () => (
         <View  style={{alignItems:"center"}}>
             <Text style={{color:"black",marginBottom:5,fontWeight:"bold",fontSize:20}}>New review</Text>
