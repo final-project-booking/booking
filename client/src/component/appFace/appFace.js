@@ -26,14 +26,16 @@ const AppFace = ({ navigation }) => {
         style={styles.image}
       >
         <View style={styles.content}>
-          <TouchableOpacity style={styles.button} onPress={handleButton}>
+          <TouchableOpacity style={styles.buttonlogin} onPress={handleButton}>
             <Text style ={styles.textbutton}>Get Started</Text>
           </TouchableOpacity>
-          <TouchableOpacity  onPress={handleLogin}>
-            <Text style ={styles.text} >If you have an Account? Login</Text>
+          <Text style ={styles.text} >If you have an Account?</Text>
+          <TouchableOpacity  onPress={handleLogin} style={styles.buttonlogin}   >
+            <Text style ={styles.textbutton} > Login</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleSignup}>
-            <Text style ={styles.text}  >If you don't have an Account? Sign Up</Text>
+          <Text style ={styles.text}  >If you don't have an Account?</Text>
+          <TouchableOpacity style={styles.buttonlogin}  onPress={handleSignup}>
+            <Text style ={styles.textbutton}  > Sign Up</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -52,12 +54,16 @@ const styles = StyleSheet.create({
   content: {
     marginTop: 500,
   },
-  button: {
-    backgroundColor: '#161618',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginBottom:5,
+
+  buttonlogin: {
+    backgroundColor: 'black',
+    borderRadius: 20,
+    alignItems:"center",
+    justifyContent:"center",
+    marginBottom:10,
+    height:36.5,
+    width:200,
+    marginLeft:20
   },
   textbutton: {
     color: '#DCE2FC',
@@ -72,7 +78,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'BoldItalic',
     justifyContent: 'center',
-    fontSize: 17,
+    fontSize: 19,
     textAlign: 'center',
     marginBottom: 3,
   },

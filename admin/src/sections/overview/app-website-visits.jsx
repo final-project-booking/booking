@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 
 // ----------------------------------------------------------------------
 
-export default function AppWebsiteVisits({ title, subheader, chart, ...other }) {
+export default function AppWebsiteVisits({ title, subheader,handleHotelSelection,func, chart, ...other }) {
   const { labels, colors, series, options } = chart;
 
   const chartOptions = useChart({
@@ -49,7 +49,7 @@ export default function AppWebsiteVisits({ title, subheader, chart, ...other }) 
   });
 
 const [hotels,setHotels]=useState([])
-const [hotelId,setHotelId]=useState(0)
+
 const [displayCount, setDisplayCount] = useState(5);
 const [searchTerm, setSearchTerm] = useState('');
 // console.log('id',hotelId);
@@ -72,31 +72,36 @@ const [searchTerm, setSearchTerm] = useState('');
     <Card {...other}>
     <CardHeader title={title} subheader={subheader} />
   
-    <FormControl  variant="filled" sx={{ m: 1, width:200 }}>
-      <InputLabel  id="demo-simple-select-filled-label">Search for Hotels</InputLabel>
-      <Select
-  labelId="demo-simple-select-filled-label"
-  id="demo-simple-select-filled"
-  
+    <FormControl variant="filled" sx={{ m: 1, width: 200 }}>
+  <InputLabel id="demo-simple-select-filled-label">Search for Hotels</InputLabel>
+  <Select
+    labelId="demo-simple-select-filled-label"
+    id="demo-simple-select-filled"
+    value="" // Ensures the Select component is controlled
   >
-  <MenuItem value="">
-    <input 
-    placeholder='Search' 
-    style={{height:30}} 
-    onClick={(event) => { event.stopPropagation()}}
-    onChange={(event) => { setSearchTerm(event.target.value); event.stopPropagation()}}></input>
-  </MenuItem>
-  {hotels.filter(hotel => hotel.name.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, displayCount).map(hotel => {
-  return <MenuItem >{hotel.name}</MenuItem>
-})}
-  <MenuItem style={{justifyContent:"space-between"}} value="">
-  <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount + 5) }}>See more</Button>
-  <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount -5) }}>See less</Button>
-</MenuItem>
-  
-</Select>
+    <MenuItem value="">
+      <input
+        placeholder="Search"
+        style={{ height: 30 }}
+        onClick={(event) => event.stopPropagation()}
+        onChange={(event) => { setSearchTerm(event.target.value); event.stopPropagation(); }}
+      />
+    </MenuItem>
+    {hotels
+      .filter(hotel => hotel.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      .slice(0, displayCount)
+      .map(hotel => (
+        <MenuItem key={hotel.id} onClick={() => func(hotel.id)}>
+          {hotel.name}
+        </MenuItem>
+      ))}
+    <MenuItem style={{ justifyContent: "space-between" }} value="">
+      <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount + 5); }}>See more</Button>
+      <Button onClick={(event) => { event.stopPropagation(); setDisplayCount(displayCount - 5); }}>See less</Button>
+    </MenuItem>
+  </Select>
+</FormControl>
 
-    </FormControl>
   
     <Box sx={{ p: 3, pb: 1 }}>
       <Chart

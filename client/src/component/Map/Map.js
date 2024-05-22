@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import {
   StyleSheet,
   View,
@@ -12,6 +12,8 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import COLORS from '../const/Colors';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 
@@ -89,15 +91,17 @@ export default function Map({ onLocationSelect }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.input}
+    
+      <View style={styles.searchInputContainer}>
+           
+          <TextInput
           value={searchQuery}
           onChangeText={(text) => setSearchQuery(text)}
           placeholder="Search city..."
-        />
-        <Button title="Search" onPress={handleSearch} />
-      </View>
+            style={{ fontSize: 20, paddingLeft: 10 ,  color: '#7c807d'}}
+          />
+          <Icon name="search" size={30} style={{ marginLeft: 220 , color: '#161618' }}  onPress={handleSearch}/> 
+        </View>
       {region ? (
         <MapView style={styles.map} initialRegion={region} region={region}>
         {/* <Marker coordinate={{ latitude: region.latitude, longitude: region.longitude }} />  */}
@@ -152,7 +156,8 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: '#112678',
+    Button:"#112678"
   },
   input: {
     flex: 1,
@@ -160,7 +165,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#112678',
     borderRadius: 4,
     fontSize: 16,
   },
@@ -175,8 +180,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#B5C18E',
+    color: '#112678',
     marginLeft: 310,
+  },
+  searchInputContainer: {
+    height: 50,
+    width: 400,
+    backgroundColor:"#DCE2FC",
+    marginTop:15,
+    marginLeft: 5,
+   
+   marginBottom:20,
+  
+justifyContent: 'center',
+    borderRadius: 30,
+   
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   hotelInfo: {
     flexDirection: 'row',
@@ -187,8 +207,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   hotelImage: {
-    width: 85,
-    height: 85,
+    width: 400,
+    height: 200,
     borderRadius: 5,
   },
   enlargedHotelImage: {

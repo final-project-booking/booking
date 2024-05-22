@@ -248,8 +248,9 @@ const opacity = scrollX.interpolate({
             </Text>
           </View>
         </View>
-        <Image source={require('../../Photo/logo-no-background.png')} style={{width:150,height:100, size:10,objectFit:"cover"}}/> 
-        
+        <Image source={require('../../Photo/logo-color.png')} style={{width:190,height:80,opacity:1}}/> 
+
+      
         {/* <Icon name="person-outline" size={38}  color='#161618'/> */}
 
       </View>
@@ -311,10 +312,12 @@ const opacity = scrollX.interpolate({
 
 const styles = StyleSheet.create({
   header: {
+    display: 'flex',
     marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
+   
   },
   searchInputContainer: {
     height: 50,

@@ -43,21 +43,30 @@ const Migrations = ({ onboardingImages, nav }) => {
       
       <View style={{ position: 'absolute', alignItems: 'center',        
  }}>
-  <Text style={[{   color: 'white', fontWeight: 'bold', 
+  <Text style={{   color: 'white', 
     textAlign: 'center',
-     marginTop: 280,
-    fontSize: 32}]}>
- '1. Ensure all property details are accurate and up-to-date.\n'
-              '2. Respond to booking inquiries promptly.\n'
-              '3. Maintain high standards of cleanliness and hospitality.\n'
-              '4. Address guest issues and feedback constructively.\n',
+     marginTop: 240,
+    fontSize: 22,
+   marginLeft:10
+  
+    }}>
+            . Ensure all property details are accurate and up-to-date{'\n'}
+            . Respond to booking inquiries promptly{'\n'}
+            . Maintain high standards of cleanliness and hospitality{'\n'}
+            . Address guest issues and feedback constructively,{'\n'}
   </Text>
         
-          <TouchableOpacity onPress={handleNext} style={[{ width: 70, height: 40 , backgroundColor: 'blue', 
-    borderRadius: 8,
-    alignItems: 'center',
+          <TouchableOpacity onPress={handleNext} style={[{    marginTop: 200,
+    justifyContent:'center' ,
+    alignItems:'center',
+   
+    backgroundColor: '#112678',
+    width: 350,
+    borderRadius: 22,
+    height: 40,
+    alignSelf: 'center',
      }]}> 
-              <Text style={{ fontSize: 22, fontWeight: 'bold', color: 'white',alignItems:"center"}}>Next</Text>
+              <Text style={{ fontSize: 20, fontFamily:'', color: 'white',alignItems:"center"}}>Next</Text>
           </TouchableOpacity>
 
 
@@ -66,11 +75,11 @@ const Migrations = ({ onboardingImages, nav }) => {
   );
 };
 
-const Migration = ({ navigation }) => {
+const Migrations2 = ({ navigation }) => {
   const onboardingImages = [
     // require('../../Photo/Screen1.jpeg'),
     // require('../../Photo/detail.jpeg'),
-    require('../../Photo/detail2.webp'),
+    require('../../Photo/migration.jpeg'),
   ];
 
   return (
@@ -80,4 +89,4 @@ const Migration = ({ navigation }) => {
   );
 };
 
-export default Migration;
+export default Migrations2;

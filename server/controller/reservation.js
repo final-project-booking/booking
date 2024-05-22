@@ -90,16 +90,25 @@ module.exports={
             console.log(error);
         }
     },
-  //   getReservationByHotelId:async function(req,res){
-  //     try {
-  //         const reservations=await reservation.findMany({
-  //           include:{room:{include:{hotel:true}}}
-  //         })
-  //         res.status(200).send(reservations)
-  //     } catch (error) {
-  //         throw error
-  //     }
-  // },
+    getReservationByHotelId:async function(req,res){
+      try {
+          const reservations=await hotel.findUnique({
+            where:{id:parseInt(req.params.id)},
+            include:{
+              room:{
+                include:{
+                  reservation:true
+                }
+              }
+            }
+   
+            
+          })
+          res.status(200).send(reservations)
+      } catch (error) {
+          throw error
+      }
+  },
     getReservationByUserId:async function(req,res){
         try {
             const reservations=await reservation.findMany({where:{userId:Number(req.params.userId)}})
