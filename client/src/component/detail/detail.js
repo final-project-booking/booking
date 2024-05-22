@@ -59,7 +59,10 @@ export default function Detail({route,navigation}) {
       userId:userId,
       dates:route?.params?.selectedDates,
       hotelName:route?.params?.hotelName
+      
     }
+    const numRoom=route?.params?.numRoom
+    const time=route?.params?.selectedDates
     console.log(body);
     useEffect(() => {
       getUsers()
@@ -100,7 +103,7 @@ export default function Detail({route,navigation}) {
               style={styles.modalButton}
               
             >
-              <Text style={styles.modalButtonText}>Price: {data?.body?.newPrice}</Text>
+              <Text style={styles.modalButtonText}>Price:{data?.body?.newPrice}</Text>
             </TouchableOpacity>
             <Text style={styles.modalText}>Room N°: {data?.body?.roomId}</Text>
             <Text style={styles.modalText}> {data?.user?.firstName} {data?.user?.lastName}</Text>
@@ -211,7 +214,7 @@ return (
             compar.mainRooms.map((e, index) => (
               <View key={index} style={styles.roomContainer}>
                 <Text style={styles.hotelName}>The Carlton Hotel</Text>
-                <Text style={styles.detailsText}>Rooms:</Text>
+                <Text style={styles.detailsText}>Rooms:{numRoom}</Text>
                 <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
                 <Text style={styles.detailsText}>People: {e?.capacity}</Text>
 
@@ -223,7 +226,7 @@ return (
 
                 <View style={styles.priceContainer}>
                   <Text style={styles.priceLabel}>Price</Text>
-                  <Text style={styles.price}>{e?.price} DT</Text>
+                  <Text style={styles.price}>{e?.price*time.length*numRoom} DT</Text>
                 </View>
               </View>
             ))}
@@ -286,7 +289,7 @@ return (
                 <View style={styles.relatedRoomDetails}>
                   <Text style={styles.relatedRoomTitle}>{e?.view}</Text>
                   <Text style={styles.relatedRoomInfo}>People: {e?.capacity}</Text>
-                  <Text style={styles.relatedRoomInfo}>Price: DT {e?.price}</Text>
+                  <Text style={styles.relatedRoomInfo}>Price: DT {e?.price*time.length*numRoom}</Text>
                   <Text style={styles.relatedRoomInfo}>Rooms: {e?.rooms}</Text>
                 </View>
               </TouchableOpacity>

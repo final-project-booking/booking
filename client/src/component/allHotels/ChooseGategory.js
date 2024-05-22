@@ -59,15 +59,13 @@ console.log('numRoom',numRoom);
 
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
     <View style={styles.container}>
       <View style={styles.centeredView}>
-        <Text style={styles.welcomeText}>Welcome</Text>
-      </View>
-      <View style={styles.centeredView}>
         <Text style={styles.chooseText}>Choose What suits you the most</Text>
-        <Text style={styles.emoji}>🤔</Text>
+        
       </View>
+  
       <View style={styles.card}>
         <View style={styles.row}>
           <Text style={styles.label}>Select View:</Text>
@@ -78,12 +76,12 @@ console.log('numRoom',numRoom);
               onValueChange={(itemValue) => setSelectedValue(itemValue)}
             >
               <Picker.Item label="Sea View" value="seaView" />
-              <Picker.Item label="Standard View" value="standerView" />
+              <Picker.Item label="Standard View" value="standardView" />
             </Picker>
           </View>
         </View>
         <View style={styles.divider} />
-
+  
         <View style={styles.row}>
           <Text style={styles.label}>Meal Plan:</Text>
           <View style={styles.pickerContainer}>
@@ -99,7 +97,7 @@ console.log('numRoom',numRoom);
           </View>
         </View>
         <View style={styles.divider} />
-
+  
         <View style={styles.rowBetween}>
           <View>
             <Text style={styles.subLabel}>Adults</Text>
@@ -112,11 +110,11 @@ console.log('numRoom',numRoom);
           </View>
         </View>
         <View style={styles.divider} />
-
+  
         <View style={styles.rowBetween}>
-          <View>
+          <View style={styles.iconWithTitle}>
+            <Icon name="bedroom-parent" size={30} style={styles.roomIcon} />
             <Text style={styles.subLabel}>Room</Text>
-            <Icon name='bedroom-parent' size={30} style={styles.roomIcon} />
           </View>
           <View style={styles.counter}>
             <IconButton icon="minus-circle-outline" size={30} onPress={remove} />
@@ -125,128 +123,132 @@ console.log('numRoom',numRoom);
           </View>
         </View>
       </View>
-
+  
       <Button
         style={styles.searchButton}
-        textColor='black'
-        onPress={() => { handleGet(body), 
-          navigation.navigate('Calander', { hotelId: route.params.hotelId, view: selectedValue, plan: selectedPlan, numRoom:numRoom, people:people, ownerId: route.params.ownerId,hotelName:route.params.hotelName });
+        textColor="white"
+        onPress={() => {
+          handleGet(body),
+          navigation.navigate('Calander', {
+            hotelId: route.params.hotelId,
+            view: selectedValue,
+            plan: selectedPlan,
+            numRoom: numRoom,
+            people: people,
+            ownerId: route.params.ownerId,
+            hotelName: route.params.hotelName
+          });
         }}
       >
         Search
       </Button>
-     
     </View>
   </ScrollView>
+  
   )
 }
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#DCE2FC',
-    padding: 20,
-  },
-  centeredView: {
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 10,
   },
-  welcomeText: {
-    fontSize: 48,
-    color: 'black',
-    marginTop: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontFamily: Platform.OS === 'ios' ? 'AvenirNext-Bold' : 'Roboto-Bold',
+  container: {
+    width: '100%',
+    maxWidth: 400,
+    padding: 16,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    elevation: 16,
+  },
+  centeredView: {
+    alignItems: 'center',
+    marginBottom: 20,
   },
   chooseText: {
-    fontSize: 24,
-    marginTop: 10,
-    marginHorizontal: 18,
+    fontSize: 18,
+    fontWeight: 'bold',
     textAlign: 'center',
-    fontFamily: Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'Roboto-Regular',
   },
   emoji: {
-    fontSize: 50,
-    color: 'black',
+    fontSize: 24,
     textAlign: 'center',
-    marginVertical: 10,
   },
   card: {
-    backgroundColor: 'white',
-    marginVertical: 14,
-    borderRadius: 20,
     padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
+    borderRadius: 15,
+    backgroundColor: '#f8f8f8',
+    marginBottom: 20,
+    alignItems: 'center',
+    width: '100%',
+   
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 10,
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    width: '100%',
   },
   rowBetween: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 10,
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    width: '100%',
   },
   label: {
-    fontSize: 18,
-    color: 'black',
-    fontFamily: Platform.OS === 'ios' ? 'AvenirNext-Medium' : 'Roboto-Medium',
+    fontSize: 16,
+    fontWeight: '500',
   },
   subLabel: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: 'black',
-    fontFamily: Platform.OS === 'ios' ? 'AvenirNext-Bold' : 'Roboto-Bold',
-  },
-  description: {
     fontSize: 14,
-    color: 'gray',
-    fontFamily: Platform.OS === 'ios' ? 'AvenirNext-Regular' : 'Roboto-Regular',
+    fontWeight: '500',
   },
   pickerContainer: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    width: '50%',
-    borderRadius: 10,
-    overflow: 'hidden',
-    backgroundColor: '#f9f9f9',
+    flex: 1,
+    marginLeft: 10,
   },
   picker: {
-    height: Platform.OS === 'ios' ? 200 : 50,
-    width: '100%',
+    height: 40,
+    width: 180,
+    marginLeft:60
   },
   divider: {
     height: 1,
-    backgroundColor: '#6082B6',
-    marginVertical: 15,
+    backgroundColor: '#ccc',
+    marginVertical: 10,
+    width: '100%',
   },
   counter: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   counterText: {
-    fontSize: 18,
+    fontSize: 16,
     marginHorizontal: 10,
-    fontFamily: Platform.OS === 'ios' ? 'AvenirNext-Medium' : 'Roboto-Medium',
+  },
+  iconWithTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   roomIcon: {
-    color: '#7CB9E8',
-    marginTop: 10,
+    marginRight: 5,
   },
   searchButton: {
-    backgroundColor: '#7CB9E8',
-    width: '50%',
-    alignSelf: 'center',
     marginTop: 20,
-    borderRadius: 25,
     paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#2196F3',
+    borderRadius: 40,
+    alignSelf: 'center',
   },
 });
+
+
+
+
+
+
+  

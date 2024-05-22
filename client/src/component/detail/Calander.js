@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View ,Text,StyleSheet,TouchableOpacity} from 'react-native';
+import { View ,Text,StyleSheet,TouchableOpacity,ScrollView} from 'react-native';
 import { eachDayOfInterval, format } from 'date-fns';
 import { Calendar } from 'react-native-calendars';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,25 +38,13 @@ const handleGet=()=>{
     dispatch(ComparPrice(body))
 }
 
-  console.log('hotelId',hotelId);
-  const handleDateChange = (date) => {
-    console.log('date',date);
-  
-    // setSelectedDates((prevDates) => {
-    //   // if (!prevDates.start) {
-    //   //   return { start: date };
-    //   // } else if (!prevDates.end) {
-    //   //   return { ...prevDates, end: date };
-    //   // } else {
-    //   //   return { start: date };
-    //   // }
-    //  return getDatesBetween(date.start,date.end)
-    // });
-  };
+console.log('hotelId',hotelId);
 
-  const onDayPress = (day) => {
-    const { dateString } = day;
-    const newSelectedDates = [...selectedDates]; // Create a copy
+
+const onDayPress = (day) => {
+  const { dateString } = day;
+  const newSelectedDates = [...selectedDates]; // Create a copy
+  console.log('hello',day);
 
     if (startDate) {
       const [start, end] = [startDate, dateString].sort();
@@ -113,25 +101,7 @@ const handleGet=()=>{
     return dates;
   }
   
-  
-
-  // const getMarkedDates = () => {
-  //   const start = new Date(selectedDates.start);
-  //   const end = selectedDates.end ? new Date(selectedDates.end) : new Date(selectedDates.start);
-  //   const interval = eachDayOfInterval({ start, end });
-  //   const dates = {};
-  //   const time=[]
-  //    interval.forEach((date) => {
-  //     time.push(date)
-  //     console.log('dates',time);
-  //     const dateString = format(date, 'yyyy-MM-dd');
-  //     dates[dateString] = { selected: true, selectedColor: '#007FFF' }
-  //   });
-   
-     
-  // return dates
-  // };
-  console.log('hhhhhhhhhhhh',date);
+ 
   const today = format(new Date(), 'yyyy-MM-dd');
   console.log(selectedDates);
   const chek=()=>{
@@ -146,119 +116,221 @@ chek()
   },[])
 
   return (
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
     <View style={styles.container}>
-    <View style={styles.header}>
-      <TouchableOpacity style={styles.backButton}>
-        <Icon name='arrow-back' size={25} color='white' />
-      </TouchableOpacity>
-      <Text style={styles.headerText}>Choose Your Arrival & Departure</Text>
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton}>
+          <Icon name='arrow-back' size={25} color='white' />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>Choose Your Arrival & Departure</Text>
+      </View>
+      <View style={styles.calendarContainer}>
+        <Calendar
+          style={styles.calendar}
+          onDayPress={onDayPress}
+          markedDates={markedDates}
+          markingType={'custom'}
+          minDate={today}
+          theme={{
+            backgroundColor: '#F4F7FD',
+            calendarBackground: '#F4F7FD',
+            textSectionTitleColor: 'black',
+            dayTextColor: 'black',
+            todayTextColor: '#00adf5',
+          }}
+        />
+      </View>
+      <View style={styles.dateInfoContainer}>
+        <Text style={styles.dateInfoText}>Start: {selectedDates[0]}</Text>
+        <Text style={styles.dateInfoText}>End: {selectedDates[selectedDates.length - 1]}</Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button mode="outlined" color='black' style={styles.resetButton} onPress={() => navigation.navigate('AllHotell')}>
+          Reset
+        </Button>
+        <Button mode="contained" style={styles.continueButton} onPress={() =>
+          {handleGet(), navigation.navigate('Detail', {selectedDates:selectedDates, hotelId:hotelId, numRoom:numRoom, people:people, ownerId:route.params.ownerId, hotelName:route.params.hotelName})}
+        }>
+          Continue
+        </Button>
+      </View>
     </View>
-    <TouchableOpacity style={styles.calendarContainer}>
-      <Calendar
-      // allowBackwardRangeSelect={true}
-      // allowRangeSelection={true}
-      // selectedStartDate={}
-      // selectedEndDate={}
-
-        style={styles.calendar}
-        // onDayPress={(day) => handleDateChange(day.dateString)}
-        // markedDates={getMarkedDates()}
-        onDayPress={onDayPress}
-        markedDates={markedDates}
-        markingType={'custom'}
-        minDate={today}
-        theme={{
-          backgroundColor: '#F4F7FD',
-          calendarBackground: '#F4F7FD',
-          textSectionTitleColor: 'black',
-          dayTextColor: 'black',
-          todayTextColor: '#00adf5',
-        }}
-      />
-    </TouchableOpacity>
-    <View style={styles.dateInfoContainer}>
-      <Text style={styles.dateInfoText}>Start: {selectedDates.start}</Text>
-      <Text style={styles.dateInfoText}>End: {selectedDates.end}</Text>
-    </View>
-    <View style={styles.buttonContainer}>
-      <Button mode="outlined" color='black' style={styles.resetButton} onPress={() =>navigation.navigate('AllHotell')}>
-        Reset
-      </Button>
-      <Button mode="contained" style={styles.continueButton} onPress={() =>
-        {handleGet(), navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId,numRoom:numRoom,people:people,ownerId:route.params.ownerId,hotelName:route.params.hotelName})}
-      }>
-        Continue
-      </Button>
-    </View>
-  </View>
+  </ScrollView>
   );
 }
 
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#F4F7FD',
+//     paddingHorizontal: 20,
+//     paddingTop: 20,
+//   },
+//   header: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     paddingBottom: 10,
+//   },
+//   backButton: {
+//     backgroundColor: '#007BFF',
+//     borderRadius: 30,
+//     padding: 10,
+//     marginRight: 10,
+//   },
+//   headerText: {
+//     fontWeight: 'bold',
+//     fontSize: 18,
+//     color: 'black',
+//   },
+//   calendarContainer: {
+//     backgroundColor: 'white',
+//     borderRadius: 15,
+//     elevation: 5,
+//     marginHorizontal: 10,
+//     marginBottom: 20,
+//     overflow: 'hidden',
+//     marginTop:80
+//   },
+//   calendar: {
+//     width: '100%',
+//     marginTop: 20,
+//     height: 350,
+//   },
+//   dateInfoContainer: {
+//     marginBottom: 20,
+//     alignItems: 'center',
+//     marginTop:30,
+//     borderWidth:1,
+//     borderRadius:10,
+//    width:'50%',
+//    marginLeft:70
+//   },
+//   dateInfoText: {
+//     fontSize: 16,
+//     color: 'black',
+//     marginBottom: 5,
+//   },
+//   buttonContainer: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     marginHorizontal: 10,
+//     marginTop: 70,
+//   },
+//   resetButton: {
+//     flex: 1,
+//     marginRight: 10,
+//     borderColor: 'black',
+//     borderWidth: 1,
+//   },
+//   continueButton: {
+//     flex: 1,
+//     backgroundColor: '#007BFF',
+//   },
+// });
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#E5E5E5', // Light gray background for better contrast
+    paddingVertical: 30,
+  },
   container: {
-    flex: 1,
-    backgroundColor: '#F4F7FD',
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    width: '90%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 10,
+    alignItems: 'center',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 10,
+    marginBottom: 20,
+    alignSelf: 'stretch',
   },
   backButton: {
-    backgroundColor: '#007BFF',
-    borderRadius: 30,
     padding: 10,
-    marginRight: 10,
+    backgroundColor: '#00adf5',
+    borderRadius: 50,
   },
   headerText: {
+    flex: 1,
+    fontSize: 20,
     fontWeight: 'bold',
-    fontSize: 18,
     color: 'black',
+    textAlign: 'center',
   },
   calendarContainer: {
-    backgroundColor: 'white',
+    backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    elevation: 5,
-    marginHorizontal: 10,
+    padding: 10,
     marginBottom: 20,
-    overflow: 'hidden',
-    marginTop:80
+    width: '100%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
   },
   calendar: {
     width: '100%',
-    marginTop: 20,
-    height: 350,
+    borderRadius: 10,
   },
   dateInfoContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    padding: 15,
     marginBottom: 20,
+    width: '100%',
     alignItems: 'center',
-    marginTop:30,
-    borderWidth:1,
-    borderRadius:10,
-   width:'50%',
-   marginLeft:70
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
   },
   dateInfoText: {
-    fontSize: 16,
+    fontSize: 18,
     color: 'black',
-    marginBottom: 5,
+    fontWeight: '500',
+    marginVertical: 5,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 10,
-    marginTop: 70,
+    marginTop: 20,
+    width: '100%',
   },
   resetButton: {
     flex: 1,
     marginRight: 10,
     borderColor: 'black',
     borderWidth: 1,
+    paddingVertical: 12,
+    borderRadius: 30,
+    alignItems: 'center',
   },
   continueButton: {
     flex: 1,
-    backgroundColor: '#007BFF',
+    marginLeft: 10,
+    backgroundColor: '#00adf5',
+    paddingVertical: 12,
+    borderRadius: 30,
+    alignItems: 'center',
   },
 });
+
+
+
+
+
+
+
+
+

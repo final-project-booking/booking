@@ -28,11 +28,7 @@ function App({route,navigation}) {
       
       setModalVisible(!modalVisible);
     });
-  // socket.on('response_request',(data)=>{
-  //   console.log('response_request response_requestresponse_request'  , data);
-  //   setData(data);
-  //   setVisible(true);
-  // })
+
     return () => {
       socket.disconnect();
     };
