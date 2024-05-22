@@ -286,9 +286,9 @@ const DetailsScreen = () => (
 );
 
 const ReviewsScreen = () => (
-  <View style={styles.screenContainer}>
+  // <View style={styles.screenContainer}>
     <Reviews/>
-  </View>
+ 
 );
 
 const HotelProfile = () => {

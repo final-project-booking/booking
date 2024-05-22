@@ -214,7 +214,7 @@ return (
             compar.mainRooms.map((e, index) => (
               <View key={index} style={styles.roomContainer}>
                 <Text style={styles.hotelName}>The Carlton Hotel</Text>
-                <Text style={styles.detailsText}>Rooms:{numRoom}</Text>
+                <Text style={styles.detailsText}>Rooms: {numRoom}</Text>
                 <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
                 <Text style={styles.detailsText}>People: {e?.capacity}</Text>
 
