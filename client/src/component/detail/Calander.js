@@ -11,13 +11,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {  } from 'react-native-gesture-handler';
 
 export default function Reservation({route,navigation}) {
-  const [selectedDates, setSelectedDates] = useState({});
+  // const [selectedDates, setSelectedDates] = useState({});
   const [hotelId,setHotelId]=useState(route.params.hotelId)
   const [selectedValue, setSelectedValue] = useState(route.params.view);
   const [selectedPlan, setSelectedPlan] = useState(route.params.plan);
   const [date, setDate] = useState({});
   const [numRoom, setNumRoom] = useState(route.params.numRoom);
   const [price, setPrice] = useState();
+  const [selectedDates, setSelectedDates] = useState([]);
+  const [startDate, setStartDate] = useState(null);
 const people=route.params.people
   const dispatch = useDispatch();
 const prices=useSelector(state=>state.getRoomByCategory.room)
@@ -38,36 +40,97 @@ const handleGet=()=>{
 
   console.log('hotelId',hotelId);
   const handleDateChange = (date) => {
-    setSelectedDates((prevDates) => {
-      if (!prevDates.start) {
-        return { start: date };
-      } else if (!prevDates.end) {
-        return { ...prevDates, end: date };
-      } else {
-        return { start: date };
-      }
-    });
+    console.log('date',date);
+  
+    // setSelectedDates((prevDates) => {
+    //   // if (!prevDates.start) {
+    //   //   return { start: date };
+    //   // } else if (!prevDates.end) {
+    //   //   return { ...prevDates, end: date };
+    //   // } else {
+    //   //   return { start: date };
+    //   // }
+    //  return getDatesBetween(date.start,date.end)
+    // });
   };
 
-  useEffect(() => {
-    getMarkedDates();
-  }, [selectedDates]);
-  const getMarkedDates = () => {
-    const start = new Date(selectedDates.start);
-    const end = selectedDates.end ? new Date(selectedDates.end) : new Date(selectedDates.start);
-    const interval = eachDayOfInterval({ start, end });
-    const dates = {};
-    const time=[]
-     interval.forEach((date) => {
-      time.push(date)
-      console.log('dates',time);
-      const dateString = format(date, 'yyyy-MM-dd');
-      dates[dateString] = { selected: true, selectedColor: '#007FFF' }
-    });
+  const onDayPress = (day) => {
+    const { dateString } = day;
+    const newSelectedDates = [...selectedDates]; // Create a copy
+
+    if (startDate) {
+      const [start, end] = [startDate, dateString].sort();
+      for (let i = new Date(start); i <= new Date(end); i.setDate(i.getDate() + 1)) {
+        const dateObj = new Date(i);
+        const formattedDate = dateObj.toISOString().slice(0, 10);
+        if (!newSelectedDates.includes(formattedDate)) {
+          newSelectedDates.push(formattedDate);
+        }
+      }
+    } else {
+      setStartDate(dateString);
+    }
+    setSelectedDates(newSelectedDates);
+    console.log("alll dates ",selectedDates)
+  };
+
+  const markedDates = selectedDates.reduce((acc, date) => {
+    acc[date] = { marked: true };
+    return acc;
+  }, {});
+  function getDatesBetween(startDate, endDate) {
+    // Parse the dates
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+  
+    // Ensure at least one valid date is provided
+    if (!start && !end) {
+      throw new Error("At least one date must be provided");
+    }
+  
+    // Ensure valid dates
+    if ((start && isNaN(start)) || (end && isNaN(end))) {
+      throw new Error("Invalid date format");
+    }
+  
+    // If only one date is provided, return an array with that date
+    if (!start) return [end];
+    if (!end) return [start];
+  
+    // Ensure start date is before end date
+    if (start > end) {
+      throw new Error("Start date must be before end date");
+    }
+  
+    // Array to hold the dates
+    const dates = [];
+  
+    // Loop from start date to end date
+    for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+      dates.push(new Date(date)); // Push a new Date object to avoid reference issues
+    }
+  
+    return dates;
+  }
+  
+  
+
+  // const getMarkedDates = () => {
+  //   const start = new Date(selectedDates.start);
+  //   const end = selectedDates.end ? new Date(selectedDates.end) : new Date(selectedDates.start);
+  //   const interval = eachDayOfInterval({ start, end });
+  //   const dates = {};
+  //   const time=[]
+  //    interval.forEach((date) => {
+  //     time.push(date)
+  //     console.log('dates',time);
+  //     const dateString = format(date, 'yyyy-MM-dd');
+  //     dates[dateString] = { selected: true, selectedColor: '#007FFF' }
+  //   });
    
      
-  return dates
-  };
+  // return dates
+  // };
   console.log('hhhhhhhhhhhh',date);
   const today = format(new Date(), 'yyyy-MM-dd');
   console.log(selectedDates);
@@ -92,9 +155,16 @@ chek()
     </View>
     <TouchableOpacity style={styles.calendarContainer}>
       <Calendar
+      // allowBackwardRangeSelect={true}
+      // allowRangeSelection={true}
+      // selectedStartDate={}
+      // selectedEndDate={}
+
         style={styles.calendar}
-        onDayPress={(day) => handleDateChange(day.dateString)}
-        markedDates={getMarkedDates()}
+        // onDayPress={(day) => handleDateChange(day.dateString)}
+        // markedDates={getMarkedDates()}
+        onDayPress={onDayPress}
+        markedDates={markedDates}
         markingType={'custom'}
         minDate={today}
         theme={{
@@ -115,7 +185,7 @@ chek()
         Reset
       </Button>
       <Button mode="contained" style={styles.continueButton} onPress={() =>
-        {handleGet(), navigation.navigate('Detail', {selectedDates:date,hotelId:hotelId,numRoom:numRoom,people:people,ownerId:route.params.ownerId,hotelName:route.params.hotelName})}
+        {handleGet(), navigation.navigate('Detail', {selectedDates:selectedDates,hotelId:hotelId,numRoom:numRoom,people:people,ownerId:route.params.ownerId,hotelName:route.params.hotelName})}
       }>
         Continue
       </Button>

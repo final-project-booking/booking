@@ -63,8 +63,9 @@ function Nav({Navigation}) {
 
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-        <Stack.Screen name="CodeQR" component={CodeQR} options={{ headerShown: false }}/>
+      <Stack.Screen name="Calander" component={Calander} options={{ headerShown: false }}/>
         <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
+        <Stack.Screen name="CodeQR" component={CodeQR} options={{ headerShown: false }}/>
         <Stack.Screen name="ReservationProfile" component={ReservationProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Favorites"  component={Favorites}  options={{ headerShown: false }} />  
         <Stack.Screen name="AllHotels" component={AllHotels} options={{ headerShown: false }}/>
@@ -89,7 +90,6 @@ function Nav({Navigation}) {
        
         <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }}/>
     
-        <Stack.Screen name="Calander" component={Calander} options={{ headerShown: false }}/>
    
         <Stack.Screen name="AppFace"  component={AppFace} options={{ headerShown: false }}/>
         <Stack.Screen name="TabNavigator"  component={TabNavigator}  options={{ headerShown: false }} />    

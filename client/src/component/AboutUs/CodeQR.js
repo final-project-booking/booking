@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, Image, StyleSheet ,SafeAreaView} from 'react-native';
 import axios from 'axios';
 import { AP_ADRESS } from '../../apAdress';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 const QRCodeComponent = ({route,navigation}) => {
   const [text, setText] = useState(user);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
@@ -29,6 +31,9 @@ const QRCodeComponent = ({route,navigation}) => {
 },[text])
   return (
     <View style={styles.container}>
+      <View style={styles.iconContainer}>
+        <Icon name='return-up-back' size={30} onPress={()=>navigation.navigate('Home')}/>
+      </View>
     <View style={styles.inputContainer}>
       <Text style={styles.header}>Your CheckOut</Text>
     </View>
@@ -138,6 +143,12 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
   },
+  iconContainer: {
+    position: 'absolute',
+    top: 16,
+    left: 16,
+  },
+
 });
 
 export default QRCodeComponent;

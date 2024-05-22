@@ -48,17 +48,17 @@ module.exports={
            
             })
 
-            const availability = await Promise.all(
-              dates.map(async (date,i) => {
-                return dayAvailability.create({
+            // const availability = await Promise.all(
+              // dates.map(async (date,i) => {
+               const x=  await dayAvailability.create({
                   data:{
-                    nigth:date,
+                    nigth:dates,
                     roomId:roomId,
                     availability:false
                   }
                 })
 
-              }))
+              // }))
          
        
            
@@ -69,7 +69,7 @@ module.exports={
     
           
         } catch (error) {
-          console.log(error);
+          
         }
       },
     removeReservation:async function(req,res){

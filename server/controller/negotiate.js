@@ -50,5 +50,21 @@ getUserWhereHotelId:async function(req,res){
     } catch (error) {
         throw error
     }
-}
+},
+getHotelByName: async function(req,res){
+    try {
+        const {name}=req.params
+        const hotels=await hotel.findMany(
+            {
+                where: {
+                  name:name
+                }
+              }
+        )
+        console.log(hotels);
+        res.status(200).send(hotels);
+    } catch (error) {
+     throw error
+    }
+} 
 }
