@@ -19,19 +19,15 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
   console.log('a user connected',socket.id);
-  socket.on('join', (userId) => {
-    console.log('user join room',userId);
-    socket.join(userId);
-
-  })
+  socket.join('admin');
   socket.on('send_hotel', (data) => {
    
-    console.log('Received_request', data);
-    socket.to().emit('Received_hotel', data);
+    console.log('Received_notification', data);
+    socket.to('admin').emit('Received_hotel', data);
   });
 socket.on('accepte_reject', (data) => {
   console.log('accepte_reject:', data);
-  socket.to().emit('response_request', data);
+  socket.to().emit('response_notification', data);
 });
 socket.on('disconnect', () => {
   console.log('A user disconnected');
