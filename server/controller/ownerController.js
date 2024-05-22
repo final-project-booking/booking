@@ -182,7 +182,8 @@ createRoomsForHotel: async function(req, res) {
 getAllHotels:async(req,res)=>{
     try {
         const hot=await prisma.hotel.findMany()
-        res.status(200).send(hot)
+        const reverse=hot.reverse()
+        res.status(200).send(reverse)
     } catch (error) {
         throw error
     }
