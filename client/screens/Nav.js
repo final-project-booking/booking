@@ -29,7 +29,9 @@ import Notification from '../src/component/UserProfile/Notification.js';
 import { Button, Dialog, Portal, PaperProvider, Text } from 'react-native-paper';
 import ReservationProfile from '../src/component/Detail/ReservationProfile.js';
 import Migrations from "../src/component/OwnerProfile/Migrations.js"
+import Migrations2 from "../src/component/OwnerProfile/Migration2.js"
 import Chhat from './Chhat.js';
+import Map from "../src/component/Map/Map.js"
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Nav({Navigation}) {
@@ -59,6 +61,7 @@ function Nav({Navigation}) {
     <NavigationContainer>
 
       <Stack.Navigator>
+        <Stack.Screen name="Map" component={Map} options={{ headerShown: false }}/>
         <Stack.Screen name="Onboarding"  component={Onboarding}  options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="ReservationProfile" component={ReservationProfile} options={{ headerShown: false }}/>
@@ -92,6 +95,7 @@ function Nav({Navigation}) {
        
         <Stack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}} />
         <Stack.Screen name="Migrations" component={Migrations} options={{headerShown: false}} />
+        <Stack.Screen name="Migrations2" component={Migrations2} options={{headerShown: false}} />
         <Stack.Screen name="OwnerProfile" component={OwnerProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Chhat" component={Chhat} options={{ headerShown: false }}/>
        

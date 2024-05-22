@@ -8,7 +8,6 @@ import Nav from './screens/Nav';
 import socket from './socket';
 import { ActivityIndicator,Modal,Pressable } from 'react-native';
 
-
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 

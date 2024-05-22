@@ -17,6 +17,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import MapView, { Marker } from 'react-native-maps';
 import { useDispatch, useSelector} from 'react-redux';
+import { AllHotell } from '../../reduce/Hotels';
 
 // import hotels from '../const/Hotels'; 
 const AdvancedFilter = () => {
@@ -30,14 +31,8 @@ const AdvancedFilter = () => {
 
   useEffect(()=>{
     dispatch(AllHotell())
-  
-
-    },[dispatch])
+    },[])
 ;
-
-
-
-
   const [rating, setRating] = useState(null);
   const [priceRange, setPriceRange] = useState([50, 5000]);
   const [location, setLocation] = useState(null);
