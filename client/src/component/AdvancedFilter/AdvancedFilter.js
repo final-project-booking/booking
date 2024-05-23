@@ -19,7 +19,6 @@ import MapView, { Marker } from 'react-native-maps';
 import { useDispatch, useSelector} from 'react-redux';
 import { AllHotell } from '../../reduce/Hotels';
 
-// import hotels from '../const/Hotels'; 
 const AdvancedFilter = () => {
 
 
@@ -128,7 +127,6 @@ const AdvancedFilter = () => {
           {'  '}
           Location
         </Text>
-        {/* Location filter UI */}
         <MapView
           style={styles.map}
           onPress={(e) => handleLocationSelect(e.nativeEvent.coordinate)}
@@ -145,7 +143,6 @@ const AdvancedFilter = () => {
         <Text style={styles.resetText}>Reset Filters</Text>
       </TouchableOpacity>
 
-      {/* Modal for displaying filtered hotels */}
       <Modal
         animationType="slide"
         transparent={true}

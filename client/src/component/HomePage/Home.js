@@ -1,4 +1,11 @@
 import React, { useState,useEffect } from 'react'
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Warning: ...']); 
+
+LogBox.ignoreAllLogs();
+
+
 import { decode } from "base-64";
 global.atob = decode;
 import {
@@ -181,8 +188,7 @@ const handleicon =()=>{
   const Card = ({hotel}) => {
     return (
           <TouchableOpacity
-        // disabled={activeCardIndex != index}
-        // activeOpacity={1}
+      
         onPress={() => navigation.navigate('HotelProfile',{hotel:hotel})}>
       <View style={styles.card}>
         <View
@@ -206,9 +212,7 @@ const handleicon =()=>{
                 <Text style={{ fontWeight: 'bold', fontSize: 17 ,color  :   '#161618'}}>
                   {hotel.name}
                 </Text>
-                {/* <Text style={{ color: '#161618', fontSize: 12 }}>
-                  {hotel.description}
-                </Text> */}
+           
               </View>
               <IconS name="heart-fill" size={26} color='#161678' style={{ color: isFavorite ? 'red' : 'white' }} onPress={()=>postFvorite({userId:userId,hotelId:hotel.id})}/>
             </View>
@@ -255,17 +259,13 @@ const handleicon =()=>{
         <Image source={require('../../Photo/logo-color.png')} style={{width:190,height:80,opacity:1}}/> 
 
       
-        {/* <Icon name="person-outline" size={38}  color='#161618'/> */}
 
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
     
         <View style={styles.searchInputContainer}>
           <Ico name="magnifying-glass-location" size={30} style={{ marginLeft: 20 , color: '#161618' }}  onPress={handleicon} />  
-          {/* <TextInput
-            placeholder="Search by location"
-            style={{ fontSize: 20, paddingLeft: 10 ,  color: '#161618'}}
-          /> */}
+        
         </View>
         <CategoryList />
         <View>
@@ -384,7 +384,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 100,
     width: 500,
-    // borderRadius: 15,
   },
   topHotelCard: {
     height: 120,

@@ -48,8 +48,7 @@ module.exports={
            
             })
 
-            // const availability = await Promise.all(
-              // dates.map(async (date,i) => {
+          
                const x=  await dayAvailability.create({
                   data:{
                     nigth:dates,
@@ -58,7 +57,6 @@ module.exports={
                   }
                 })
 
-              // }))
          
        
            

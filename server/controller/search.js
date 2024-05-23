@@ -1,6 +1,5 @@
 const {hotel}=require('../database/index');
 
-// console.log(hotel)
 module.exports={
   getHotelByName:async function(req,res) {
     try {

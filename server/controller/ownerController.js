@@ -113,12 +113,7 @@ getAllOwners : async function(req, res) {
         const owners = await prisma.hotel.findMany({
             include: {
                 owner:true, 
-                // hotel:{
-                //     include: {
-                //         room:true ,
-                //         media:true
-                //     }
-                // }
+           
             }
         });
 
@@ -210,14 +205,12 @@ console.log(req.params);
                whereCondition={
                    AND:[
                        {view:{equals:view}},
-                   //    {capacity: {equals:Number(capacity)}},
 
                    ]
                }
            }else if(view){
                whereCondition={view:{equals:view}}
-           // }else if(capacity){
-           //     whereCondition={capacity:{equals:Number(capacity)}}
+          
            }
 
             const room = await prisma.room.findFirst({
@@ -232,17 +225,7 @@ console.log(req.params);
                 },
 
               });
-           //    const chekRoom=await prisma.reservation.findFirst({
-           //     where:{
-           //         roomId:Number(room.id)
-           //     }
-
-           // })
-           // if(chekRoom){
-           //     return res.status(400).send({error:"room is already reserved"})
-           // }else{
-
-               // }
+       
                    res.status(200).send(room)
 
     } catch (error) {

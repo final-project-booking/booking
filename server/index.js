@@ -7,12 +7,10 @@ const ownerRouter=require('./router/owner')
 const userRouter=require('./router/user')
 const chat=require('./router/chat')
 const reservation=require('./router/reservation')
-// const userRoute=require('./router/user')
 const CompairePrice=require('./router/compairePrice')
 const userRoute=require('./router/user')
 const review=require("./router/review")
 const search=require('./router/search')
-// require("./dummy")()
 const negotiate=require('./router/negotiation')
 const bodyParser = require('body-parser');
 const hotel = require('./router/hotel');
@@ -25,7 +23,6 @@ const socketIO = require("socket.io")(http, {
   },
 });
 
-// app.use(express.static(__dirname + "/../client/dist"))
 app.use(express.urlencoded({extended: true}))
 
 app.use(express.json())
@@ -109,13 +106,10 @@ socketIO.on("connection", (socket) => {
 
 app.get("/api", (req, res) => {
   console.log(req,res);
-  // res.json(chatgroups);
 });
 
 http.listen(port, () => {
   console.log(`Server is listeing on ${port}`);
 });
 
-// app.listen(port, function () {
-//   console.log(`listening on port ${port}`)
-// })
+

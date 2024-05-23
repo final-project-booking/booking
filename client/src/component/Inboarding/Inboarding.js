@@ -77,8 +77,7 @@ const OnboardingScreen = ({ onboardingImages, nav }) => {
 const Onboarding = ({ navigation }) => {
   const onboardingImages = [
     require('../../Photo/Screen1.jpeg'),
-    // require('../../Photo/screen2.jpg'),
-    // require('../../Photo/screen3.jpeg'),
+  
   ];
 
   return (
@@ -99,7 +98,6 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 24,
     textAlign: 'center',
-    // backgroundColor: 'rgba(255, 255, 255, 0.7)',
     padding: 10,
     borderRadius: 5,
     fontFamily:"Italic"

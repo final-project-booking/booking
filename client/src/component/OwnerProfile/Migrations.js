@@ -71,9 +71,7 @@ const Migrations = ({ onboardingImages, nav }) => {
 
 const Migration = ({ navigation }) => {
   const onboardingImages = [
-    // require('../../Photo/Screen1.jpeg'),
     require('../../Photo/6523aea35066d9e378121619c8de12ed--dark-interiors-black-dark.jpg'),
-    // require('../../Photo/detail2.webp'),
   ];
 
   return (

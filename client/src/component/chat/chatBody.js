@@ -44,7 +44,7 @@ export default function chatBody() {
         name="arrow-forward-outline"
         size={24}
         color="black"
-        onPress={() => Linking.openURL('/')} // Assuming you want to navigate to "/"
+        onPress={() => Linking.openURL('/')} 
         style={styles.leaveChatBtn}
       />
     </View>
@@ -61,7 +61,6 @@ export default function chatBody() {
         <Text></Text>
       </View>
     </View>
-    {/* Assuming ChatFooter is another component */}
     <ChatFooter scrollToBottom={scrollToBottom} roomId={rooms.rooms.id} socket={socket} />
   </View>
   )

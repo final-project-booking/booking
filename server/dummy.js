@@ -3,9 +3,7 @@ const bcrypt=require("bcrypt")
 const { faker ,Randomizer} = require('@faker-js/faker');
 
 function getRandomElementFromArray(arr) {
-    // Generate a random index within the bounds of the array
     const randomIndex = Math.floor(Math.random() * arr.length);
-    // Return the element at the random index
     return arr[randomIndex];
   }
   let count =function(){
@@ -25,14 +23,7 @@ let counterOwner=count()
 let hotelCounter=count()
 let counterRoom=count()
 let counterDate=count()
-// let optionCount=count()
-// let hotelcount=count()
-// let roomCount=count()
 
-// let optionCount=count()
-// let hotelcount=count()
-// let roomCount=count()
-    // Adjust the number of seeds you want for each model
     const ownercount=50
     const hotelCount=300
     const userCount = 50;
@@ -40,7 +31,6 @@ let counterDate=count()
     const reservationsCount=3000
  let current=userCount
   
-    // Generate random users
     const owners = await Promise.all(
         Array.from({ length: ownercount }).map(async () => {
           return await owner.create({

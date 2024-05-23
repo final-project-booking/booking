@@ -104,7 +104,6 @@ const handleReductionChange = (newValue) => {
   
   const handleSubmit = () => {
     dispatch(createRoomsForHotel(roomData));
-    // console.log(roomData,'roomData');
 };
 
 const ImageIcon = <Icon size={25} name='add-a-photo' />;
@@ -133,12 +132,10 @@ const ImageIcon = <Icon size={25} name='add-a-photo' />;
                 keyboardType="numeric"  
                 onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, price: parseInt(text, 10) } })}
              />
-      {/* <TextInput style={styles.input} placeholder="View" onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, view: text } })} /> */}
       
 
       <TextInput style={styles.input} placeholder="Rate" keyboardType="numeric"  onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, rate: parseInt(text, 10) } })} />
       
-      {/* <TextInput style={styles.input} placeholder="Meal Plan"  onChangeText={handleOptionChange} /> */}
       <Text style={styles.label}>Meal Plan:</Text>
               <Picker
                 selectedValue={roomData.roomTemplate.option.Meal_Plan}
@@ -260,7 +257,6 @@ const ImageIcon = <Icon size={25} name='add-a-photo' />;
          <View />
          <View />
         </View>
-        {/* Bottom Sheet Trigger */}
         <BottomSheet
           ref={bottomSheetRef}
           index={0}
@@ -311,7 +307,6 @@ const DetailsScreen = () => (
 );
 
 const ReviewsScreen = () => (
-  // <View style={styles.screenContainer}>
     <Reviews/>
  
 );
@@ -437,7 +432,6 @@ const HotelProfile = () => {
           <Caption style={styles.captionText}>{hotelLocation}</Caption>
         </View>
         <Divider style={styles.divider} />
-        {/* Custom Navigation Bar */}
         <View style={styles.tabBar}>
           {['overview', 'details', 'reviews'].map((tab) => (
             <TouchableOpacity
@@ -537,7 +531,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#112678',
     marginTop: 2,
   },
-  //////////////////
   overviewWrapper: {
     flex: 1,
   },
@@ -620,7 +613,6 @@ imagePreview: {
     borderColor: '#ddd',
     borderRadius: 5,
   },
-  ////////////////////
   detailsContainer: {
     flex: 1,
     padding: 16,

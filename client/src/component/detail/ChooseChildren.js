@@ -19,7 +19,6 @@ const getWhereHotelId=async()=>{
 }
 
 useEffect(() => {
-  // console.log('Attempting to connect to server...');
 
   socket.on('connect', () => {
     console.log('Connected to server');
@@ -47,8 +46,7 @@ console.log('Received data state:', receivedData);
 
 
 
-// const nego=useSelector(state=>state.getNegotiations.get)
-// console.log('nego',nego);
+
   return (
     <SafeAreaView style={styles.container}>
     <ScrollView>
