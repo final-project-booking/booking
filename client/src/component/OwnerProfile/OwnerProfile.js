@@ -10,7 +10,7 @@ import { promoteToOwner } from '../../reduce/Ownerprofile';
 import pic from '../../Photo/owner.jpg'
 import Icons from "react-native-vector-icons/Ionicons"
 import socket from '../../../notificationSocket'
-const OwnerProfile = () => {
+const OwnerProfile = ({route,navigation}) => {
   const [profile, setProfile] = useState({
     firstName: 'John',
     lastName: 'Doe',
@@ -78,27 +78,10 @@ const OwnerProfile = () => {
       }
     });
   };
-  useEffect(() => {
 
- 
-    socket.on('connection', () => {
-      console.log('Connected to server');
-    }); 
-    
-  
-    
-  socket.on('response_request',(data)=>{
-    console.log('response_request response_requestresponse_request'  , data);
-    setData(data);
-  
-  })
-    
-  
-  return () => socket.off('disconnect');
-  }, []);
   const handleSave = () => {
     //send notification 
-    socket.emit('send_request',{})
+  
 
     dispatch(
       promoteToOwner({
@@ -107,6 +90,7 @@ const OwnerProfile = () => {
         latitude: profile.location.latitude,
       })
     );
+    navigation.navigate('TabNavigator')
   };
 
   const [view, setView] = useState('profile');

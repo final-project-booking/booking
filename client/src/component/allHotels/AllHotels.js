@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
   },
   searchButton: {
     marginLeft: 10,
+  backgroundColor:'#112678'
   },
   card: {
     backgroundColor: '#fff',

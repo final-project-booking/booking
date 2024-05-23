@@ -22,6 +22,9 @@ const GOOGLE_MAPS_API_KEY = 'AIzaSyDYm4cfAj3Lrk6HqMJZHGeB1JevFbEC55o';
 Geocoder.init(GOOGLE_MAPS_API_KEY);
 
 export default function Map({ onLocationSelect }) {
+  const handleButtonClick =()=>{
+    NavigationPreloadManager.navigate("")
+  }
   const [region, setRegion] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [hotels, setHotels] = useState([]);

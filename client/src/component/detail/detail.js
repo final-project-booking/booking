@@ -251,7 +251,7 @@ return (
         </Pressable>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '10%' }}>
          <IconButton icon="minus-circle-outline" size={30} onPress={minus} />
-         <Text style={{fontSize:17}}>{price2}</Text>
+         <Text style={{fontSize:17}}>{price2*time.length*numRoom}</Text>
         <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={plus} />
        </View>
        <View>
@@ -413,11 +413,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: '#007FFF',
+    backgroundColor: '#112678',
     borderRadius: 15,
     width: '40%',
     alignItems: 'center',
     paddingVertical: 10,
+    // justifyContent: 'center',
+    height: '99%',
   },
   buttonText: {
     fontSize: 18,

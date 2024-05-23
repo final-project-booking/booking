@@ -33,6 +33,7 @@ import {getAllUser,getAllHotels,allClient,allOwner,getReservationByHotelId,allRe
 export default function AppView() {
 
   const[userCout,setUserCount]=useState(0)
+
   const[hotelsCount,setHotelCount]=useState(0)
   // console.log("hotels",hotelsCount);
   const [client,setClient]=useState(0)
@@ -49,7 +50,7 @@ console.log("reservation",reservationData);
 const handleHotelSelection = (id) => {
   fetchReservationByHotelId(id);
 };
-
+console.log('id',);
   useEffect(()=>{
     fetch()
     fetchHotels();
@@ -62,7 +63,7 @@ const handleHotelSelection = (id) => {
    const fetch=async()=>{
     try {
       const response=await axios.get(getAllUser)
-      setUserCount(response.data.length-1);
+      setUserCount(response.data.length);
     } catch (error) {
       console.log(error);
     }
@@ -78,7 +79,7 @@ const handleHotelSelection = (id) => {
   const fetchHotels = async () => {
     try {
       const response = await axios.get(getAllHotels);
-      setHotelCount(response.data.length-1);
+      setHotelCount(response.data.length);
     } catch (error) {
       console.log(error);
     }
@@ -86,7 +87,7 @@ const handleHotelSelection = (id) => {
   const fetchReservation = async () => {
     try {
       const response = await axios.get(allReservation);
-      setReservationCount(response.data.length-1);
+      setReservationCount(response.data.length);
       setReservation(response.data)
     } catch (error) {
       console.log(error);
@@ -97,7 +98,7 @@ const handleHotelSelection = (id) => {
   const fetchClient = async () => {
     try {
       const response = await axios.get(allClient);
-      setClient(response.data.length-1);
+      setClient(response.data.length);
     } catch (error) {
       console.log(error);
     }
@@ -105,7 +106,7 @@ const handleHotelSelection = (id) => {
   const fetchOwner = async () => {
     try {
       const response = await axios.get(allOwner);
-      setOwner(response.data.length-1);
+      setOwner(response.data.length);
     } catch (error) {
       console.log(error);
     }
@@ -123,12 +124,12 @@ const handleHotelSelection = (id) => {
     try {
       const response = await axios.get(`${getReservationByHotelId}/${_id}`);
       let allReservations = [];
-  
+  console.log('hhhhhhhhhhhhhhhhhhhh',response.data);
       response.data.room.forEach(room => {
         allReservations = allReservations.concat(room.reservation);
       });
   
-      const filteredData = countReservationsByMonth(allReservations, 1970);
+      const filteredData = countReservationsByMonth(allReservations, 2024);
       setReservationData(filteredData);
     } catch (error) {
       console.error(error);

@@ -25,8 +25,7 @@ function App({route,navigation}) {
     socket.on('Received_request', (data) => {
       console.log('ceived_request'  , data);
       setData(data);
-      
-      setModalVisible(!modalVisible);
+      setModalVisible(true);
     });
 
     return () => {

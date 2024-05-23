@@ -26,10 +26,14 @@ const store = configureStore({
     reservation:reservation,
     getRoomByCategory:getRoomByCategory,
     comparPrice:compairePrice,
-    review:reviewSlice,
     negotiation:negotiation,
     OwnerProfile:OwnerProfile,
     Rooms:Rooms,
+    review:reviewSlice,
+   
+    
+    
+  
     allHotels:AllHotels,
     hotelSlice:HotelSlice,
     getNegotiations:getNegotiations,

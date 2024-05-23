@@ -29,7 +29,7 @@ navigation.navigate("Home");
   const user=useSelector(state=>state.userSignIn.userAuth)
   console.log(user);
   const dispatch=useDispatch()
-  console.log(error);
+  console.log(success);
   const handleInputChange = (name, value) => {
     setLogin({ ...login, [name]: value });
   };
@@ -38,7 +38,7 @@ navigation.navigate("Home");
     dispatch(signInAsync(login))
     
     if(success){
-      navigation.navigate("Home")
+      navigation.navigate("TabNavigator")
     } else{
       console.log('somthing happen');
     }

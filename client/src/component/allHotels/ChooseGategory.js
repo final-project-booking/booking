@@ -237,12 +237,15 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   searchButton: {
-    marginTop: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#2196F3',
-    borderRadius: 40,
-    alignSelf: 'center',
+    flex: 1,
+    marginLeft: 10,
+    backgroundColor: '#112678',
+    // paddingVertical: 12,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+   
+    height: 50,
   },
 });
 

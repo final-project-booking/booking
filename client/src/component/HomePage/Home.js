@@ -17,6 +17,7 @@ import {
 import { useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconS from 'react-native-vector-icons/Octicons';
+import Ico from 'react-native-vector-icons/FontAwesome6'
 import { favoriteHotel } from '../../reduce/favoriteHotel';
 import COLORS from '../const/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -109,6 +110,9 @@ const opacity = scrollX.interpolate({
   extrapolate: 'clamp',
 });
 
+const handleicon =()=>{
+  navigation.navigate('Map')
+}
   const CategoryList = ({ navigation }) => {
     return (
       <View style={styles.categoryListContainer}>
@@ -257,11 +261,11 @@ const opacity = scrollX.interpolate({
       <ScrollView showsVerticalScrollIndicator={false}>
     
         <View style={styles.searchInputContainer}>
-          <Icon name="search" size={30} style={{ marginLeft: 20 , color: '#161618' }} />  
-          <TextInput
-            placeholder="Search"
+          <Ico name="magnifying-glass-location" size={30} style={{ marginLeft: 20 , color: '#161618' }}  onPress={handleicon} />  
+          {/* <TextInput
+            placeholder="Search by location"
             style={{ fontSize: 20, paddingLeft: 10 ,  color: '#161618'}}
-          />
+          /> */}
         </View>
         <CategoryList />
         <View>

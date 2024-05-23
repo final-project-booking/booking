@@ -32,7 +32,7 @@ const QRCodeComponent = ({route,navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
-        <Icon name='return-up-back' size={30} onPress={()=>navigation.navigate('Home')}/>
+        <Icon name='return-up-back' size={30} onPress={()=>navigation.navigate('TabNavigator')}/>
       </View>
     <View style={styles.inputContainer}>
       <Text style={styles.header}>Your CheckOut</Text>
