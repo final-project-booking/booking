@@ -77,8 +77,7 @@ const Migrations = ({ onboardingImages, nav }) => {
 
 const Migrations2 = ({ navigation }) => {
   const onboardingImages = [
-    // require('../../Photo/Screen1.jpeg'),
-    // require('../../Photo/detail.jpeg'),
+  
     require('../../Photo/migration.jpeg'),
   ];
 

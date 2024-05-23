@@ -15,7 +15,6 @@ export default function Chhat() {
     <GlobalState>
       <NavigationContainer independent={true}>
         <Stack.Navigator>
-          {/* all the screens here */}
           <Stack.Screen
             name="ChatHomescreen"
             component={ChatHomescreen}

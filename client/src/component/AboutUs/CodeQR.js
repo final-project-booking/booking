@@ -8,8 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const QRCodeComponent = ({route,navigation}) => {
   const [text, setText] = useState(user);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
-// setText(1)
-  // console.log(route?.params?.data?.body.userId)
+
 
    const user=route?.params?.data?.body.roomId
   console.log(user);

@@ -1,7 +1,6 @@
 
 const express = require('express');
 const app = express();
-// http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io'); 
 const http =require('http').Server(app);
@@ -9,11 +8,6 @@ const http =require('http').Server(app);
 const server = http.createServer(app); 
 
 
-// const io = new Server(server, {
-//   cors: {
-//     origin: '*',
-//   },
-// });
 const socketIO = require("socket.io")(http, {
     cors: {
       origin: "http://10.0.2.2:3000/",

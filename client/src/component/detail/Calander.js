@@ -11,7 +11,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {  } from 'react-native-gesture-handler';
 
 export default function Reservation({route,navigation}) {
-  // const [selectedDates, setSelectedDates] = useState({});
   const [hotelId,setHotelId]=useState(route.params.hotelId)
   const [selectedValue, setSelectedValue] = useState(route.params.view);
   const [selectedPlan, setSelectedPlan] = useState(route.params.plan);
@@ -32,7 +31,6 @@ const body={
   numRoom:numRoom,
   price:prices?.price
 }
-// console.log('date',date);
 console.log('calendar',route.params.ownerId);
 const handleGet=()=>{
     dispatch(ComparPrice(body))
@@ -43,7 +41,7 @@ console.log('hotelId',hotelId);
 
 const onDayPress = (day) => {
   const { dateString } = day;
-  const newSelectedDates = [...selectedDates]; // Create a copy
+  const newSelectedDates = [...selectedDates]; 
   console.log('hello',day);
 
     if (startDate) {
@@ -67,35 +65,28 @@ const onDayPress = (day) => {
     return acc;
   }, {});
   function getDatesBetween(startDate, endDate) {
-    // Parse the dates
     const start = startDate ? new Date(startDate) : null;
     const end = endDate ? new Date(endDate) : null;
   
-    // Ensure at least one valid date is provided
     if (!start && !end) {
       throw new Error("At least one date must be provided");
     }
   
-    // Ensure valid dates
     if ((start && isNaN(start)) || (end && isNaN(end))) {
       throw new Error("Invalid date format");
     }
   
-    // If only one date is provided, return an array with that date
     if (!start) return [end];
     if (!end) return [start];
   
-    // Ensure start date is before end date
     if (start > end) {
       throw new Error("Start date must be before end date");
     }
   
-    // Array to hold the dates
     const dates = [];
   
-    // Loop from start date to end date
     for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
-      dates.push(new Date(date)); // Push a new Date object to avoid reference issues
+      dates.push(new Date(date)); 
     }
   
     return dates;
@@ -159,80 +150,13 @@ chek()
   );
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#F4F7FD',
-//     paddingHorizontal: 20,
-//     paddingTop: 20,
-//   },
-//   header: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     paddingBottom: 10,
-//   },
-//   backButton: {
-//     backgroundColor: '#007BFF',
-//     borderRadius: 30,
-//     padding: 10,
-//     marginRight: 10,
-//   },
-//   headerText: {
-//     fontWeight: 'bold',
-//     fontSize: 18,
-//     color: 'black',
-//   },
-//   calendarContainer: {
-//     backgroundColor: 'white',
-//     borderRadius: 15,
-//     elevation: 5,
-//     marginHorizontal: 10,
-//     marginBottom: 20,
-//     overflow: 'hidden',
-//     marginTop:80
-//   },
-//   calendar: {
-//     width: '100%',
-//     marginTop: 20,
-//     height: 350,
-//   },
-//   dateInfoContainer: {
-//     marginBottom: 20,
-//     alignItems: 'center',
-//     marginTop:30,
-//     borderWidth:1,
-//     borderRadius:10,
-//    width:'50%',
-//    marginLeft:70
-//   },
-//   dateInfoText: {
-//     fontSize: 16,
-//     color: 'black',
-//     marginBottom: 5,
-//   },
-//   buttonContainer: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     marginHorizontal: 10,
-//     marginTop: 70,
-//   },
-//   resetButton: {
-//     flex: 1,
-//     marginRight: 10,
-//     borderColor: 'black',
-//     borderWidth: 1,
-//   },
-//   continueButton: {
-//     flex: 1,
-//     backgroundColor: '#007BFF',
-//   },
-// });
+
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#E5E5E5', // Light gray background for better contrast
+    backgroundColor: '#E5E5E5',
     paddingVertical: 30,
   },
   container: {
@@ -312,7 +236,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderColor: 'black',
     borderWidth: 1,
-    // paddingVertical: 12,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
@@ -322,7 +245,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 10,
     backgroundColor: '#112678',
-    // paddingVertical: 12,
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',

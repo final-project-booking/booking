@@ -80,7 +80,6 @@ const OwnerProfile = ({route,navigation}) => {
   };
 
   const handleSave = () => {
-    //send notification 
   
 
     dispatch(
@@ -226,26 +225,14 @@ justifyContent: 'center',
 };
 const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
-  
-  // scrollContainer: {
-  //   backgroundColor: '#ffffff',
-  //   // flex: 1,
-  // },
-  // container: {
-  //   flex: 1,
-  //   padding: 20,
-  //   backgroundColor: '#ffffff',
-  // },
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
   },
-  //
+  
   paddedContent: {
     flex: 1,
-     // Apply padding here for other views
   },
-  //
   heading: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -275,12 +262,9 @@ const styles = StyleSheet.create({
   linkText: {
     fontSize: 20,
     color: '#FFFFFF',
-    // textDecorationLine: 'underline',
-    // textAlign: 'center',
-    // marginBottom: 20,
+   
   },
   formContainer: {
-    //marginTop: 100,
     padding:43
   },
   formHeading: {
@@ -314,7 +298,6 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     backgroundColor: '#112678',
-    // padding: 15,
     justifyContent: 'center',
     borderRadius:20,
     marginBottom: 10,
@@ -344,7 +327,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   promoteText: {
-   // marginBottom: 10,
     fontSize: 18,
     color: 'white',
     textAlign: 'center',
@@ -354,7 +336,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 200,
     fontSize: 22,
-   // backgroundColor: 'rgba(0, 0, 0, 1)',  // Semi-transparent background for better readability
     padding: 10,
     borderRadius: 5,
   },

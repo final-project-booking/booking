@@ -14,7 +14,6 @@ const Tab = createBottomTabNavigator();
 function App({route,navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState({});
-  // const [visible, setVisible] = React.useState(false);
   const [msg,setMsg]=useState('')
   useEffect(()=>{
     
@@ -33,7 +32,6 @@ function App({route,navigation}) {
     };
   },[])
 
-console.log('data request',data);
   const showDialog=()=>{
     return (
       <Modal
@@ -72,36 +70,7 @@ console.log('data request',data);
     )
   }
 
-  // const showResponse=()=>{
-  //   return (
-  //     <Modal
-  //     animationType='slide'
-  //     transparent={true}
-  //     visible={visible}
-  //     onRequestClose={() => setVisible(!visible)}
-  //   >
-  //     <View style={styles.centeredView}>
-  //       <View style={styles.modalView}>
-  //         <Text style={styles.modalText}>{data.status}</Text>
-  //         <TouchableOpacity
-  //           style={styles.modalButton}
-            
-  //         >
-  //           <Text style={styles.modalButtonText}>Price: {data?.body?.newPrice}</Text>
-  //         </TouchableOpacity>
-  //         <Text style={styles.modalText}>Room N°: {data?.body?.roomId}</Text>
-  //         <Text style={styles.modalText}> {data?.user?.firstName} {data?.user?.lastName}</Text>
-  //         <View style={styles.buttonContainer}>
-  //           <Pressable style={styles.actionButton} onPress={() =>navigation.navigate('Payment',{roomId:data.body.roomId,userId:data.body.userId,dates:data.body.dates})}>
-  //             <Text style={styles.actionButtonText}>Okey</Text>
-  //           </Pressable>
-  //         </View>
-  //       </View>
-  //     </View>
-  //   </Modal>
 
-  //   )
-  // }
  const Accept=()=>{
   setMsg('Your offer is accepted')
   socket.emit('accepte_reject', { user: data.user, body: data.body, status: 'Your offer is accepted' });
@@ -128,7 +97,7 @@ console.log('data request',data);
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dimmed background for focus
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     },
     modalView: {
       width: '80%',
@@ -157,11 +126,8 @@ console.log('data request',data);
       marginTop:10
     },
     modalButton: {
-      // backgroundColor: '#2196F3',
       borderRadius: 15,
       padding: 10,
-        // elevation: 2,
-        // marginVertical: 10,
       width: '50%',
       alignItems: 'center',
       borderColor:'black',

@@ -1,6 +1,5 @@
 const {message,user,roomChat,joinChat}=require('../database/index')
 
-// console.log(joinChat);
 module.exports = {
     addMessage: async function(req, res) {
         const { userId, content, roomId } = req.body;
@@ -103,13 +102,11 @@ getAllUser:async function(req, res){
  createRoom: async function (req, res) {
     try {
         const rooms = await roomChat.create({});
-        // const joinChats=await joinChat.create({})
         const commonRooms = await joinChat.findMany({
             where: {
                 AND: [
                   { userId: Number(req.params.user1) },
                   { userId: Number(req.params.user2) },
-                //   { roomId: roomId },
                 ],
               },
               include: {
@@ -132,7 +129,6 @@ joinChat: async function(req, res) {
                 AND: [
                   { userId: Number(req.params.user1) },
                   { userId: Number(req.params.user2) },
-                //   { roomId: roomId },
                 ],
               }
         });
@@ -141,20 +137,6 @@ joinChat: async function(req, res) {
         throw error;
     }
 },
-// joinChat: async function(req, res) {
-//     try {
-//       const { userId, roomId } = req.body;
-//       const join = await joinChat.create({
-//         data: {
-//           roomId: roomId,
-//           userId: userId
-//         }
-//       });
-//       res.status(200).send(join);
-//     } catch (error) {
-//       throw error;
-//     }
-//   }
 
 
 

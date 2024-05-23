@@ -68,7 +68,6 @@ console.log('data',allFave.user);
             <View>
               <Text style={styles.cardTitle}>{item.hotel.name}</Text>
             </View>
-            <IconS name="heart-alt" size={26} color='#ff6347' style={styles.heartIcon} />
           </View>
           <View style={styles.ratingContainer}>
             <View style={styles.rating}>

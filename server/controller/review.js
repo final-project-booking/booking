@@ -28,9 +28,7 @@ module.exports = {
     getReviews:async(req,res)=>{
         try {
             const reviews=await review.findMany({
-                // orderBy: {
-                //     createdAt: 'desc' 
-                //   },
+               
                 where:{
                     hotelId:parseInt(req.params.id)
                 },

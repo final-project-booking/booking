@@ -43,7 +43,6 @@ const EditProfile = ({navigation}) => {
 
     
     const imageHandler = async (image) => {
-      // console.log("image", image.assets[0].uri);
       try {
         const form = new FormData();
         form.append("file", {
@@ -59,7 +58,6 @@ const EditProfile = ({navigation}) => {
           body: form
         });
         const data = await res.json();
-        // console.log("url", data.secure_url);
         return data.secure_url;
       } catch (error) {
         console.error("Error:", error.message); 
@@ -99,7 +97,7 @@ const EditProfile = ({navigation}) => {
             setUser(data.payload);
             
           })
-          .catch(error => console.log("Error fetching user data:", error)); // Error handling
+          .catch(error => console.log("Error fetching user data:", error)); 
       };
     
       fetchUserId();

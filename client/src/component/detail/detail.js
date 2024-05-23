@@ -159,7 +159,6 @@ export default function Detail({route,navigation}) {
     const checkToken = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        console.log('hhhhhhhhhhhhhhhhh',token);
         
         if(token !== null) {
           return true;
@@ -418,7 +417,6 @@ const styles = StyleSheet.create({
     width: '40%',
     alignItems: 'center',
     paddingVertical: 10,
-    // justifyContent: 'center',
     height: '99%',
   },
   buttonText: {
@@ -515,7 +513,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dimmed background for focus
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
   },
   modalView: {
     width: '80%',
@@ -544,11 +542,8 @@ const styles = StyleSheet.create({
     marginTop:10
   },
   modalButton: {
-    // backgroundColor: '#2196F3',
     borderRadius: 15,
     padding: 10,
-      // elevation: 2,
-      // marginVertical: 10,
     width: '50%',
     alignItems: 'center',
     borderColor:'black',

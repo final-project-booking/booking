@@ -43,8 +43,7 @@ import socket from "../socket";
 
           const token = await AsyncStorage.getItem('user');
           console.log(token,'token');
-        //  const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywicm9sZSI6InVzZXIiLCJpYXQiOjE3MTYxOTgxMjl9.-VNS4jD9Z4uDabJg_W-C5DvNXPcKO4AijXj_QvBrGZ0";
-          // const decoded = jwtDecode(token);
+       
       const parse=JSON.parse(token)
           setProfile(parse);
         } catch (error) {
@@ -75,23 +74,14 @@ import socket from "../socket";
           (userItem) => userItem === currentUserName
         );
   
-        // if (isLogin) {
-        //   if (index === -1) {
-        //     Alert.alert("Please register first");
-        //   } else {
-           // setCurrentUser(currentUserName);
-          // }
-        // } else {
+
           if (index === -1) {
             allUsers.push(currentUserName);
             setAllUsers(allUsers);
             setCurrentUser(currentUserName);
-          // } else {
-          //   Alert.alert("Already registered ! Please login");
-          // }
+       
         }
   
-        // setCurrentUserName("");
       } else {
         Alert.alert("Please Login First!!");
       }
