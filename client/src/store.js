@@ -30,6 +30,10 @@ const store = configureStore({
     OwnerProfile:OwnerProfile,
     Rooms:Rooms,
     review:reviewSlice,
+   
+    
+    
+  
     allHotels:AllHotels,
     hotelSlice:HotelSlice,
     getNegotiations:getNegotiations,

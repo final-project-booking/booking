@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {cloud_name,preset} from "../../apAdress"
+import { Picker } from '@react-native-picker/picker';
 import Reviews from './Reviews'
 const OverviewScreen = () => {
   
@@ -110,7 +111,7 @@ const ImageIcon = <Icon size={25} name='add-a-photo' />;
 
     const BottomSheetContent = () => (
       <View style={styles.bottomSheetContent}>
-         <View style={{flexDirection:'column', gap: 10 }}>
+         <View style={{flexDirection:'column', gap: 15 }}>
                 <View />
                </View>
         <Text style={styles.bottomSheetTitle}>Add More Rooms</Text>
@@ -132,12 +133,38 @@ const ImageIcon = <Icon size={25} name='add-a-photo' />;
                 keyboardType="numeric"  
                 onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, price: parseInt(text, 10) } })}
              />
-      <TextInput style={styles.input} placeholder="View" onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, view: text } })} />
+      {/* <TextInput style={styles.input} placeholder="View" onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, view: text } })} /> */}
       
+
       <TextInput style={styles.input} placeholder="Rate" keyboardType="numeric"  onChangeText={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, rate: parseInt(text, 10) } })} />
       
-      <TextInput style={styles.input} placeholder="Meal Plan"  onChangeText={handleOptionChange} />
+      {/* <TextInput style={styles.input} placeholder="Meal Plan"  onChangeText={handleOptionChange} /> */}
+      <Text style={styles.label}>Meal Plan:</Text>
+              <Picker
+                selectedValue={roomData.roomTemplate.option.Meal_Plan}
+                style={styles.picker}
+                onValueChange={handleOptionChange}
+              >
+                <Picker.Item label="Please select the Meal Plan" value="" />
+                <Picker.Item label="break Fast" value="breakFast" />
+                <Picker.Item label="all Inclusive" value="all_Inclusive" />
+                <Picker.Item label="Half Board" value="halfBoard" />
+              
+              </Picker>
+
+      <Text style={styles.label}>View:</Text>
+              <Picker
+                selectedValue={roomData.roomTemplate.view}
+                style={styles.picker}
+                onValueChange={(text) => setRoomData({ ...roomData, roomTemplate: { ...roomData.roomTemplate, view: text } })}
+              >
+                <Picker.Item label="Please select the View" value="" />
+                <Picker.Item label="sea view" value="seaView" />
+                <Picker.Item label="stander view" value="standerView" />
+              
+              </Picker>
       <View style={styles.switchContainer}>
+
       <Text style={styles.switchLabel}>Reduction:</Text>
        <Switch
         trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -154,13 +181,11 @@ const ImageIcon = <Icon size={25} name='add-a-photo' />;
                 <View />
                </View>
               <Text onPress={pickImage} style={{color:"black"}}>Select your {ImageIcon}</Text>
-              {roomData.roomTemplate.media.length > 0 && (
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageContainer}>
-                    {roomData.roomTemplate.media.map((uri, index) => (
-                        <Image key={index} source={{ uri }} style={styles.imagePreview} />
-                    ))}
-                </ScrollView>
-            )}
+              <ScrollView horizontal>
+            {roomData.roomTemplate.media.map((uri, index) => (
+              <Image key={index} source={{ uri }} style={{ width: 100, height: 100, marginRight: 10 }} />
+            ))}
+              </ScrollView>
               <View style={{flexDirection:'column', gap: 10 }}>
                 <View />
                 <View />
@@ -286,9 +311,9 @@ const DetailsScreen = () => (
 );
 
 const ReviewsScreen = () => (
-  <View style={styles.screenContainer}>
+  // <View style={styles.screenContainer}>
     <Reviews/>
-  </View>
+ 
 );
 
 const HotelProfile = () => {
@@ -561,7 +586,7 @@ const styles = StyleSheet.create({
     flex:1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding:18,
+    padding:20,
   },
   bottomSheetTitle: {
     fontSize: 10,
@@ -620,6 +645,15 @@ imagePreview: {
   },
   detailsDivider: {
     marginVertical: 16,
+  },
+  picker: {
+    height: 50,
+    width: '100%',
+    marginBottom: 10,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
   },
 });
 

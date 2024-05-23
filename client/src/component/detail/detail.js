@@ -214,7 +214,7 @@ return (
             compar.mainRooms.map((e, index) => (
               <View key={index} style={styles.roomContainer}>
                 <Text style={styles.hotelName}>The Carlton Hotel</Text>
-                <Text style={styles.detailsText}>Rooms:{numRoom}</Text>
+                <Text style={styles.detailsText}>Rooms: {numRoom}</Text>
                 <Text style={styles.detailsText}>2 bedrooms, 2 bathrooms</Text>
                 <Text style={styles.detailsText}>People: {e?.capacity}</Text>
 
@@ -251,7 +251,7 @@ return (
         </Pressable>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '10%' }}>
          <IconButton icon="minus-circle-outline" size={30} onPress={minus} />
-         <Text style={{fontSize:17}}>{price2}</Text>
+         <Text style={{fontSize:17}}>{price2*time.length*numRoom}</Text>
         <IconButton icon="plus-circle-outline" size={30} color="red" style={{color:'red'}} onPress={plus} />
        </View>
        <View>
