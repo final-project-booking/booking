@@ -21,7 +21,7 @@ Clone the repository:
 
 bash
 Copier le code
-git clone https://github.com/your-username/hotel-booking-app.git
+git clone 
 cd hotel-booking-app
 Install dependencies:
 
